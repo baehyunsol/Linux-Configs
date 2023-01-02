@@ -1,0 +1,34 @@
+# Base
+
+- gnome
+  - additional drivers
+  - check firefox version
+  - check disk
+    - well formatted
+  - use `gnome-control-center` inside leftwm
+- rustup
+- leftwm
+  - /usr/share/xsessions
+- alacritty
+- nushell
+  - chsh
+    - /etc/shells
+- feh
+- polybar
+- picom
+  - `picom -i 0.88 --opacity-rule '88:name *= \"Alacritty\"'`
+- rofi
+  - `rofi-theme-selector`
+
+# Applications
+
+- code
+- git
+- bat
+- bottom
+- tokei
+- virtualbox
+- kime
+- kdenlive
+- libreoffice
+  - see if it can read `monthly.xlsx` properly
