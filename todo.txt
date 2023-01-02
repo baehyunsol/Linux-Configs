@@ -15,6 +15,7 @@
     - /etc/shells
 - feh
 - polybar
+  - Install Korean fonts so that polybar can render korean
 - picom
   - `picom -i 0.88 --opacity-rule '88:name *= \"Alacritty\"'`
 - rofi
