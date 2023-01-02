@@ -67,8 +67,9 @@
         (command: Execute,     modifier: ["modkey"], key: "r", value: "rofi -show run"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "Return", value: "alacritty"),
 
-        // TODO: help page
-        //(command: Execute,     modifier: ["modkey", "Shift"], key: "h", value: "firefox --kiosk /home/baehyunsol/help.html"),
+        // TODO: Make additional polybars with more detailed information, and make shortcuts for open/close the new bars
+
+        (command: Execute,     modifier: ["modkey"], key: "h", value: "firefox --kiosk /home/baehyunsol/Documents/DThelp/index.html"),
 
         // kill
         (command: Execute,     modifier: ["modkey", "Shift"], key: "x", value: "loginctl kill-session $XDG_SESSION_ID"),
@@ -111,7 +112,7 @@
 
         // scratch pads
         (command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "m", value: "Memo"),
-        //(command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "m", value: "Clock"),  // TODO: make one
+        //(command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "c", value: "Clock"),  // TODO: make one
         (command: ReleaseScratchPad, modifier: ["modkey", "Control"], key: "r"),
     ],
     state_path: None,
