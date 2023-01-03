@@ -61,7 +61,7 @@
     auto_derive_workspaces: true,
     keybind: [
         // init
-        (command: Execute,     modifier: ["modkey"], key: "i", value: "feh --bg-fill /home/baehyunsol/Downloads/bg.jpg & picom -i 0.88 & polybar -c /home/baehyunsol/.config/polybar.ini left & polybar -c /home/baehyunsol/.config/polybar.ini center & polybar -c /home/baehyunsol/.config/polybar.ini right"),
+        (command: Execute,     modifier: ["modkey"], key: "i", value: "feh --bg-fill /home/baehyunsol/Downloads/bg.jpg & picom -i 0.88 & polybar -c /home/baehyunsol/.config/polybar.ini bar0 & polybar -c /home/baehyunsol/.config/polybar.ini bar1 & polybar -c /home/baehyunsol/.config/polybar.ini bar2 & polybar -c /home/baehyunsol/.config/polybar.ini bar3"),
 
         // launch new app
         (command: Execute,     modifier: ["modkey"], key: "r", value: "rofi -show run"),
@@ -71,8 +71,6 @@
         (command: Execute,     modifier: ["modkey", "Shift"], key: "f", value: "firefox"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "v", value: "code"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "n", value: "nautilus"),
-
-        // TODO: Make additional polybars with more detailed information, and make shortcuts for open/close the new bars
 
         // kill
         (command: Execute,     modifier: ["modkey", "Control"], key: "x", value: "loginctl kill-session $XDG_SESSION_ID"),
