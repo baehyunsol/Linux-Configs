@@ -20,6 +20,7 @@
   - `picom -i 0.88 --opacity-rule '88:name *= \"Alacritty\"'`
 - rofi
   - `rofi-theme-selector`
+  - /usr/share/rofi/themes
 
 # Applications
 
