@@ -66,16 +66,20 @@
         // launch new app
         (command: Execute,     modifier: ["modkey"], key: "r", value: "rofi -show run"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "Return", value: "alacritty"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "h", value: "firefox --kiosk /home/baehyunsol/Documents/DThelp/index.html"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "c", value: "gnome-control-center"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "f", value: "firefox"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "v", value: "code"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "n", value: "nautilus"),
 
         // TODO: Make additional polybars with more detailed information, and make shortcuts for open/close the new bars
 
-        (command: Execute,     modifier: ["modkey"], key: "h", value: "firefox --kiosk /home/baehyunsol/Documents/DThelp/index.html"),
-
         // kill
-        (command: Execute,     modifier: ["modkey", "Shift"], key: "x", value: "loginctl kill-session $XDG_SESSION_ID"),
-        (command: CloseWindow, modifier: ["modkey", "Shift"], key: "q"),
-        (command: Execute,     modifier: ["modkey", "Shift"], key: "r", value: "pkill polybar"),  // it first kills polybar before reloading -> it makes polybar theme testing easier
-        (command: SoftReload,  modifier: ["modkey", "Shift"], key: "r"),
+        (command: Execute,     modifier: ["modkey", "Control"], key: "x", value: "loginctl kill-session $XDG_SESSION_ID"),
+        (command: CloseWindow, modifier: ["modkey", "Control"], key: "q"),
+        (command: Execute,     modifier: ["modkey", "Control"], key: "p", value: "pkill polybar"),
+        (command: Execute,     modifier: ["modkey", "Control"], key: "p", value: "pkill picom"),
+        (command: SoftReload,  modifier: ["modkey", "Control"], key: "p"),
 
         // move window/tag
         (command: MoveWindowTop,   modifier: ["modkey"], key: "Return"),
@@ -106,12 +110,12 @@
         (command: ToggleFloating, modifier: ["modkey", "Control"], key: "f"),
 
         // resize window
-        (command: IncreaseMainWidth, modifier: ["modkey", "Shift"], key: "w", value: "5"),
-        (command: DecreaseMainWidth, modifier: ["modkey", "Shift"], key: "n", value: "5"),
-        (command: ToggleFullScreen,  modifier: ["modkey", "Shift"], key: "f"),
+        (command: IncreaseMainWidth, modifier: ["modkey", "Control"], key: "w", value: "5"),
+        (command: DecreaseMainWidth, modifier: ["modkey", "Control"], key: "n", value: "5"),
+        (command: ToggleFullScreen,  modifier: ["modkey", "Control"], key: "s"),
 
         // scratch pads
-        (command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "m", value: "Memo"),
+        (command: ToggleScratchPad,  modifier: ["modkey", "Shift"], key: "m", value: "Memo"),
         //(command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "c", value: "Clock"),  // TODO: make one
         (command: ReleaseScratchPad, modifier: ["modkey", "Control"], key: "r"),
     ],
