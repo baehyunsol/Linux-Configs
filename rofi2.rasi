@@ -1,0 +1,54 @@
+* {
+    background-color: #2c2c2c;
+    text-color: #fefefe;
+}
+
+window {
+    border-color: #c2c2c2;
+    border: 6px;
+    border-radius: 4px;
+}
+
+mainbox {
+    padding: 8px;
+}
+
+message {
+    margin: 8px;
+    padding: 8px;
+    border-color: #c2c2c2;
+    border: 6px;
+    border-radius: 4px;
+}
+
+inputbar {
+    padding: 8px;
+    border-color: #c2c2c2;
+    border: 6px;
+    border-radius: 4px;
+}
+
+listview {
+    padding: 2px;
+}
+
+prompt, entry {
+    padding: 4px;
+}
+
+element {
+    margin: 2px;
+    padding: 2px;
+}
+
+element.selected {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    border: 2px;
+    border-radius: 4px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
