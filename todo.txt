@@ -21,6 +21,8 @@
 - rofi
   - `rofi-theme-selector`
   - /usr/share/rofi/themes
+- fetch (ex: ferris-fetch, neofetch)
+  - run it when opening a terminal
 
 # Applications
 
