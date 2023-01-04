@@ -17,7 +17,7 @@
 - polybar
   - Install Korean fonts so that polybar can render korean
 - picom
-  - `picom -i 0.88 --opacity-rule '88:name *= \"Alacritty\"'`
+  - TODO: add config file
 - rofi
   - `rofi-theme-selector`
   - /usr/share/rofi/themes
