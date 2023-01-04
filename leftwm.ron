@@ -61,7 +61,7 @@
     auto_derive_workspaces: true,
     keybind: [
         // init
-        (command: Execute,     modifier: ["modkey"], key: "i", value: "feh --bg-fill /home/baehyunsol/Downloads/bg.jpg & picom -i 0.88 & polybar -c /home/baehyunsol/.config/polybar.ini bar0 & polybar -c /home/baehyunsol/.config/polybar.ini bar1 & polybar -c /home/baehyunsol/.config/polybar.ini bar2 & polybar -c /home/baehyunsol/.config/polybar.ini bar3"),
+        (command: Execute,     modifier: ["modkey"], key: "i", value: "feh --bg-fill /home/baehyunsol/Downloads/bg.jpg & picom -i 0.88 --opacity-rule '88:name *= \"Alacritty\"' & polybar -c /home/baehyunsol/.config/polybar.ini bar0 & polybar -c /home/baehyunsol/.config/polybar.ini bar1 & polybar -c /home/baehyunsol/.config/polybar.ini bar2 & polybar -c /home/baehyunsol/.config/polybar.ini bar3"),
 
         // launch new app
         (command: Execute,     modifier: ["modkey"], key: "r", value: "rofi -show run"),
