@@ -36,3 +36,7 @@
 - kdenlive
 - libreoffice
   - see if it can read `monthly.xlsx` properly
+- blueman
+  - bluetooth manager
+  - use it if gnome-control-center is not working
+  - bin name is `blueman-manager`
