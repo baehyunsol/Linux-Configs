@@ -15,10 +15,16 @@
   - Launch gnome [[giant]]C[[/giant]]ontrol center
 - Mod + [[aqua]]Shift[[/aqua]] + F
   - Launch [[giant]]F[[/giant]]irefox
+- Mod + [[aqua]]Shift[[/aqua]] + P
+  - Launch Firefox in [[giant]]P[[/giant]]rivate mode
 - Mod + [[aqua]]Shift[[/aqua]] + V
   - Launch [[giant]]V[[/giant]]SCode
 - Mod + [[aqua]]Shift[[/aqua]] + N
   - Launch [[giant]]N[[/giant]]autilus
+- Mod + [[aqua]]Shift[[/aqua]] + M
+  - Launch [[giant]]M[[/giant]]emo in scratch pad mode
+- Mod + [[aqua]]Shift[[/aqua]] + L
+  - Launch ca[[giant]]L[[/giant]]culator in scratch pad mode
 
 ## Kill
 
@@ -59,10 +65,5 @@
   - Make the main window [[giant]]N[[/giant]]arrower
 - Mod + [[red]]Control[[/red]] + S
   - Toggle full[[giant]]S[[/giant]]creen
-
-## Scratch Pads
-
-- Mod + [[aqua]]Shift[[/aqua]] + M
-  - Launch [[giant]]M[[/giant]]emo in scratch pad mode
-- Mod + [[aqua]]Control[[/aqua]] + R
+- Mod + [[red]]Control[[/red]] + R
   - [[giant]]R[[/giant]]elease current scratch pad
