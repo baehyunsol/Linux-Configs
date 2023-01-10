@@ -46,8 +46,13 @@
     scratchpad: [
         (
             name: "Memo",
-            value: "gedit",
+            value: "gnome-text-editor",
             x: 300, y: 300, width: 640, height: 480
+        ),
+        (
+            name: "Calc",
+            value: "gnome-calculator",
+            x: 360, y: 360, width: 640, height: 480
         )
     ],
     window_rules: [],
@@ -56,7 +61,7 @@
     disable_window_snap: true,
     focus_behaviour: Sloppy,
     focus_new_windows: true,
-    single_window_border: true,
+    single_window_border: false,
     sloppy_mouse_follows_focus: true,
     auto_derive_workspaces: true,
     keybind: [
@@ -71,6 +76,7 @@
         (command: Execute,     modifier: ["modkey", "Shift"], key: "f", value: "firefox"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "v", value: "code"),
         (command: Execute,     modifier: ["modkey", "Shift"], key: "n", value: "nautilus"),
+        (command: Execute,     modifier: ["modkey", "Shift"], key: "p", value: "firefox --private-window"),
 
         // kill
         (command: Execute,     modifier: ["modkey", "Control"], key: "x", value: "loginctl kill-session $XDG_SESSION_ID"),
@@ -114,7 +120,7 @@
 
         // scratch pads
         (command: ToggleScratchPad,  modifier: ["modkey", "Shift"], key: "m", value: "Memo"),
-        //(command: ToggleScratchPad,  modifier: ["modkey", "Control"], key: "c", value: "Clock"),  // TODO: make one
+        (command: ToggleScratchPad,  modifier: ["modkey", "Shift"], key: "l", value: "Calc"),
         (command: ReleaseScratchPad, modifier: ["modkey", "Control"], key: "r"),
     ],
     state_path: None,
