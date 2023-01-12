@@ -40,3 +40,12 @@
   - bluetooth manager
   - use it if gnome-control-center is not working
   - bin name is `blueman-manager`
+
+---
+
+TODO: make a very light launcher
+
+eg: Mod + Shift + F launches a firefox launcher.
+- the launcher gives me several options (eg: 'g' for github, 'Enter' for new Tab, 'y' for youtube...)
+
+Alacritty, VSCode, Nautilus and many other applications (that can open with an address) have launchers
