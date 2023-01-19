@@ -42,6 +42,8 @@
   - `get`이나 `.`이나 동일
 - `0x[bf] | into int`
   - 191
+- `du`
+  - get the size of the directory (recursively)
 
 - list
   - `[1 2 3 4 5 6] | get 1`
