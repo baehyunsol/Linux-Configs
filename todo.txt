@@ -30,6 +30,8 @@
 - git
 - bat
 - silver searcher
+- du-dust
+  - disk usage
 - bottom
 - tokei
 - virtualbox
