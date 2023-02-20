@@ -395,6 +395,11 @@ let-env config = {
     metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, zb, zib, auto
   }
+  cursor_shape: {
+    emacs: line # block, underscore, line (line is the default)
+    vi_insert: block # block, underscore, line (block is the default)
+    vi_normal: underscore # block, underscore, line  (underscore is the default)
+  }
   color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
   use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
@@ -403,7 +408,7 @@ let-env config = {
   use_ansi_coloring: true
   edit_mode: emacs # emacs, vi
   shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
-  show_banner: false # true or false to enable or disable the banner
+  show_banner: true # true or false to enable or disable the banner
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
@@ -644,6 +649,8 @@ let-env config = {
     }
   ]
 }
+
+
 
 # if updating this config file,
 # 1. download fresh config file
