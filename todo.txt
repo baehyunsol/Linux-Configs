@@ -7,6 +7,7 @@
     - well formatted
   - use `gnome-control-center` inside leftwm
   - install korean ime before installing leftwm
+    - snap's vscode is not compatible with ibus
 - rustup
 - leftwm
   - /usr/share/xsessions
