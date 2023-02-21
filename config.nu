@@ -659,5 +659,6 @@ let-env config = {
 # 2. set `show_banner: false` (if possible)
 # 3. copy and paste below lines
 
-alias ll = python /home/baehyunsol/.config/launcher.py
+alias py = python3
+alias ll = python3 /home/baehyunsol/.config/launcher.py
 ferris-fetch
