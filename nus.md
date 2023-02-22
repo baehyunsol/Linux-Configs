@@ -31,6 +31,8 @@
   - string literal 앞의 `$`를 이용해서 formatting 가능. formatting 할 때는 문자열 안의 `()`를 읽음.
 - `echo "a, b, c, d, e" | save test.txt; open test.txt | split column ","`
   - `split column`은 table을 반환하고 `split row`는 list를 반환
+- `str --help`
+  - string과 관련된 유용한 명령어들 쭉 보여줌
 - `let files = (ls | where size > 500KiB | get name)`
 - `(do {let x = 3; let y = 4; $x + $y}) + (do {let x = 5; let y = 6; $x + $y})`
   - 18
