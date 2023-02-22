@@ -33,6 +33,7 @@
   - `split column`은 table을 반환하고 `split row`는 list를 반환
 - `str --help`
   - string과 관련된 유용한 명령어들 쭉 보여줌
+- `"a" * 3`, `[11  12] * 7`
 - `let files = (ls | where size > 500KiB | get name)`
 - `(do {let x = 3; let y = 4; $x + $y}) + (do {let x = 5; let y = 6; $x + $y})`
   - 18
@@ -44,6 +45,7 @@
   - 191
 - `du`
   - get the size of the directory (recursively)
+- `timeit { ls | sort-by name type -i | get name }`
 
 - list
   - `[1 2 3 4 5 6] | get 1`
