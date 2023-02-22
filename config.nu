@@ -661,4 +661,13 @@ let-env config = {
 
 alias py = python3
 alias ll = python3 /home/baehyunsol/.config/launcher.py
+
+def battery [verbose?] {
+  if ($verbose == "verbose") {
+    upower -i /org/freedesktop/UPower/devices/battery_BAT1;
+  } else {
+    upower -i /org/freedesktop/UPower/devices/battery_BAT1 | split row "\n" | find "percentage" | get 0;
+  }
+}
+
 ferris-fetch
