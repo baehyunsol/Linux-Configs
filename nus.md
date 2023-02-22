@@ -13,12 +13,10 @@
   - `ps | select name cpu | describe`는 `table<name: string, cpu: float>`임.
 - `ps | select name cpu | length`
   - 그냥 `length` 언급하고 싶었음
-- `ls | find --regex ".*png"`, `[2 4 3 6 5 8] | find --predicate { |it| ($it mod 2) == 1 }`
+- `ls | find --regex ".*png"`, `[2 4 3 6 5 8] | filter { |it| ($it mod 2) == 1 }`
   - regex 쓸 때 문법 조심하셈 ㅋㅋ `.`가 ~_any character_~임.
   - table에다가 `find` 쓰면 모든 cell들의 문자열을 다 뒤져서 대응되는 row를 다 반환하는 듯? 반환은 table로 함
-  - `find --predicate` is not working on the newer version of nu. it's complaining that the flag is unknown
-    - instead, `[2 4 3 6 5 8] | filter { ($it mod 2) == 1 }` or `[2 4 3 6 5 8] | filter { ($in mod 2) == 1 }`
-    - if a name of an input is not declared, it's `$in`
+  - if a name of an input is not declared, it's `$in`
 - `cp *.abc test`
   - 현재 폴더의 `.abc` 확장자를 전부 `test` dir로 옮김
   - 앞에가 파일이름이니까 뒤에도 `test/*.abc` 같은 느낌이어야하지 않나 싶겠지만 그렇지 않음!
