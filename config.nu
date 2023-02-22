@@ -662,6 +662,7 @@ let-env config = {
 alias py = python3
 alias ll = python3 /home/baehyunsol/.config/launcher.py
 
+# if the path is wrong, try `upower -e`
 def battery [verbose?] {
   if ($verbose == "verbose") {
     upower -i /org/freedesktop/UPower/devices/battery_BAT1;
