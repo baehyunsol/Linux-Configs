@@ -657,9 +657,17 @@ let-env config = {
 # 2. set `show_banner: false` (if possible)
 # 3. copy and paste below lines
 
+# -------
+# aliases
+# -------
+
 alias py = python3
 alias ll = python3 /home/baehyunsol/.config/launcher.py
 alias gnt = gnome-text-editor
+
+# -------
+# my defs
+# -------
 
 # if the path is wrong, try `upower -e`
 def battery [verbose?] {
@@ -677,5 +685,47 @@ def screenshot [all?] {
     /home/baehyunsol/.config/nushell/screenshot.nu
   }
 }
+
+# -------------------------------------------
+# from https://github.com/nushell/nu_scripts/
+# -------------------------------------------
+
+# Go up a number of directories
+def-env up [
+    limit = 1: int # The number of directories to go up (default is 1)
+  ] {
+    cd ("." * ($limit + 1))
+}
+
+#Function to extract archives with different extensions
+def extract [name:string #name of the archive to extract
+] {
+  let exten = [ [ex com];
+                    ['.tar.bz2' 'tar xjf']
+                    ['.tar.gz' 'tar xzf']
+                    ['.bz2' 'bunzip2']
+                    ['.rar' 'unrar x']
+                    ['.tbz2' 'tar xjf']
+                    ['.tgz' 'tar xzf']
+                    ['.zip' 'unzip']
+                    #['.7z' '/usr/bin/7z x']
+                    ['.deb' 'ar x']
+                    ['.tar.xz' 'tar xvf']
+                    ['.tar.zst' 'tar xvf']
+                    ['.tar' 'tar xvf']
+                    ['.gz' 'gunzip']
+                    ['.Z' 'uncompress']
+                    ]
+  let command = ($exten | where $name =~ $it.ex | first)
+  if ($command | is-empty) {
+    echo 'Error! Unsupported file extension'
+  } else {
+    nu -c ($command.com + ' ' + $name)
+  }
+}
+
+# ---------------------
+# Start-up Applications
+# ---------------------
 
 ferris-fetch
