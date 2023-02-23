@@ -666,7 +666,7 @@ def battery [verbose?] {
   if ($verbose == "verbose") {
     upower -i /org/freedesktop/UPower/devices/battery_BAT1;
   } else {
-    upower -i /org/freedesktop/UPower/devices/battery_BAT1 | split row "\n" | find "percentage" | get 0;
+    upower -i /org/freedesktop/UPower/devices/battery_BAT1 | split row "\n" | find "percentage" | get 0 | str replace -a " " "" | str replace ":" ": ";
   }
 }
 
