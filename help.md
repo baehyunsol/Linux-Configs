@@ -67,3 +67,10 @@
   - Toggle full[[giant]]S[[/giant]]creen
 - Mod + [[red]]Control[[/red]] + R
   - [[giant]]R[[/giant]]elease current scratch pad
+
+## Utilities
+
+- Mod + [[aqua]]Shift[[/aqua]] + F1
+  - Take a screenshot
+- Mod + [[aqua]]Shift[[/aqua]] + F2
+  - Take a screenshot of the entire screen
