@@ -39,6 +39,9 @@
 - virtualbox
 - kime
 - kdenlive
+- imagemagick
+  - screenshot util
+  - add `screenshot.nu` and `screenshot_all.nu` to `~/.config/nushell`
 - libreoffice
   - see if it can read `monthly.xlsx` properly
 - blueman
