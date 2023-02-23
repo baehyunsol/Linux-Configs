@@ -670,4 +670,12 @@ def battery [verbose?] {
   }
 }
 
+def screenshot [all?] {
+  if ($all == "all") {
+    /home/baehyunsol/.config/nushell/screenshot_all.nu
+  } else {
+    /home/baehyunsol/.config/nushell/screenshot.nu
+  }
+}
+
 ferris-fetch
