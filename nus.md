@@ -10,11 +10,13 @@ nushell 0.76.0
 
 ## float
 
-TODO
+64 bits double precision floating point number (I guess)
 
 ## int
 
-64bit signed integer
+64 bits signed integer
+
+TODO: `0x[1000]`
 
 ## list
 
@@ -36,9 +38,7 @@ TODO: 이거 어디에 적지...
 
 [[/box]]
 
-# Basic Commands
-
-## Arithmatic Operations
+# Arithmatic Operations
 
 - (lhs: [list]<any>) `++` (rhs: [list]<any>) -> [list]<any>
 - (lhs: [string]) `+` (rhs: [string]) -> [string]
@@ -46,6 +46,20 @@ TODO: 이거 어디에 적지...
 - (s: [string]) `*` (times: [int]) -> [string]
 - (base: [int]) `**` (exp: [int]) -> [int]
 - (base: [int] | [float]) `**` (exp: [int] | [float]) -> [float]
+
+# Basic Commands
+
+## all
+
+- (l: [list]<T>) | `all` (predicate: [closure]\(T) -> [bool]) -> [bool]
+- (t: [table]) | `all` (predicate: [closure]\(R) -> [bool]) -> [bool]
+  - `R` is a row of `t`
+
+## any
+
+- (l: [list]<T>) | `any` (predicate: [closure]\(T) -> [bool]) -> [bool]
+- (t: [table]) | `any` (predicate: [closure]\(R) -> [bool]) -> [bool]
+  - `R` is a row of `t`
 
 ## columns
 
@@ -55,6 +69,10 @@ see [values]
   - returns the names of the columns in `list<string>`
 - (r: [record]) | `columns` -> [list]<[string]>
   - returns the names of the columns in `list<string>`
+
+## drop
+
+TODO
 
 ## each
 
@@ -69,13 +87,28 @@ see [values]
 
 ## enumerate
 
-TODO
+- (t: [table]) | `enumerate` -> [table]<index: [int], item: Row>
+- (l: [list]<T>) | `enumerate` -> [table]<index: [int], item: T>
+- (r: [record]) | `enumerate` -> [table]<index: [int], item: [record]>
+  - A record works like a table with a single row
+
+It doesn't work on strings
 
 ## filter
 
 - (l: [list]<T>) | `filter` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
 - (t: [table]) | `filter` (predicate: [closure]\(R) -> [bool]) -> [table]
   - `R` is a row of `t`
+
+## first
+
+see [last]
+
+- (l: [list]<T>) | `first` -> T
+- (l: [list]<T>) | `first` (n: [int]) -> [list]<T>
+  - returns a list with the first `n` elements
+
+TODO: `first` on binary data
 
 ## get
 
@@ -88,13 +121,71 @@ TODO
 - (r: [record]) | `get` (k: any) -> V
   - key-value search
 
+## into
+
+### into binary
+
+TODO
+
+### into bool
+
+- (n: [int] | [float]) | `into bool` -> [bool]
+  - non-zero for true
+- (b: [bool]) | `into bool` -> [bool]
+- (s: [string]) | `into bool` -> [bool]
+  - `s` should be a valid representation of a boolean or a number
+- (l: [list]<any>) | `into bool` -> [list]<[bool]>
+  - `each {$in | into bool}`
+
+### into datetime
+
+TODO
+
+### into decimal
+
+TODO
+
+### into duration
+
+TODO
+
+### into filesize
+
+TODO
+
+### into int
+
+TODO
+
+### into record
+
+TODO
+
+### into sqlite
+
+TODO
+
+### into string
+
+- any | `into string` -> [string]
+
+- `-d` (digits: [int]): decimal digits to which to round (only for numerics)
+
+## last
+
+see [first]
+
+- (l: [list]<T>) | `last` -> T
+- (l: [list]<T>) | `last` (n: [int]) -> [list]<T>
+  - returns a list with the last `n` elements
+
 ## length
 
 - (l: [list]<any>) | `length` -> [int]
 - (t: [table]) | `length` -> [int]
   - the number of rows
 
-It doesn't work on [record]s and [string]s.
+It doesn't work on [record]s and [string]s
 
 ## random
 
@@ -106,15 +197,17 @@ It doesn't work on [record]s and [string]s.
 
 ### random chars
 
-TODO
+- `random chars` -> [string]
+  - [0-9a-zA-Z]+
 
-TODO: enhance help message (default length)
+- `-l`: length of the result (default 25)
 
 ### random decimal
 
-TODO
+TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 안 겹치게 잘 하셈..!!
 
-TODO: enhance help message (default range)
+- `random decimal` (range: [range]<[float]>) -> [float]
+  - default range is 0.0 ~ 1.0
 
 ### random dice
 
@@ -122,7 +215,9 @@ TODO
 
 ### random integer
 
-TODO
+TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 안 겹치게 잘 하셈..!!
+
+- `random integer` (range: [range]<[int]> = (0..2^63^)) -> [int]
 
 ### random uuid
 
@@ -132,9 +227,19 @@ TODO
 
 TODO
 
-## reverse
+## reduce
 
 TODO
+
+## reject
+
+TODO
+
+## reverse
+
+- (l: [list]<any>) | `reverse` -> [list]<any>
+- (t: [table]) | `reverse` -> [table]
+  - reverse the rows
 
 ## select
 
@@ -142,6 +247,18 @@ TODO
   - selects 1 or more columns
 - (t: [table]) | `select` (column: ColumnName)* -> [table]
   - selects 1 or more columns
+
+## skip
+
+TODO
+
+### skip until
+
+TODO
+
+### skip while
+
+TODO
 
 ## sort
 
@@ -156,8 +273,9 @@ TODO
 
 ## sort-by
 
-- (t: [table]) | `sort-by` (column: c)
-  - `column` must be a valid column of `t`
+It seems to be a stable sort
+
+- (t: [table]) | `sort-by` (column: ColumnName)
 
 - `-r`: reverse
 - `-i`: ignore case
@@ -210,7 +328,7 @@ TODO
 
 - (s: [string]) | `str ends-with` (substring: [string]) -> [bool]
 
-- `-i`: ignore case (not implemented yet)
+- `-i`: ignore case
 
 ### str index-of
 
@@ -246,7 +364,7 @@ TODO
 
 - (s: [string]) | `str starts-with` (substring: [string]) -> [bool]
 
-- `-i`: ignore case (not implemented yet)
+- `-i`: ignore case
 
 ### str substring
 
@@ -270,9 +388,42 @@ TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 �
 - `-l`: trims the left side
 - `-r`: trims the right side
 
-## uniq
+## take
 
 TODO
+
+### take until
+
+TODO
+
+### take while
+
+TODO
+
+## uniq
+
+- (l: [list]<any>) | `uniq` -> [list]<any>
+  - removes duplicate elements (leaves only 1)
+- (t: [table]) | `uniq` -> [table]
+  - removes duplicate rows (leaves only 1)
+
+- `-c`: returns a table containing the distinct input values together with their counts
+- `-d`: removes unique elements/rows
+- `-i`: ignore cases
+- `-u`: removes duplicate elements/rows
+  - default option leaves 1 element/row, but it removes all
+
+## uniq-by
+
+see [uniq]
+
+- (t: [table]) | `uniq-by` (c: ColumnName) -> [table]
+
+- `-c`: returns a table containing the distinct rows together with their counts
+- `-d`: removes unique rows
+- `-i`: ignore cases
+- `-u`: removes duplicate rows
+  - default option leaves 1 row, but it removes all
 
 ## values
 
