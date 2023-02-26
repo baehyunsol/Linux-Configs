@@ -74,3 +74,5 @@
   - Take a screenshot
 - Mod + [[aqua]]Shift[[/aqua]] + F2
   - Take a screenshot of the entire screen
+- Mod + [[aqua]]Shift[[/aqua]] + F3
+  - Play Music
