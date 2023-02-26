@@ -113,9 +113,10 @@
         (command: MoveToTag, modifier: ["modkey", "Shift"], key: "0", value: "10"),
         (command: ToggleFloating, modifier: ["modkey", "Control"], key: "f"),
 
-        // screenshots
+        // utilities
         (command: Execute, modifier: ["modkey", "Shift"], key: "F1", value: "/home/baehyunsol/.config/nushell/screenshot.nu"),
         (command: Execute, modifier: ["modkey", "Shift"], key: "F2", value: "/home/baehyunsol/.config/nushell/screenshot_all.nu"),
+        (command: Execute, modifier: ["modkey", "Shift"], key: "F3", value: "vlc --random /home/baehyunsol/Music"),
 
         // resize window
         (command: IncreaseMainWidth, modifier: ["modkey", "Control"], key: "w", value: "5"),
