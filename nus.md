@@ -38,6 +38,11 @@ In order to directly call a closure, `let foo = {|name| print $"hello ($name)"};
 
 TODO
 
+[[anchor, id = type duration]][[/anchor]]
+## duration
+
+TODO
+
 [[anchor, id = type float]][[/anchor]]
 ## float
 
@@ -99,73 +104,115 @@ TODO: 이거 어디에 적지...
 
 # Arithmatic Operations
 
-- (lhs: [list]<any>) `++` (rhs: [list]<any>) -> [list]<any>
-- (lhs: [string]) `+` (rhs: [string]) -> [string]
-- (l: [list]<T>) `*` (times: [int]) -> [list]<T>
-- (s: [string]) `*` (times: [int]) -> [string]
-- (base: [int]) `**` (exp: [int]) -> [int]
-- (base: [int] | [float]) `**` (exp: [int] | [float]) -> [float]
+- (lhs: [list]<any>) `++` (rhs: [list]<any>) → [list]<any>
+- (lhs: [string]) `+` (rhs: [string]) → [string]
+- (l: [list]<T>) `*` (times: [int]) → [list]<T>
+- (s: [string]) `*` (times: [int]) → [string]
+- (base: [int]) `**` (exp: [int]) → [int]
+- (base: [int] | [float]) `**` (exp: [int] | [float]) → [float]
+- (lhs: [date][typedate]) `-` (rhs: [date][typedate]) → [duration]
 
 # Basic Commands
 
 ## all
 
-- (l: [list]<T>) | `all` (predicate: [closure]\(T) -> [bool]) -> [bool]
-- (t: [table]) | `all` (predicate: [closure]\(R) -> [bool]) -> [bool]
+- (l: [list]<T>) | `all` (predicate: [closure]\(T) → [bool]) → [bool]
+- (t: [table]) | `all` (predicate: [closure]\(R) → [bool]) → [bool]
   - `R` is a row of `t`
 
 ## any
 
-- (l: [list]<T>) | `any` (predicate: [closure]\(T) -> [bool]) -> [bool]
-- (t: [table]) | `any` (predicate: [closure]\(R) -> [bool]) -> [bool]
+- (l: [list]<T>) | `any` (predicate: [closure]\(T) → [bool]) → [bool]
+- (t: [table]) | `any` (predicate: [closure]\(R) → [bool]) → [bool]
   - `R` is a row of `t`
 
 ## columns
 
 see [values](#values)
 
-- (t: [table]) | `columns` -> [list]<[string]>
+- (t: [table]) | `columns` → [list]<[string]>
   - returns the names of the columns in `list<string>`
-- (r: [record]) | `columns` -> [list]<[string]>
+- (r: [record]) | `columns` → [list]<[string]>
   - returns the names of the columns in `list<string>`
 
 [[anchor, id = command date]][[/anchor]]
 ## date
 
-TODO
+[[anchor, id = date format string]][[/anchor]]
+
+| String  | Example         | Explanation                          |
+|---------|-----------------|--------------------------------------|
+|!![[collapsible, default = hidden]]                               |
+| %Y      | 2023            | year (zero-padded 4 digits)          |
+| %C      | 20              | year / 100 (zero-padded 2 digits)    |
+| %y      | 23              | year % 100 (zero-padded 2 digits)    |
+| %m      | 02              | month (zero-padded 2 digits)         |
+| %b      | Feb             | month (always 3 characters)          |
+| %B      | February        | full month name                      |
+| %d      | 27              | day (zero-padded 2 digits)           |
+| %e      | 27              | day (space-padded 2 digits)          |
+| %a      | Mon             | weekday (always 3 characters)        |
+| %A      | Monday          | full weekday                         |
+| %w      | 1               | sunday = 0 ... saturday = 6          |
+| %u      | 1               | monday = 1 ... sunday = 7            |
+| %U      | 09              | week number starting with sunday (0 ~ 53), (zero-padded 2 digits)  |
+| %W      | 09              | same as %U, but week 1 starts with the first Monday in that year   |
+| %j      | 059             | day of the year (1 ~ 366), (zero-padded 3 digits)  |
+| %D      | 02/28/23        | %m/%d/%y                             |
+| %F      | 2023-02-28      | %Y-%m-%d                             |
+| %v      | 28-Feb-2023     | %e-%b-%Y                             |
+| %H      | 00              | hour (0 ~ 23), (zero-padded 2 digits)  |
+| [[colspan=3]]TODO... |
+
+### date format
+
+- (date: [date][typedate]) | `date format` (format: [string] = "%a, %d %b %Y %T %z") → [string]
+- (date: [string]) | `date format` (format: [string] = "%a, %d %b %Y %T %z") → [string]
+
+- `-l`: list all the format characters
+  - see [this table](#dateformatstring)
+
+### date now
+
+- `date now` → [date][typedate]
+
+### date to-record
+
+- (date: [date][typedate]) | `date to-record` → [record]
+- (date: [string]) | `date to-record` → [record]
 
 ## decode
 
-- (raw: [binary]) | `decode utf-8` -> [string]
-- (raw: [binary]) | `decode utf-16be` -> [string]
-- (raw: [binary]) | `decode utf-16le` -> [string]
-- (raw: [binary]) | `decode euc-kr` -> [string]
+- (raw: [binary]) | `decode utf-8` → [string]
+- (raw: [binary]) | `decode utf-16be` → [string]
+- (raw: [binary]) | `decode utf-16le` → [string]
+- (raw: [binary]) | `decode euc-kr` → [string]
 
 ## drop
 
 see [skip](#skip) and [last](#last)
 
-- (l: [list]<T>) | `drop` (count: [int] = 1) -> [list]<T>
+- (l: [list]<T>) | `drop` (count: [int] = 1) → [list]<T>
   - removes `count` items from the end
-- (t: [table]) | `drop` (count: [int] = 1) -> [table]
+- (t: [table]) | `drop` (count: [int] = 1) → [table]
   - removes `count` rows from the end
 
 ### drop column
 
-- (t: [table]) | `drop column` (count: [int] = 1) -> [table]
+- (t: [table]) | `drop column` (count: [int] = 1) → [table]
   - removes `count` columns from the end (right)
 
 ### drop nth
 
-- (l: [list]<T>) | `drop nth` (which: [int] | [range][typerange]<[int]>)* -> [list]<T>
+- (l: [list]<T>) | `drop nth` (which: [int] | [range][typerange]<[int]>)* → [list]<T>
   - removes elements with the selected indexes
 
 ## each
 
-- (l: [list]<T>) | `each` (func: [closure]\(T) -> U) -> [list]<U>
+- (l: [list]<T>) | `each` (func: [closure]\(T) → U) → [list]<U>
   - if `func` returns [null], it skips the index
   - in order to include [null]s, `-k` flag must be given
-- (t: [table]) | `each` (func: [closure]\(T) -> U) -> [list]<U>
+- (t: [table]) | `each` (func: [closure]\(T) → U) → [list]<U>
   - `T` is the type of `t`'s row
   - the length of the result is the number of the rows, that means `func` is applied to "each" row
 
@@ -173,47 +220,56 @@ flags
 
 - `-k`: keep empty ([null]) value cells
 
+## echo
+
+- `echo` (val: T) → T
+  - it returns its argument to the pipeline
+
 ## encode
 
-- (s: [string]) | `encode utf-8` -> [binary]
-- (s: [string]) | `encode utf-16be` -> [binary]
-- (s: [string]) | `encode utf-16le` -> [binary]
-- (s: [string]) | `encode euc-kr` -> [binary]
+- (s: [string]) | `encode utf-8` → [binary]
+- (s: [string]) | `encode utf-16be` → [binary]
+- (s: [string]) | `encode utf-16le` → [binary]
+- (s: [string]) | `encode euc-kr` → [binary]
 
 ## enumerate
 
-- (t: [table]) | `enumerate` -> [table]<index: [int], item: Row>
-- (l: [list]<T>) | `enumerate` -> [table]<index: [int], item: T>
-- (r: [record]) | `enumerate` -> [table]<index: [int], item: [record]>
+- (t: [table]) | `enumerate` → [table]<index: [int], item: Row>
+- (l: [list]<T>) | `enumerate` → [table]<index: [int], item: T>
+- (r: [record]) | `enumerate` → [table]<index: [int], item: [record]>
   - A record works like a table with a single row
 
 It doesn't work on strings
 
 ## filter
 
-- (l: [list]<T>) | `filter` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
-- (t: [table]) | `filter` (predicate: [closure]\(R) -> [bool]) -> [table]
+- (l: [list]<T>) | `filter` (predicate: [closure]\(T) → [bool]) → [list]<T>
+- (t: [table]) | `filter` (predicate: [closure]\(R) → [bool]) → [table]
   - `R` is a row of `t`
+
+## find
+
+TODO
 
 ## first
 
 see [last](#last)
 
-- (l: [list]<T>) | `first` -> T
-- (l: [list]<T>) | `first` (n: [int]) -> [list]<T>
+- (l: [list]<T>) | `first` → T
+- (l: [list]<T>) | `first` (n: [int]) → [list]<T>
   - returns a list with the first `n` elements of `l`
 
 TODO: `first` on binary data
 
 ## get
 
-- (t: [table]) | `get` (n: [int]) -> [record]
+- (t: [table]) | `get` (n: [int]) → [record]
   - gets `n`th row of `t`
-- (t: [table]) | `get` (k: T) -> [list]
+- (t: [table]) | `get` (k: T) → [list]
   - gets column with key `k` in `t`
-- (l: [list]<T>) | `get` (n: [int]) -> T
+- (l: [list]<T>) | `get` (n: [int]) → T
   - gets `n`th element of `l`
-- (r: [record]) | `get` (k: any) -> V
+- (r: [record]) | `get` (k: any) → V
   - key-value search
 
 ## into
@@ -224,23 +280,25 @@ TODO
 
 ### into bool
 
-- (n: [int] | [float]) | `into bool` -> [bool]
+- (n: [int] | [float]) | `into bool` → [bool]
   - non-zero for true
-- (b: [bool]) | `into bool` -> [bool]
-- (s: [string]) | `into bool` -> [bool]
+- (b: [bool]) | `into bool` → [bool]
+- (s: [string]) | `into bool` → [bool]
   - `s` should be a valid representation of a boolean or a number
-- (l: [list]<any>) | `into bool` -> [list]<[bool]>
+- (l: [list]<any>) | `into bool` → [list]<[bool]>
   - `each {$in | into bool}`
 
 ### into datetime
 
-- (n: [int]) | `into datetime` -> [date][typedate]
+- (n: [int]) | `into datetime` → [date][typedate]
   - if `n` is small enough, it reads `n` in seconds
     - when `n.to_string().len() <= 10`
     - it doesn't make sense to me... why not just using `n.abs()`?
   - otherwise, `n` is read in milliseconds
-- (s: [string]) | `into datetime` -> [date][typedate]
+- (s: [string]) | `into datetime` → [date][typedate]
   - TODO: format strings
+
+TODO: flags (reference [date format](#dateformatstring))
 
 ### into decimal
 
@@ -256,16 +314,16 @@ TODO
 
 ### into int
 
-- (f: [float]) | `into int` -> [int]
+- (f: [float]) | `into int` → [int]
   - floor, not round
-- (f: [filesize]) | `into int` -> [int]
+- (f: [filesize]) | `into int` → [int]
   - into number of bytes
-- (d: [date][typedate]) | `into int` -> [int]
+- (d: [date][typedate]) | `into int` → [int]
   - seconds elapsed since the Unix Epoch
-- (s: [string]) | `into int` -> [int]
+- (s: [string]) | `into int` → [int]
   - see `-r` flag
-- (b: [bool]) | `into int` -> [int]
-- (b: [binary]) | `into int` -> [int]
+- (b: [bool]) | `into int` → [int]
+- (b: [binary]) | `into int` → [int]
   - TODO: the help message is not telling us about this signature
 
 flags
@@ -282,7 +340,7 @@ TODO
 
 ### into string
 
-- any | `into string` -> [string]
+- any | `into string` → [string]
 
 flags
 
@@ -292,23 +350,36 @@ flags
 
 see [first](#first)
 
-- (l: [list]<T>) | `last` -> T
-- (l: [list]<T>) | `last` (n: [int]) -> [list]<T>
+- (l: [list]<T>) | `last` → T
+- (l: [list]<T>) | `last` (n: [int]) → [list]<T>
   - returns a list with the last `n` elements of `l`
 
 ## length
 
-- (l: [list]<any>) | `length` -> [int]
-- (t: [table]) | `length` -> [int]
+- (l: [list]<any>) | `length` → [int]
+- (t: [table]) | `length` → [int]
   - the number of rows
 
 It doesn't work on [record]s and [string]s
+
+## open
+
+It can read some formats (json, toml, ...). It creates nu-data types for those formats. It returns [string] otherwise.
+
+- (path: [string]) | `open` → <any>
+- `open` (path: [string]) → <any>
+
+- `-r`: open file as a raw binary
+
+## print
+
+TODO
 
 ## random
 
 ### random bool
 
-- `random bool` -> [bool]
+- `random bool` → [bool]
 
 flags
 
@@ -316,7 +387,7 @@ flags
 
 ### random chars
 
-- `random chars` -> [string]
+- `random chars` → [string]
   - [0-9a-zA-Z]+
 
 flags
@@ -325,12 +396,12 @@ flags
 
 ### random decimal
 
-- `random decimal` (range: [range][typerange]<[float]>) -> [float]
+- `random decimal` (range: [range][typerange]<[float]>) → [float]
   - default range is 0.0 ~ 1.0
 
 ### random dice
 
-- `random dice` -> [list]<[int]>
+- `random dice` → [list]<[int]>
 
 flags
 
@@ -340,7 +411,7 @@ flags
 
 ### random integer
 
-- `random integer` (range: [range][typerange]<[int]> = (0..2^63^)) -> [int]
+- `random integer` (range: [range][typerange]<[int]> = (0..2^63^)) → [int]
 
 ### random uuid
 
@@ -349,9 +420,9 @@ TODO
 [[anchor, id = command range]][[/anchor]]
 ## range
 
-- (l: [list]<T>) | `range` (range: [range][typerange]<[int]>) -> [list]<T>
+- (l: [list]<T>) | `range` (range: [range][typerange]<[int]>) → [list]<T>
   - a range may have negative indexes
-- (t: [table]) | `range` (range: [range][typerange]<[int]>) -> [table]
+- (t: [table]) | `range` (range: [range][typerange]<[int]>) → [table]
   - it works on rows
 
 ## reduce
@@ -360,51 +431,59 @@ TODO
 
 ## reject
 
-- (t: [table]) | `reject` (column: ColumnName)* -> [table]
+- (t: [table]) | `reject` (column: ColumnName)* → [table]
   - returns a table without `column`s
-- (r: [record]) | `reject` (column: ColumnName)* -> [record]
+- (r: [record]) | `reject` (column: ColumnName)* → [record]
   - returns a record without `column`s
 
 ## reverse
 
-- (l: [list]<any>) | `reverse` -> [list]<any>
-- (t: [table]) | `reverse` -> [table]
+- (l: [list]<any>) | `reverse` → [list]<any>
+- (t: [table]) | `reverse` → [table]
   - reverses the rows
+
+## save
+
+TODO
 
 ## select
 
-- (r: [record]) | `select` (column: ColumnName)* -> [record]
+- (r: [record]) | `select` (column: ColumnName)* → [record]
   - selects 1 or more columns
-- (t: [table]) | `select` (column: ColumnName)* -> [table]
+- (t: [table]) | `select` (column: ColumnName)* → [table]
   - selects 1 or more columns
 
 ## skip
 
 see [drop](#drop) and [first](#first)
 
-- (l: [list]<T>) | `skip` (count: [int] = 1) -> [list]<T>
+- (l: [list]<T>) | `skip` (count: [int] = 1) → [list]<T>
   - skips the first `count` elements
-- (t: [table]) | `skip` (count: [int] = 1) -> [table]
+- (t: [table]) | `skip` (count: [int] = 1) → [table]
   - skips the first `count` rows
 
 ### skip until
 
-- (l: [list]<T>) | `skip until` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+- (l: [list]<T>) | `skip until` (predicate: [closure]\(T) → [bool]) → [list]<T>
   - skips elements of `l` while `predicate` is false
-- (t: [table]) | `skip until` (predicate: [closure]\(Row) -> [bool]) -> [table]
+- (t: [table]) | `skip until` (predicate: [closure]\(Row) → [bool]) → [table]
   - skips rows of `t` while `predicate` is false
 
 ### skip while
 
-- (l: [list]<T>) | `skip while` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+- (l: [list]<T>) | `skip while` (predicate: [closure]\(T) → [bool]) → [list]<T>
   - skips elements of `l` while `predicate` is true
-- (t: [table]) | `skip while` (predicate: [closure]\(Row) -> [bool]) -> [table]
+- (t: [table]) | `skip while` (predicate: [closure]\(Row) → [bool]) → [table]
   - skips rows of `t` while `predicate` is true
+
+## sleep
+
+- `sleep` (duration: [duration])
 
 ## sort
 
-- (l: [list]<T>) | `sort` -> [list]<T>
-- (r: [record]) | `sort` -> [record]
+- (l: [list]<T>) | `sort` → [list]<T>
+- (r: [record]) | `sort` → [record]
   - sorts by key
 
 flags
@@ -431,41 +510,41 @@ flags
 
 ### split chars
 
-- (s: [string]) | `split chars` -> [list]<[string]>
+- (s: [string]) | `split chars` → [list]<[string]>
 
 ### split column
 
-- (s: [string]) | `split column` (delim: [string]) -> [table]
+- (s: [string]) | `split column` (delim: [string]) → [table]
   - the result contains only one row
   - each column of the row is a separated string
-- (strings: [list]<[string]>) | `split column` (delim: [string]) -> [table]
+- (strings: [list]<[string]>) | `split column` (delim: [string]) → [table]
   - each row is a result of `split column` on each element of `strings`
 
 ### split list
 
-- (l: [list]<T>) | `split list` (delim: <T>) -> [list]<[list]<T>>
+- (l: [list]<T>) | `split list` (delim: <T>) → [list]<[list]<T>>
 
 ### split row
 
-- (s: [string]) | `split row` (delim: [string]) -> [list]<[string]>
+- (s: [string]) | `split row` (delim: [string]) → [list]<[string]>
 
 ## str
 
 ### str cases
 
-- (s: [string]) | `str camel-case` -> [string]
-- (s: [string]) | `str capitalize` -> [string]
-- (s: [string]) | `str downcase` -> [string]
-- (s: [string]) | `str kebab-case` -> [string]
-- (s: [string]) | `str pascal-case` -> [string]
-- (s: [string]) | `str screaming-snake-case` -> [string]
-- (s: [string]) | `str snake-case` -> [string]
-- (s: [string]) | `str title-case` -> [string]
-- (s: [string]) | `str upcase` -> [string]
+- (s: [string]) | `str camel-case` → [string]
+- (s: [string]) | `str capitalize` → [string]
+- (s: [string]) | `str downcase` → [string]
+- (s: [string]) | `str kebab-case` → [string]
+- (s: [string]) | `str pascal-case` → [string]
+- (s: [string]) | `str screaming-snake-case` → [string]
+- (s: [string]) | `str snake-case` → [string]
+- (s: [string]) | `str title-case` → [string]
+- (s: [string]) | `str upcase` → [string]
 
 ### str contains
 
-- (s: [string]) | `str contains` (substring: [string]) -> [bool]
+- (s: [string]) | `str contains` (substring: [string]) → [bool]
 
 flags
 
@@ -473,7 +552,7 @@ flags
 
 ### str ends-with
 
-- (s: [string]) | `str ends-with` (substring: [string]) -> [bool]
+- (s: [string]) | `str ends-with` (substring: [string]) → [bool]
 
 flags
 
@@ -481,7 +560,7 @@ flags
 
 ### str index-of
 
-- (s: [string]) | `str index-of` (substring: [string]) -> [int]
+- (s: [string]) | `str index-of` (substring: [string]) → [int]
   - returns start index of the first occurence of `substring`
   - returns -1 if not found
 
@@ -493,11 +572,11 @@ flags
 
 ### str join
 
-- (s: [list]<[string]>) | `str join` (delim: [string] = "") -> [string]
+- (s: [list]<[string]>) | `str join` (delim: [string] = "") → [string]
 
 ### str length
 
-- (s: [string]) | `str length` -> [int]
+- (s: [string]) | `str length` → [int]
   - length in bytes, not in chars
 
 flags
@@ -511,11 +590,11 @@ TODO
 
 ### str reverse
 
-- (s: [string]) | `str reverse` -> [string]
+- (s: [string]) | `str reverse` → [string]
 
 ### str starts-with
 
-- (s: [string]) | `str starts-with` (substring: [string]) -> [bool]
+- (s: [string]) | `str starts-with` (substring: [string]) → [bool]
 
 flags
 
@@ -523,7 +602,7 @@ flags
 
 ### str substring
 
-- (s: [string]) | `str substring` (range: [range][typerange]) -> [string]
+- (s: [string]) | `str substring` (range: [range][typerange]) → [string]
   - the start of the range is included, but the end is excluded
   - an index may be 0
 
@@ -534,7 +613,7 @@ flags
 
 ### str trim
 
-- (s: [string]) | `str trim` -> [string]
+- (s: [string]) | `str trim` → [string]
 
 flags
 
@@ -547,30 +626,48 @@ flags
 
 ## take
 
-- (l: [list]<T>) | `take` (count: [int]) -> [list]<T>
+- (l: [list]<T>) | `take` (count: [int]) → [list]<T>
   - takes the first `count` elements from `l`
-- (t: [table]) | `take` (count: [int]) -> [table]
+- (t: [table]) | `take` (count: [int]) → [table]
   - takes the first `count` rows from `t`
 
 ### take until
 
-- (l: [list]<T>) | `take until` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+- (l: [list]<T>) | `take until` (predicate: [closure]\(T) → [bool]) → [list]<T>
   - takes elements while `predicate` is false
-- (t: [table]) | `take until` (predicate: [closure]\(Row) -> [bool]) -> [table]
+- (t: [table]) | `take until` (predicate: [closure]\(Row) → [bool]) → [table]
   - takes rows while `predicate` is false
 
 ### take while
 
-- (l: [list]<T>) | `take while` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+- (l: [list]<T>) | `take while` (predicate: [closure]\(T) → [bool]) → [list]<T>
   - takes elements while `predicate` is true
-- (t: [table]) | `take while` (predicate: [closure]\(Row) -> [bool]) -> [table]
+- (t: [table]) | `take while` (predicate: [closure]\(Row) → [bool]) → [table]
   - takes rows while `predicate` is true
+
+## to
+
+### to html
+
+TODO
+
+### to json
+
+TODO
+
+### to md
+
+TODO
+
+### to xml
+
+TODO
 
 ## uniq
 
-- (l: [list]<any>) | `uniq` -> [list]<any>
+- (l: [list]<any>) | `uniq` → [list]<any>
   - removes duplicate elements (leaves only 1)
-- (t: [table]) | `uniq` -> [table]
+- (t: [table]) | `uniq` → [table]
   - removes duplicate rows (leaves only 1)
 
 flags
@@ -585,7 +682,7 @@ flags
 
 see [uniq](#uniq)
 
-- (t: [table]) | `uniq-by` (c: ColumnName) -> [table]
+- (t: [table]) | `uniq-by` (c: ColumnName) → [table]
 
 flags
 
@@ -599,14 +696,16 @@ flags
 
 see [columns](#columns)
 
-- (t: [table]) | `values` -> [list]<any>
+- (t: [table]) | `values` → [list]<any>
   - returns the values in a list
-- (r: [record]) | `values` -> [list]<any>
+- (r: [record]) | `values` → [list]<any>
   - returns the values in a list
 
 # Custom Commands
 
 TODO
+
+TODO: make `date born` -> returns my birthday
 
 [comrange]: #commandrange
 [typerange]: #typerange
@@ -617,6 +716,7 @@ TODO
 [binary]: #typebinary
 [bool]: #typebool
 [closure]: #typeclosure
+[duration]: #typeduration
 [float]: #typefloat
 [filesize]: #typefilesize
 [int]: #typeint
