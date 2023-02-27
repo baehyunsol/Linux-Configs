@@ -1,31 +1,90 @@
-nushell 0.76.0
+Nushell Documents
+
+[[box]]
+
+[[center]]
+
+[[giant]]Table of Contents[[/giant]]
+
+[[/center]]
 
 [[toc]]
 
+[[/box]]
+
 # Basic Types
 
+[[anchore, id = type binary]][[/anchor]]
+## binary
+
+TODO
+
+[[anchor, id = type bool]][[/anchor]]
+## bool
+
+`true`, `false`
+
+[[anchor, id = type closure]][[/anchor]]
 ## closure
 
-{|x| $x + 1}, {$in + 1}
+`{|x| $x + 1}`, `{$in + 1}`
 
+In order to directly call a closure, `let foo = {|name| print $"hello ($name)"}; do $foo "Sol"`
+
+`$in` is not the first argument of the closure, it's an input from the pipeline
+
+[[anchor, id = type date]][[/anchor]]
+## date
+
+TODO
+
+[[anchor, id = type float]][[/anchor]]
 ## float
 
 64 bits double precision floating point number (I guess)
 
+[[anchor, id = type filesize]][[/anchor]]
+## filesize
+
+TODO
+
+[[anchor, id = type int]][[/anchor]]
 ## int
 
 64 bits signed integer
 
-TODO: `0x[1000]`
-
+[[anchor, id = type list]][[/anchor]]
 ## list
 
 untyped data structure, use json-style syntax
 
+[[anchor, id = type null]][[/anchor]]
+## null
+
+`null`
+
+`null | into string` is an empty string.
+
+[[anchor, id = type range]][[/anchor]]
+## range
+
+`0..100`
+
+It's a [list]<[int]>. There's no `range` type in Nu.
+
+[[anchor, id = type record]][[/anchor]]
 ## record
 
 key-value data structure, use json-style syntax
 
+[[anchor, id = type string]][[/anchor]]
+## string
+
+`"abcdef"`
+
+`let x = 3; let y = 4; echo $"($x) + ($y) = ($x + $y)"`
+
+[[anchor, id = type table]][[/anchor]]
 ## table
 
 each row is a record, and each column is a list. if the rows have different types... don't just do that
@@ -34,7 +93,7 @@ each row is a record, and each column is a list. if the rows have different type
 
 TODO: 이거 어디에 적지...
 
-`if c { d }` is an expression that returns null when `c` is not true
+`if c { d }` is an expression that returns [null] when `c` is not true
 
 [[/box]]
 
@@ -42,7 +101,7 @@ TODO: 이거 어디에 적지...
 
 - (lhs: [list]<any>) `++` (rhs: [list]<any>) -> [list]<any>
 - (lhs: [string]) `+` (rhs: [string]) -> [string]
-- (l: [list]<any>) `*` (times: [int]) -> [list]<any>
+- (l: [list]<T>) `*` (times: [int]) -> [list]<T>
 - (s: [string]) `*` (times: [int]) -> [string]
 - (base: [int]) `**` (exp: [int]) -> [int]
 - (base: [int] | [float]) `**` (exp: [int] | [float]) -> [float]
@@ -63,27 +122,63 @@ TODO: 이거 어디에 적지...
 
 ## columns
 
-see [values]
+see [values](#values)
 
 - (t: [table]) | `columns` -> [list]<[string]>
   - returns the names of the columns in `list<string>`
 - (r: [record]) | `columns` -> [list]<[string]>
   - returns the names of the columns in `list<string>`
 
-## drop
+[[anchor, id = command date]][[/anchor]]
+## date
 
 TODO
+
+## decode
+
+- (raw: [binary]) | `decode utf-8` -> [string]
+- (raw: [binary]) | `decode utf-16be` -> [string]
+- (raw: [binary]) | `decode utf-16le` -> [string]
+- (raw: [binary]) | `decode euc-kr` -> [string]
+
+## drop
+
+see [skip](#skip) and [last](#last)
+
+- (l: [list]<T>) | `drop` (count: [int] = 1) -> [list]<T>
+  - removes `count` items from the end
+- (t: [table]) | `drop` (count: [int] = 1) -> [table]
+  - removes `count` rows from the end
+
+### drop column
+
+- (t: [table]) | `drop column` (count: [int] = 1) -> [table]
+  - removes `count` columns from the end (right)
+
+### drop nth
+
+- (l: [list]<T>) | `drop nth` (which: [int] | [range][typerange]<[int]>)* -> [list]<T>
+  - removes elements with the selected indexes
 
 ## each
 
 - (l: [list]<T>) | `each` (func: [closure]\(T) -> U) -> [list]<U>
-  - if `func` returns null, it skips the index
-  - in order to include nulls, `-k` flag must be given
+  - if `func` returns [null], it skips the index
+  - in order to include [null]s, `-k` flag must be given
 - (t: [table]) | `each` (func: [closure]\(T) -> U) -> [list]<U>
   - `T` is the type of `t`'s row
   - the length of the result is the number of the rows, that means `func` is applied to "each" row
 
-- `-k`: keep empty (null) value cells
+flags
+
+- `-k`: keep empty ([null]) value cells
+
+## encode
+
+- (s: [string]) | `encode utf-8` -> [binary]
+- (s: [string]) | `encode utf-16be` -> [binary]
+- (s: [string]) | `encode utf-16le` -> [binary]
+- (s: [string]) | `encode euc-kr` -> [binary]
 
 ## enumerate
 
@@ -102,22 +197,22 @@ It doesn't work on strings
 
 ## first
 
-see [last]
+see [last](#last)
 
 - (l: [list]<T>) | `first` -> T
 - (l: [list]<T>) | `first` (n: [int]) -> [list]<T>
-  - returns a list with the first `n` elements
+  - returns a list with the first `n` elements of `l`
 
 TODO: `first` on binary data
 
 ## get
 
 - (t: [table]) | `get` (n: [int]) -> [record]
-  - get `n`th row of `t`
+  - gets `n`th row of `t`
 - (t: [table]) | `get` (k: T) -> [list]
-  - get column with key `k` in `t`
+  - gets column with key `k` in `t`
 - (l: [list]<T>) | `get` (n: [int]) -> T
-  - get `n`th element of `l`
+  - gets `n`th element of `l`
 - (r: [record]) | `get` (k: any) -> V
   - key-value search
 
@@ -139,7 +234,13 @@ TODO
 
 ### into datetime
 
-TODO
+- (n: [int]) | `into datetime` -> [date][typedate]
+  - if `n` is small enough, it reads `n` in seconds
+    - when `n.to_string().len() <= 10`
+    - it doesn't make sense to me... why not just using `n.abs()`?
+  - otherwise, `n` is read in milliseconds
+- (s: [string]) | `into datetime` -> [date][typedate]
+  - TODO: format strings
 
 ### into decimal
 
@@ -155,7 +256,21 @@ TODO
 
 ### into int
 
-TODO
+- (f: [float]) | `into int` -> [int]
+  - floor, not round
+- (f: [filesize]) | `into int` -> [int]
+  - into number of bytes
+- (d: [date][typedate]) | `into int` -> [int]
+  - seconds elapsed since the Unix Epoch
+- (s: [string]) | `into int` -> [int]
+  - see `-r` flag
+- (b: [bool]) | `into int` -> [int]
+- (b: [binary]) | `into int` -> [int]
+  - TODO: the help message is not telling us about this signature
+
+flags
+
+- `-r` (radix: [int]): radix of integer
 
 ### into record
 
@@ -169,15 +284,17 @@ TODO
 
 - any | `into string` -> [string]
 
+flags
+
 - `-d` (digits: [int]): decimal digits to which to round (only for numerics)
 
 ## last
 
-see [first]
+see [first](#first)
 
 - (l: [list]<T>) | `last` -> T
 - (l: [list]<T>) | `last` (n: [int]) -> [list]<T>
-  - returns a list with the last `n` elements
+  - returns a list with the last `n` elements of `l`
 
 ## length
 
@@ -193,6 +310,8 @@ It doesn't work on [record]s and [string]s
 
 - `random bool` -> [bool]
 
+flags
+
 - `-b` (bias: [float]): probability of a `true` outcome
 
 ### random chars
@@ -200,32 +319,40 @@ It doesn't work on [record]s and [string]s
 - `random chars` -> [string]
   - [0-9a-zA-Z]+
 
+flags
+
 - `-l`: length of the result (default 25)
 
 ### random decimal
 
-TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 안 겹치게 잘 하셈..!!
-
-- `random decimal` (range: [range]<[float]>) -> [float]
+- `random decimal` (range: [range][typerange]<[float]>) -> [float]
   - default range is 0.0 ~ 1.0
 
 ### random dice
 
-TODO
+- `random dice` -> [list]<[int]>
+
+flags
+
+- `-d` (dice: [int]): the amount of dices being rolled
+- `-s` (sides: [int]): the amount of sides a dice has
+  - TODO: there's a typo in the help message
 
 ### random integer
 
-TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 안 겹치게 잘 하셈..!!
-
-- `random integer` (range: [range]<[int]> = (0..2^63^)) -> [int]
+- `random integer` (range: [range][typerange]<[int]> = (0..2^63^)) -> [int]
 
 ### random uuid
 
 TODO
 
+[[anchor, id = command range]][[/anchor]]
 ## range
 
-TODO
+- (l: [list]<T>) | `range` (range: [range][typerange]<[int]>) -> [list]<T>
+  - a range may have negative indexes
+- (t: [table]) | `range` (range: [range][typerange]<[int]>) -> [table]
+  - it works on rows
 
 ## reduce
 
@@ -233,13 +360,16 @@ TODO
 
 ## reject
 
-TODO
+- (t: [table]) | `reject` (column: ColumnName)* -> [table]
+  - returns a table without `column`s
+- (r: [record]) | `reject` (column: ColumnName)* -> [record]
+  - returns a record without `column`s
 
 ## reverse
 
 - (l: [list]<any>) | `reverse` -> [list]<any>
 - (t: [table]) | `reverse` -> [table]
-  - reverse the rows
+  - reverses the rows
 
 ## select
 
@@ -250,26 +380,39 @@ TODO
 
 ## skip
 
-TODO
+see [drop](#drop) and [first](#first)
+
+- (l: [list]<T>) | `skip` (count: [int] = 1) -> [list]<T>
+  - skips the first `count` elements
+- (t: [table]) | `skip` (count: [int] = 1) -> [table]
+  - skips the first `count` rows
 
 ### skip until
 
-TODO
+- (l: [list]<T>) | `skip until` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+  - skips elements of `l` while `predicate` is false
+- (t: [table]) | `skip until` (predicate: [closure]\(Row) -> [bool]) -> [table]
+  - skips rows of `t` while `predicate` is false
 
 ### skip while
 
-TODO
+- (l: [list]<T>) | `skip while` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+  - skips elements of `l` while `predicate` is true
+- (t: [table]) | `skip while` (predicate: [closure]\(Row) -> [bool]) -> [table]
+  - skips rows of `t` while `predicate` is true
 
 ## sort
 
 - (l: [list]<T>) | `sort` -> [list]<T>
 - (r: [record]) | `sort` -> [record]
-  - sort by key
+  - sorts by key
+
+flags
 
 - `-r`: reverse
-- `-i`: ignore case
+- `-i`: ignores case
 - `-n`: "10" is greater than "9"
-- `-v`: (for a single record), sort by values rather than keys
+- `-v`: (for a single record), sorts by values rather than keys
 
 ## sort-by
 
@@ -277,10 +420,12 @@ It seems to be a stable sort
 
 - (t: [table]) | `sort-by` (column: ColumnName)
 
+flags
+
 - `-r`: reverse
-- `-i`: ignore case
+- `-i`: ignores case
 - `-n`: "10" is greater than "9"
-- `-v`: (for a single record), sort by values rather than keys
+- `-v`: (for a single record), sorts by values rather than keys
 
 ## split
 
@@ -292,7 +437,7 @@ It seems to be a stable sort
 
 - (s: [string]) | `split column` (delim: [string]) -> [table]
   - the result contains only one row
-  - each column of the row is the separated strings
+  - each column of the row is a separated string
 - (strings: [list]<[string]>) | `split column` (delim: [string]) -> [table]
   - each row is a result of `split column` on each element of `strings`
 
@@ -322,13 +467,17 @@ It seems to be a stable sort
 
 - (s: [string]) | `str contains` (substring: [string]) -> [bool]
 
+flags
+
 - `-i`: ignore case
 
 ### str ends-with
 
 - (s: [string]) | `str ends-with` (substring: [string]) -> [bool]
 
-- `-i`: ignore case
+flags
+
+- `-i`: ignores case
 
 ### str index-of
 
@@ -336,9 +485,11 @@ It seems to be a stable sort
   - returns start index of the first occurence of `substring`
   - returns -1 if not found
 
-- `-b`: count indexes in bytes (default)
-- `-e`: search from the end
-- `-g`: count indexes in chars
+flags
+
+- `-b`: counts indexes in bytes (default)
+- `-e`: searches from the end
+- `-g`: counts indexes in chars
 
 ### str join
 
@@ -349,8 +500,10 @@ It seems to be a stable sort
 - (s: [string]) | `str length` -> [int]
   - length in bytes, not in chars
 
-- `-b`: count length in bytes (default)
-- `-g`: count length in chars
+flags
+
+- `-b`: counts length in bytes (default)
+- `-g`: counts length in chars
 
 ### str replace
 
@@ -364,22 +517,26 @@ TODO
 
 - (s: [string]) | `str starts-with` (substring: [string]) -> [bool]
 
-- `-i`: ignore case
+flags
+
+- `-i`: ignores case
 
 ### str substring
 
-TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 안 겹치게 잘 하셈..!!
-
-- (s: [string]) | `str substring` (range: [range]) -> [string]
+- (s: [string]) | `str substring` (range: [range][typerange]) -> [string]
   - the start of the range is included, but the end is excluded
   - an index may be 0
 
-- `-b`: count indexes in bytes (default)
-- `-g`: count indexes in chars
+flags
+
+- `-b`: counts indexes in bytes (default)
+- `-g`: counts indexes in chars
 
 ### str trim
 
 - (s: [string]) | `str trim` -> [string]
+
+flags
 
 - `-a`: trims both sides and in the middle
 - `-b`: trims both sides
@@ -390,15 +547,24 @@ TODO: type에도 range 있고, 명령어 중에도 range 있음! 링크 이름 �
 
 ## take
 
-TODO
+- (l: [list]<T>) | `take` (count: [int]) -> [list]<T>
+  - takes the first `count` elements from `l`
+- (t: [table]) | `take` (count: [int]) -> [table]
+  - takes the first `count` rows from `t`
 
 ### take until
 
-TODO
+- (l: [list]<T>) | `take until` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+  - takes elements while `predicate` is false
+- (t: [table]) | `take until` (predicate: [closure]\(Row) -> [bool]) -> [table]
+  - takes rows while `predicate` is false
 
 ### take while
 
-TODO
+- (l: [list]<T>) | `take while` (predicate: [closure]\(T) -> [bool]) -> [list]<T>
+  - takes elements while `predicate` is true
+- (t: [table]) | `take while` (predicate: [closure]\(Row) -> [bool]) -> [table]
+  - takes rows while `predicate` is true
 
 ## uniq
 
@@ -407,27 +573,31 @@ TODO
 - (t: [table]) | `uniq` -> [table]
   - removes duplicate rows (leaves only 1)
 
+flags
+
 - `-c`: returns a table containing the distinct input values together with their counts
 - `-d`: removes unique elements/rows
-- `-i`: ignore cases
+- `-i`: ignores cases
 - `-u`: removes duplicate elements/rows
   - default option leaves 1 element/row, but it removes all
 
 ## uniq-by
 
-see [uniq]
+see [uniq](#uniq)
 
 - (t: [table]) | `uniq-by` (c: ColumnName) -> [table]
 
+flags
+
 - `-c`: returns a table containing the distinct rows together with their counts
 - `-d`: removes unique rows
-- `-i`: ignore cases
+- `-i`: ignores cases
 - `-u`: removes duplicate rows
   - default option leaves 1 row, but it removes all
 
 ## values
 
-see [columns]
+see [columns](#columns)
 
 - (t: [table]) | `values` -> [list]<any>
   - returns the values in a list
@@ -435,3 +605,27 @@ see [columns]
   - returns the values in a list
 
 # Custom Commands
+
+TODO
+
+[comrange]: #commandrange
+[typerange]: #typerange
+
+[comdate]: #commanddate
+[typedate]: #typedate
+
+[binary]: #typebinary
+[bool]: #typebool
+[closure]: #typeclosure
+[float]: #typefloat
+[filesize]: #typefilesize
+[int]: #typeint
+[list]: #typelist
+[null]: #typenull
+[record]: #typerecord
+[string]: #typestring
+[table]: #typetable
+
+TODO: function signatures of `first` and `last` don't tell us that they work on tables.
+
+TODO: people (developers) are complaining that `first n` and `take` are doing the same thing. So they might change the API soon. Let's keep an eye on it.
