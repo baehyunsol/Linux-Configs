@@ -268,12 +268,12 @@ It doesn't work on strings
 
 ## find
 
-- (l: [list]<T>) | `find` (term: <T>)* → [list]<T>
+- (l: [list]<T>) | `find` (term: T)* → [list]<T>
   - `filter { $in.contain(any of the terms) }`
-- (t: [table]) | `find` (term: <any>)* → [table]
+- (t: [table]) | `find` (term: any)* → [table]
   - `filter { $in.contain(any of the terms) }`
   - filters rows
-- (s: [string]) | `find` (term <any>)* → [string]
+- (s: [string]) | `find` (term: any)* → [string]
   - TODO: How does it work?
 
 flags
@@ -531,8 +531,8 @@ flags
 
 It can read some formats (json, toml, ...). It creates nu-data types for those formats. It returns [string] otherwise.
 
-- (path: [string]) | `open` → <any>
-- `open` (path: [string]) → <any>
+- (path: [string]) | `open` → any
+- `open` (path: [string]) → any
 
 - `-r`: open file as a raw binary
 
@@ -753,7 +753,7 @@ flags
 
 ### split list
 
-- (l: [list]<T>) | `split list` (delim: <T>) → [list]<[list]<T>>
+- (l: [list]<T>) | `split list` (delim: T) → [list]<[list]<T>>
 
 ### split row
 
