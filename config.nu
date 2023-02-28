@@ -669,21 +669,31 @@ alias gnt = gnome-text-editor
 # my defs
 # -------
 
+let __battery = {(upower -i /org/freedesktop/UPower/devices/battery_BAT1;) | into string | lines | | str trim | filter {|x| ($x | str length) > 0} | each { |x|  ($x | split row ": " | str trim)} | filter {|x| ($x | length) == 2} | reduce -f {} {|it, acc| $acc | insert ($it | get 0) ($it | get 1)}};
+
 # if the path is wrong, try `upower -e`
-def battery [verbose?] {
-  if ($verbose == "verbose") {
-    upower -i /org/freedesktop/UPower/devices/battery_BAT1;
+def battery [
+  --verbose (-v)#verbose output
+] {
+  if $verbose {
+    do $__battery
   } else {
-    upower -i /org/freedesktop/UPower/devices/battery_BAT1 | split row "\n" | find "percentage" | get 0 | str replace -a " " "" | str replace ":" ": ";
+    do $__battery | select percentage state
   }
 }
 
-def screenshot [all?] {
-  if ($all == "all") {
+def screenshot [
+  --all (-a)#entire screen
+] {
+  if $all {
     /home/baehyunsol/.config/nushell/screenshot_all.nu
   } else {
     /home/baehyunsol/.config/nushell/screenshot.nu
   }
+}
+
+def birthday [] {
+  916794000 | into datetime -o +9
 }
 
 # -------------------------------------------
