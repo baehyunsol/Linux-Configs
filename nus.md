@@ -1,4 +1,4 @@
-Nushell Documents
+[[giant]]Nushell Documents[[/giant]]
 
 [[box]]
 
@@ -14,10 +14,12 @@ Nushell Documents
 
 # Basic Types
 
-[[anchore, id = type binary]][[/anchor]]
+[[anchor, id = type binary]][[/anchor]]
 ## binary
 
-TODO
+`0x[1f ff]`, `0b[0111 1111 1111 1111]`, `0o[77777]`
+
+incomplete bytes will be left-padded with zeros
 
 [[anchor, id = type bool]][[/anchor]]
 ## bool
@@ -36,12 +38,14 @@ In order to directly call a closure, `let foo = {|name| print $"hello ($name)"};
 [[anchor, id = type date]][[/anchor]]
 ## date
 
-TODO
+see [here][comdate]
 
 [[anchor, id = type duration]][[/anchor]]
 ## duration
 
-TODO
+`1ns`, `1us`, `1ms`, `1sec`, `1min`, `1hr`, `3.14day`, `1wk`
+
+It panics when a duration is longer than `15250.285714wk`
 
 [[anchor, id = type float]][[/anchor]]
 ## float
@@ -51,7 +55,11 @@ TODO
 [[anchor, id = type filesize]][[/anchor]]
 ## filesize
 
-TODO
+`1b`: a byte
+
+`1kb`, `1mb`, `1gb`, `1tb`, `1pb`, `1eb`, `1zb`: 1000^n^ bytes
+
+`1kib`, `1mib`, `1gib`, `1tib`, `1pib`, `1eib`, `1zib`: 1024^n^ bytes
 
 [[anchor, id = type int]][[/anchor]]
 ## int
@@ -126,6 +134,11 @@ TODO: 이거 어디에 적지...
 - (t: [table]) | `any` (predicate: [closure]\(R) → [bool]) → [bool]
   - `R` is a row of `t`
 
+## append
+
+- (l: [list]<T>) | `append` (val: T) → [list]<T>
+  - if `T` is `list<U>`, it will unwrap `val`, that means `[1 2 3] | append [1 2 3]` is `[1 2 3 1 2 3]`
+
 ## columns
 
 see [values](#values)
@@ -157,11 +170,18 @@ see [values](#values)
 | %u      | 1               | monday = 1 ... sunday = 7            |
 | %U      | 09              | week number starting with sunday (0 ~ 53), (zero-padded 2 digits)  |
 | %W      | 09              | same as %U, but week 1 starts with the first Monday in that year   |
-| %j      | 059             | day of the year (1 ~ 366), (zero-padded 3 digits)  |
+| %j      | 059             | day of the year (1 ~ 366), (zero-padded 3 digits)                  |
 | %D      | 02/28/23        | %m/%d/%y                             |
 | %F      | 2023-02-28      | %Y-%m-%d                             |
 | %v      | 28-Feb-2023     | %e-%b-%Y                             |
-| %H      | 00              | hour (0 ~ 23), (zero-padded 2 digits)  |
+| %H      | 00              | hour (0 ~ 23), (zero-padded 2 digits)     |
+| %k      |  0              | hour (0 ~ 23), (space-padded 2 digits)    |
+| %I      | 03              | hour (01 ~ 12), (zero-padded 2 digits)    |
+| %l      |  3              | hour (01 ~ 12), (space-padded 2 digits)   |
+| %P      | pm              | 'am' or 'pm'         |
+| %p      | PM              | 'AM' or 'PM'         |
+| %M      | 24              | minute (00 ~ 59), (zero-padded 2 digits)  |
+| %S      | 30              | second (00 ~ 60), (zero-padded 2 digits)  |
 | [[colspan=3]]TODO... |
 
 ### date format
@@ -244,12 +264,25 @@ It doesn't work on strings
 ## filter
 
 - (l: [list]<T>) | `filter` (predicate: [closure]\(T) → [bool]) → [list]<T>
-- (t: [table]) | `filter` (predicate: [closure]\(R) → [bool]) → [table]
-  - `R` is a row of `t`
+- (t: [table]) | `filter` (predicate: [closure]\(Row) → [bool]) → [table]
 
 ## find
 
-TODO
+- (l: [list]<T>) | `find` (term: <T>)* → [list]<T>
+  - `filter { $in.contain(any of the terms) }`
+- (t: [table]) | `find` (term: <any>)* → [table]
+  - `filter { $in.contain(any of the terms) }`
+  - filters rows
+- (s: [string]) | `find` (term <any>)* → [string]
+  - TODO: How does it work?
+
+flags
+
+- `-i`: case-insensitive regex mode
+- `-m`: multiline regex mode; \^ and \$ match begin/end of a line
+- `-r` (regex: [string]): regex to match with
+- `-s`: allow a dot (`.`) to match newlines
+- `-v`: invert the match
 
 ## first
 
@@ -271,6 +304,38 @@ TODO: `first` on binary data
   - gets `n`th element of `l`
 - (r: [record]) | `get` (k: any) → V
   - key-value search
+
+## group
+
+- (l: [list]<T>) | `group` (size: [int]) → [list]<[list]<T>>
+  - `0..20 | group 3` is `[[0, 1, 2], [3, 4, 5], ...]`
+
+## group-by
+
+- (l: [list]<T>) | `group-by` → [record]
+  - `[1 1 2 2 3] | group-by` is `{1: [1 1], 2: [2, 2], 3: [3]}`
+- (t: [table]) | `group-by` (grouper: ColumnName) → [record]
+  - `ls | group-by type` is `{file: TableOfFiles, dir: TableOfDirs, ...}`
+
+## hash
+
+- (s: [string]) | `hash md5` → [string]
+- (s: [string]) | `hash sha256` → [string]
+
+flags
+
+- `-b`: returns binary output
+
+## insert
+
+see [upsert]
+
+It panics when the field already exists
+
+- (r: [record]) | `insert` (key: any) (value: any) → [record]
+- (t: [table]) | `insert` (key: any) (value: any) → [table]
+  - all the cells of the inserted column have the same value
+- (l: [list]<T>) | `insert` (index: [int]) (value: T) → [list]<T>
 
 ## into
 
@@ -298,7 +363,12 @@ TODO
 - (s: [string]) | `into datetime` → [date][typedate]
   - TODO: format strings
 
-TODO: flags (reference [date format](#dateformatstring))
+flags
+
+- `-f` (format: [string]): specify an expected format for parsing strings (eg: "%Y%m%d")
+  - see [date format](#dateformatstring)
+- `-o` (offset: [int]): specify timezone by offset (eg: "+8", "-4")
+- `-l`: show [date format](#dateformatstring)
 
 ### into decimal
 
@@ -306,11 +376,20 @@ TODO
 
 ### into duration
 
-TODO
+- (s: [string]) | `into duration` → [duration]
+- (d: [duration]) | `into duration` → [duration]
+  - use `-c` flag
+
+flags
+
+- `-c` (unit: [string]): "sec", "ms", "min", ...
+
+TODO: buggy help message
 
 ### into filesize
 
-TODO
+- (n: [int] | [float]) | `into filesize` → [filesize]
+- (s: [string]) | `into filesize` → [filesize]
 
 ### into int
 
@@ -320,6 +399,9 @@ TODO
   - into number of bytes
 - (d: [date][typedate]) | `into int` → [int]
   - seconds elapsed since the Unix Epoch
+- (d: [duration]) | `into int` → [int]
+  - nanoseconds
+  - TODO: the help message is not telling us about this signature
 - (s: [string]) | `into int` → [int]
   - see `-r` flag
 - (b: [bool]) | `into int` → [int]
@@ -362,6 +444,89 @@ see [first](#first)
 
 It doesn't work on [record]s and [string]s
 
+## lines
+
+same as `split row "\n"`
+
+- (s: [string]) | `lines` → [list]<[string]>
+
+flags
+
+- `-s`: skip empty lines
+
+## math
+
+All the scalar functions also work on lists. They work like `map` function.
+
+Eg: `[1 -1 1 -1] | math abs` is `[1 1 1 1]`
+
+### scalar functions
+
+- (n: [int] | [float]) | `math abs` → [int] | [float]
+- (n: [int] | [float]) | `math ceil` → [int]
+- (n: [int] | [float]) | `math floor` → [int]
+- (n: [int] | [float]) | `math round` → [int]
+- (n: [int] | [float]) | `math sqrt` → [int] | [float]
+
+TODO: `3.14 | math round | describe` is `int` while `3.14 | math floor | describe` is `float`,... why?
+
+flags
+
+- `-p` (precision: [int] | [float]): precision of `round`
+
+### logarithms
+
+- (n: [int] | [float]) | `math ln` → [int] | [float]
+- (n: [int] | [float]) | `math log` (base: [int] | [float]) → [int] | [float]
+
+### trigonometric functions
+
+- (n: [int] | [float]) | `math arccos` → [float]
+- (n: [int] | [float]) | `math arccosh` → [float]
+- (n: [int] | [float]) | `math arcsin` → [float]
+- (n: [int] | [float]) | `math arcsinh` → [float]
+- (n: [int] | [float]) | `math arctan` → [float]
+- (n: [int] | [float]) | `math arctanh` → [float]
+- (n: [int] | [float]) | `math cos` → [float]
+- (n: [int] | [float]) | `math cosh` → [float]
+- (n: [int] | [float]) | `math sin` → [float]
+- (n: [int] | [float]) | `math sinh` → [float]
+- (n: [int] | [float]) | `math tan` → [float]
+- (n: [int] | [float]) | `math tanh` → [float]
+
+flags
+
+- `-d`: degrees instead of radians
+
+### functions on a list
+
+- (l: [list]<[int] | [float]>) | `math avg` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math max` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math median` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math min` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math mode` → [list]<[int] | [float]>
+  - most frequent element(s)
+- (l: [list]<[int] | [float]>) | `math product` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math stddev` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math sum` → [int] | [float]
+- (l: [list]<[int] | [float]>) | `math variance` → [int] | [float]
+
+### constants
+
+- `math e` → [float]
+  - 2.718281828459045
+- `math pi` → [float]
+  - 3.141592653589793
+- `math tau` → [float]
+  - [[math]]2 times pi[[/math]]
+
+## merge
+
+- (r: [record]) | `merge` (val: [record]) → [record]
+  - if `r` and `val` has overlapping keys, the values of `val` are chosen
+- (t: [table]) | `merge` (val: [table]) → [table]
+  - merge row by row
+
 ## open
 
 It can read some formats (json, toml, ...). It creates nu-data types for those formats. It returns [string] otherwise.
@@ -371,9 +536,57 @@ It can read some formats (json, toml, ...). It creates nu-data types for those f
 
 - `-r`: open file as a raw binary
 
+## path
+
+### path basename
+
+- (p: [string]) | `path basename` → [string]
+  - 'a/b/c/d.e' → 'd.e'
+
+flags
+
+- `-r` (new_name: [string]): return the original path with basename replaced with this string
+
+### path dirname
+
+- (p: [string]) | `path dirname` → [string]
+  - 'a/b/c/d.e' → 'a/b/c'
+
+flags
+
+- `-r` (new_name: [string]): return the original path with dirname replaced with this string
+- `-n` (level: [int]): number of directories to walk up
+
+### path exists
+
+- (p: [string]) | `path exists` → [bool]
+
+### path join
+
+- (l: [list]<[string]>) | `path join` → [string]
+  - `l` is a result of [path split](#path-split)
+- (t: [table]) | `path join` → [string]
+  - `t` is a result of [path parse](#path-parse)
+- (p: [string]) | `path join` (additional_path: [string]) → [string]
+
+### path parse
+
+- (p: [string]) | `path parse` → [record]
+
+### path split
+
+- (p: [string]) | `path split` → [list]<[string]>
+
 ## print
 
-TODO
+no inputs, no outputs
+
+flags
+
+- `-e`: print to stderr
+- `-n`: no newlines
+
+- `print` (value: any)*
 
 ## random
 
@@ -415,7 +628,9 @@ flags
 
 ### random uuid
 
-TODO
+[UUID](TODO: wikipedia on UUID4)
+
+- `random uuid` → [string]
 
 [[anchor, id = command range]][[/anchor]]
 ## range
@@ -427,7 +642,18 @@ TODO
 
 ## reduce
 
-TODO
+- (l: [list]<T>) | `reduce` (func: [closure]\(T, U) → U) → U
+- (t: [table]) | `reduce` (func: [closure]\(Row, U) → U) → U
+
+flags
+
+- `-f` (value: U): initial value
+
+examples
+
+- `[{}, [a, 2], [b, 4], [c, 8]] | reduce {|it, acc| $acc | insert ($it | get 0) ($it | get 1)}` → `{a: 2, b: 4, c: 8}`
+- `[[a, 2], [b, 4], [c, 8]] | reduce -f {} {|it, acc| $acc | insert ($it | get 0) ($it | get 1)}` → `{a: 2, b: 4, c: 8}`
+- `ls | reduce -f "" {|row res| $res + $row.name}` → `DesktopDocumentsDownloadsMusicPicturesPublicTemplatesVideossnap`
 
 ## reject
 
@@ -444,7 +670,12 @@ TODO
 
 ## save
 
-TODO
+- (data: any) | `save` (path: [string])
+
+flags
+
+- `-a`: append input to the end of the file
+- `-f`: overwrite
 
 ## select
 
@@ -488,9 +719,9 @@ see [drop](#drop) and [first](#first)
 
 flags
 
-- `-r`: reverse
 - `-i`: ignores case
 - `-n`: "10" is greater than "9"
+- `-r`: reverse
 - `-v`: (for a single record), sorts by values rather than keys
 
 ## sort-by
@@ -501,9 +732,9 @@ It seems to be a stable sort
 
 flags
 
-- `-r`: reverse
 - `-i`: ignores case
 - `-n`: "10" is greater than "9"
+- `-r`: reverse
 - `-v`: (for a single record), sorts by values rather than keys
 
 ## split
@@ -649,19 +880,41 @@ flags
 
 ### to html
 
-TODO
+- (t: [table]) | `to html` → [string]
+  - `<table>`
+- (l: [list]<any>) | `to html` → [string]
+  - `<ol>`
+- (r: [record]) | `to html` → [string]
+  - a [record] is a [table] with a single row
+
+flags
+
+- `-p`: only output the html for the content itself (no `<body>`, `<html>`, ...)
 
 ### to json
 
-TODO
+- (t: [table]) | `to json` → [string]
+  - an array of objects
+- (l: [list]<any>) | `to json` → [string]
+  - an array
+- (r: [record]) | `to json` → [string]
+  - an object
+
+flags
+
+- `-i` (indent: [int]): indentation width
+- `-r`: remove whitespaces
 
 ### to md
 
-TODO
+- (t: [table]) | `to md` → [string]
+  - gfm styled table
+- (r: [record]) | `to md` → [string]
+  - a [record] is a [table] with a single row
 
-### to xml
+flags
 
-TODO
+- `-p`: prettify the markdown table
 
 ## uniq
 
@@ -692,6 +945,28 @@ flags
 - `-u`: removes duplicate rows
   - default option leaves 1 row, but it removes all
 
+## update
+
+see [upsert]
+
+it panics when the field does not exist
+
+- (r: [record]) | `upsert` (key: any) (value: any) → [record]
+- (t: [table]) | `upsert` (key: any) (value: any) → [table]
+  - all the cells of the updated/inserted column have the same value
+- (l: [list]<T>) | `upsert` (index: [int]) (value: T) → [list]<T>
+  - it updates `l` by replacing the original value
+
+## upsert
+
+see [insert] and [update]
+
+- (r: [record]) | `upsert` (key: any) (value: any) → [record]
+- (t: [table]) | `upsert` (key: any) (value: any) → [table]
+  - all the cells of the updated/inserted column have the same value
+- (l: [list]<T>) | `upsert` (index: [int]) (value: T) → [list]<T>
+  - it updates `l` by replacing the original value
+
 ## values
 
 see [columns](#columns)
@@ -701,17 +976,25 @@ see [columns](#columns)
 - (r: [record]) | `values` → [list]<any>
   - returns the values in a list
 
-# Custom Commands
+## wrap
 
-TODO
+- (l: [list]<any>) | `wrap` (column_name: [string]) → [table]
+  - make `l` a column of a [table]
 
-TODO: make `date born` -> returns my birthday
+## zip
+
+- (l1: [list]<T>) | `zip` (l2: [list]<U>) → [list]<\[U, V]>
+  - the length of the result is `min(l1.len, l2.len)`
 
 [comrange]: #commandrange
 [typerange]: #typerange
 
 [comdate]: #commanddate
 [typedate]: #typedate
+
+[insert]: #insert
+[update]: #update
+[upsert]: #upsert
 
 [binary]: #typebinary
 [bool]: #typebool
@@ -726,6 +1009,40 @@ TODO: make `date born` -> returns my birthday
 [string]: #typestring
 [table]: #typetable
 
+# Custom Commands
+
+## aliases
+
+| alias  | explanation        |
+|--------|--------------------|
+| py     | python3            |
+| ll     | launcher           |
+| gnt    | gnome-text-editor  |
+
+## battery
+
+- `battery` → [record]
+
+flags
+
+- `-v`: verbose output
+
+## birthday
+
+- `birthday` → [date][typedate]
+  - 1999.01.20
+
+## extract
+
+- `extract` (path: [string])
+
+## up
+
+- `up` (level: [int])
+  - go up `level` times
+
 TODO: function signatures of `first` and `last` don't tell us that they work on tables.
 
 TODO: people (developers) are complaining that `first n` and `take` are doing the same thing. So they might change the API soon. Let's keep an eye on it.
+
+TODO: I want `{a: b, c: d} | contains c` → `true`
