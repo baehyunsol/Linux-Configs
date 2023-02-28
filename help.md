@@ -76,3 +76,7 @@
   - Take a screenshot of the entire screen
 - Mod + [[aqua]]Shift[[/aqua]] + F3
   - Play Music
+
+## Other manuals
+
+[nu](nus.html)
