@@ -119,6 +119,8 @@ TODO: 이거 어디에 적지...
 - (base: [int]) `**` (exp: [int]) → [int]
 - (base: [int] | [float]) `**` (exp: [int] | [float]) → [float]
 - (lhs: [date][typedate]) `-` (rhs: [date][typedate]) → [duration]
+- (val: any) `in` (list: [list]<any>) → [bool]
+- (val: any) `not-in` (list: [list]<any>) → [bool]
 
 # Basic Commands
 
@@ -182,6 +184,7 @@ see [values](#values)
 | %p      | PM              | 'AM' or 'PM'         |
 | %M      | 24              | minute (00 ~ 59), (zero-padded 2 digits)  |
 | %S      | 30              | second (00 ~ 60), (zero-padded 2 digits)  |
+| %f      | 479181892       | fractional seconds (in nanosecond) since the last whole second   |
 | [[colspan=3]]TODO... |
 
 ### date format
@@ -274,7 +277,8 @@ It doesn't work on strings
   - `filter { $in.contain(any of the terms) }`
   - filters rows
 - (s: [string]) | `find` (term: any)* → [string]
-  - TODO: How does it work?
+  - it returns `s`, if there's a match
+  - otherwise it returns [null]
 
 flags
 
@@ -361,7 +365,7 @@ TODO
     - it doesn't make sense to me... why not just using `n.abs()`?
   - otherwise, `n` is read in milliseconds
 - (s: [string]) | `into datetime` → [date][typedate]
-  - TODO: format strings
+  - it's helpful to use the `-f` flag
 
 flags
 
@@ -384,8 +388,6 @@ flags
 
 - `-c` (unit: [string]): "sec", "ms", "min", ...
 
-TODO: buggy help message
-
 ### into filesize
 
 - (n: [int] | [float]) | `into filesize` → [filesize]
@@ -401,12 +403,10 @@ TODO: buggy help message
   - seconds elapsed since the Unix Epoch
 - (d: [duration]) | `into int` → [int]
   - nanoseconds
-  - TODO: the help message is not telling us about this signature
 - (s: [string]) | `into int` → [int]
   - see `-r` flag
 - (b: [bool]) | `into int` → [int]
 - (b: [binary]) | `into int` → [int]
-  - TODO: the help message is not telling us about this signature
 
 flags
 
@@ -414,11 +414,17 @@ flags
 
 ### into record
 
-TODO
-
-### into sqlite
-
-TODO
+- (d: [date][typedate]) | `into record` -> [record]
+  - year: [int], month: [int], day: [int], hour: [int], minute: [int], second: [int], timezone: [string]
+- (d: [duration]) | `into record` -> [record]
+  - year: [int], month: [int], week: [int], day: [int], hour: [int], minute: [int], second: [int], millisecond: [int], microsecond: [int], nanosecond: [int], sign: [string]
+  - some fields may be missing
+- (l: [list]<any>) | `into record` -> [record]
+  - keys of the result are index numbers
+  - values of the results are the elements of `l`
+- (t: [table]) | `into record` -> [record]
+  - keys of the result are index numbers
+  - values of the result are the rows of `t`
 
 ### into string
 
@@ -465,10 +471,8 @@ Eg: `[1 -1 1 -1] | math abs` is `[1 1 1 1]`
 - (n: [int] | [float]) | `math abs` → [int] | [float]
 - (n: [int] | [float]) | `math ceil` → [int]
 - (n: [int] | [float]) | `math floor` → [int]
-- (n: [int] | [float]) | `math round` → [int]
+- (n: [int] | [float]) | `math round` → [int] | [float]
 - (n: [int] | [float]) | `math sqrt` → [int] | [float]
-
-TODO: `3.14 | math round | describe` is `int` while `3.14 | math floor | describe` is `float`,... why?
 
 flags
 
@@ -581,12 +585,12 @@ flags
 
 no inputs, no outputs
 
+- `print` (value: any)*
+
 flags
 
 - `-e`: print to stderr
 - `-n`: no newlines
-
-- `print` (value: any)*
 
 ## random
 
@@ -628,7 +632,7 @@ flags
 
 ### random uuid
 
-[UUID](TODO: wikipedia on UUID4)
+[UUID4](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
 
 - `random uuid` → [string]
 
@@ -1036,6 +1040,12 @@ flags
 
 - `extract` (path: [string])
 
+## render_doc
+
+use my engine to render a markdown file
+
+- `render_doc` (path: [string])
+
 ## up
 
 - `up` (level: [int])
@@ -1044,5 +1054,3 @@ flags
 TODO: function signatures of `first` and `last` don't tell us that they work on tables.
 
 TODO: people (developers) are complaining that `first n` and `take` are doing the same thing. So they might change the API soon. Let's keep an eye on it.
-
-TODO: I want `{a: b, c: d} | contains c` → `true`
