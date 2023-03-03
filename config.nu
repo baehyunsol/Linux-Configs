@@ -696,6 +696,24 @@ def birthday [] {
   916794000 | into datetime -o +9
 }
 
+def render_doc [
+  path: string
+] {
+  let filename = ($path | path parse | get stem);
+  let dirname = ($path | path dirname);
+  let pwd = (pwd);
+
+  cp $path "/home/baehyunsol/Documents/Rust/engine/mdxts/documents"
+
+  cd /home/baehyunsol/Documents/Rust/engine
+  cargo run --release --quiet
+  cd $pwd
+  rm $"/home/baehyunsol/Documents/Rust/engine/mdxts/documents/($filename).md"
+  mv $"/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/($filename).html"  $"($pwd)"
+  cp "/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/*.css" $"($pwd)"
+  cp "/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/*.js" $"($pwd)"
+}
+
 # -------------------------------------------
 # from https://github.com/nushell/nu_scripts/
 # -------------------------------------------
