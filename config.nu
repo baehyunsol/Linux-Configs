@@ -714,6 +714,21 @@ def render_doc [
   cp "/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/*.js" $"($pwd)"
 }
 
+# if it doesn't work, please install `xrandr`
+def set-brightness [
+  brightness: float #0.0 ~ 1.2
+] {
+
+  if $brightness > 1.2 or $brightness < 0.0 {
+    print "brightness must be 0.0 ~ 1.2"
+  } else {
+    let disp = (xrandr | into string | split row "\n" | find " connected" | get 0 | split row " " | get 0);
+  
+    xrandr --output $disp --brightness $brightness
+  }
+
+}
+
 # -------------------------------------------
 # from https://github.com/nushell/nu_scripts/
 # -------------------------------------------
