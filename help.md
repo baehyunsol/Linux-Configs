@@ -76,6 +76,10 @@
   - Take a screenshot of the entire screen
 - Mod + [[aqua]]Shift[[/aqua]] + F3
   - Play Music
+- Mod + [[aqua]]Shift[[/aqua]] + F4
+  - Set the screen brightness to 0.1
+- Mod + [[aqua]]Shift[[/aqua]] + F5
+  - Set the screen brightness to 1.0
 
 ## Other manuals
 
