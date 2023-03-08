@@ -117,6 +117,8 @@
         (command: Execute, modifier: ["modkey", "Shift"], key: "F1", value: "/home/baehyunsol/.config/nushell/screenshot.nu"),
         (command: Execute, modifier: ["modkey", "Shift"], key: "F2", value: "/home/baehyunsol/.config/nushell/screenshot_all.nu"),
         (command: Execute, modifier: ["modkey", "Shift"], key: "F3", value: "vlc --random /home/baehyunsol/Music"),
+        (command: Execute, modifier: ["modkey", "Shift"], key: "F4", value: "/home/baehyunsol/.config/nushell/turn_black.nu"),
+        (command: Execute, modifier: ["modkey", "Shift"], key: "F5", value: "/home/baehyunsol/.config/nushell/turn_white.nu"),
 
         // resize window
         (command: IncreaseMainWidth, modifier: ["modkey", "Control"], key: "w", value: "5"),
