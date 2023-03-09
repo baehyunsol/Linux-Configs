@@ -29,6 +29,7 @@
 # Applications
 
 - code
+  - Don't use snap!!
 - git
 - bat
 - silver searcher
@@ -48,3 +49,7 @@
   - bluetooth manager
   - use it if gnome-control-center is not working
   - bin name is `blueman-manager`
+- vlc
+- xrandr
+  - screen brightness/resolution utility
+  - installed by default in most cases
