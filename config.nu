@@ -669,16 +669,17 @@ alias gnt = gnome-text-editor
 # my defs
 # -------
 
-let __battery = {(upower -i /org/freedesktop/UPower/devices/battery_BAT1;) | into string | lines | | str trim | filter {|x| ($x | str length) > 0} | each { |x|  ($x | split row ": " | str trim)} | filter {|x| ($x | length) == 2} | reduce -f {} {|it, acc| $acc | insert ($it | get 0) ($it | get 1)}};
-
-# if the path is wrong, try `upower -e`
+# if it doesn't work, please install `upower`
 def battery [
   --verbose (-v)#verbose output
 ] {
+  let battery_path = (upower -e | into string | lines | find "battery" | get 0);
+  let res = ((upower -i $battery_path) | into string | lines | | str trim | filter {|x| ($x | str length) > 0} | each { |x|  ($x | split row ": " | str trim)} | filter {|x| ($x | length) == 2} | reduce -f {} {|it, acc| $acc | insert ($it | get 0) ($it | get 1)});
+
   if $verbose {
-    do $__battery
+    $res
   } else {
-    do $__battery | select percentage state
+    $res | select percentage state | merge ( if ("time to full" in $res) { ($res | select "time to full") } else { {} } ) | merge ( if ("time to empty" in $res) { ($res | select "time to empty") } else { {} } )
   }
 }
 
@@ -716,11 +717,11 @@ def render_doc [
 
 # if it doesn't work, please install `xrandr`
 def set-brightness [
-  brightness: float #0.0 ~ 1.2
+  brightness: float #0.0 ~ 1.3
 ] {
 
-  if $brightness > 1.2 or $brightness < 0.0 {
-    print "brightness must be 0.0 ~ 1.2"
+  if $brightness > 1.3 or $brightness < 0.0 {
+    print "brightness must be 0.0 ~ 1.3"
   } else {
     let disp = (xrandr | into string | split row "\n" | find " connected" | get 0 | split row " " | get 0);
   
