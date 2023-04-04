@@ -1,5 +1,7 @@
 # Base
 
+How about switching to awesomeWM + river instead of Leftwm + picom?
+
 - gnome
   - additional drivers
   - check firefox version
