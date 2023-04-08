@@ -9,13 +9,10 @@
   - install korean ime before installing leftwm
     - snap's vscode is not compatible with ibus
 - rustup
-- leftwm
-  - /usr/share/xsessions
 - alacritty
 - nushell
   - chsh
     - /etc/shells
-- feh
 - polybar
   - Install Korean fonts so that polybar can render korean
 - picom
@@ -25,6 +22,8 @@
   - /usr/share/rofi/themes
 - fetch (ex: ferris-fetch, neofetch)
   - run it when opening a terminal
+- awesome
+  - place `rc.lua` at `~/.config/awesome/rc.lua`
 
 # Applications
 
