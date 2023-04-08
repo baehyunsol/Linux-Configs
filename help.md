@@ -1,8 +1,3 @@
-## Init
-
-- Mod + I
-  - [[giant]]I[[/giant]]nitialize feh, polybar and picom
-
 ## Launch Applications
 
 - Mod + [[aqua]]Shift[[/aqua]] + Enter
@@ -22,40 +17,45 @@
 - Mod + [[aqua]]Shift[[/aqua]] + N
   - Launch [[giant]]N[[/giant]]autilus
 - Mod + [[aqua]]Shift[[/aqua]] + M
-  - Launch [[giant]]M[[/giant]]emo in scratch pad mode
+  - Launch [[giant]]M[[/giant]]emo in floating mode
 - Mod + [[aqua]]Shift[[/aqua]] + L
-  - Launch ca[[giant]]L[[/giant]]culator in scratch pad mode
+  - Launch ca[[giant]]L[[/giant]]culator in floating mode
 
 ## Kill
 
 - Mod + [[red]]Control[[/red]] + X
-  - Logout
+  - Quit Awesome
 - Mod + [[red]]Control[[/red]] + Q
-  - [[giant]]Q[[/giant]]uit
-- Mod + [[red]]Control[[/red]] + P
-  - Reload leftwm and kill [[giant]]P[[/giant]]olybar and [[giant]]P[[/giant]]icom
-  - Use it when testing new configs
+  - [[giant]]Q[[/giant]]uit window
+- Mod + [[red]]Control[[/red]] + R
+  - [[giant]]R[[/giant]]eload Awesome
 
 ## Move Windows
 
 - Mod + [[aqua]]Shift[[/aqua]] + Up
-  - Move window [[giant]]U[[/giant]]pward
+  - Move window [[giant]]Up[[/giant]]ward
 - Mod + [[aqua]]Shift[[/aqua]] + Down
-  - Move window [[giant]]D[[/giant]]ownward
-- Mod + Return
-  - Move window to top
+  - Move window [[giant]]Down[[/giant]]ward
 - Mod + Up
-  - Move focus [[giant]]U[[/giant]]pward
+  - Move focus [[giant]]Up[[/giant]]ward
 - Mod + Down
-  - Move focus [[giant]]D[[/giant]]ownward
-- Mod + [[red]]Control[[/red]] + F
-  - Toggle [[giant]]F[[/giant]]loating
+  - Move focus [[giant]]Down[[/giant]]ward
+- Mod + [[red]]Control[[/red]] + Space
+  - Toggle Floating
 - Mod + 0~9
   - Go to tag
+- Mod + Right
+  - Go to next tag
+- Mod + Left
+  - Go to previous tag
 - Mod + [[aqua]]Shift[[/aqua]] + 0~9
   - Move window to tag
-- Mod + Drag
+- Mod + [[red]]Control[[/red]] + T
+  - Set the client always on [[giant]]T[[/giant]]op
+- Mod + Left mouse
   - Move window
+- Mod + Right mouse
+  - Resize window
 
 ## Resize Windows
 
@@ -63,10 +63,10 @@
   - Make the main window [[giant]]W[[/giant]]ider
 - Mod + [[red]]Control[[/red]] + N
   - Make the main window [[giant]]N[[/giant]]arrower
-- Mod + [[red]]Control[[/red]] + S
-  - Toggle full[[giant]]S[[/giant]]creen
-- Mod + [[red]]Control[[/red]] + R
-  - [[giant]]R[[/giant]]elease current scratch pad
+- Mod + [[red]]Control[[/red]] + F
+  - Toggle [[giant]]F[[/giant]]ullscreen
+- Mod + Space
+  - Change layout (horizontal <-> vertical)
 
 ## Utilities
 
