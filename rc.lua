@@ -92,14 +92,6 @@ awful.screen.connect_for_each_screen(function(s)
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
 end)
 
--- {{{ Mouse bindings
-root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
--- }}}
-
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     -- view previous
@@ -145,9 +137,6 @@ globalkeys = gears.table.join(
     -- select next layout
     awful.key({ modkey }, "space", function () awful.layout.inc(1) end),
 
-    -- select previous layout
-    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc(-1) end),
-
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
@@ -181,7 +170,7 @@ clientkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle),
 
     -- toggle always on top
-    awful.key({ modkey, }, "t", function (c) c.ontop = not c.ontop end)
+    awful.key({ modkey, "Control" }, "t", function (c) c.ontop = not c.ontop end)
 )
 
 -- Bind all key numbers to tags.
