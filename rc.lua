@@ -122,8 +122,19 @@ globalkeys = gears.table.join(
     -- move client up
     awful.key({ modkey, "Control" }, "Up", function () awful.client.swap.byidx(-1) end),
 
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Control" }, "x", awesome.quit),
+    -- restart awesome
+    awful.key({ modkey, "Control" }, "r", function ()
+        awesome.spawn("pkill polybar")
+        awesome.spawn("pkill picom")
+        awesome.restart()
+    end),
+
+    -- kill awesome
+    awful.key({ modkey, "Control" }, "x", function ()
+        awesome.spawn("pkill polybar")
+        awesome.spawn("pkill picom")
+        awesome.quit()
+    end),
 
     -- make the main window wider
     awful.key({ modkey, "Control" }, "w", function () awful.tag.incmwfact( 0.05) end),
