@@ -69,6 +69,8 @@ awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar1")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar2")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
 
+floating_window_size = 480
+
 local function set_wallpaper(s)
     -- Wallpaper
     if beautiful.wallpaper then
@@ -235,12 +237,23 @@ awful.rules.rules = {
 
     -- Floating clients.
     {
-      rule_any = { class = {"gnome-text-editor", "gnome-calculator"} },
+      rule = { class = "gnome-text-editor" },
       properties = {
         x = 60,
         y = 60,
-        width = 360,
-        height = 360,
+        width = floating_window_size,
+        height = floating_window_size,
+        floating = true,
+        ontop = true
+      }
+    },
+    {
+      rule = { class = "gnome-calculator" },
+      properties = {
+        x = 80,
+        y = 80,
+        width = floating_window_size,
+        height = floating_window_size,
         floating = true,
         ontop = true
       }
@@ -269,6 +282,14 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_none end)
+client.connect_signal("focus", function(c)
+    if c.class ~= "Polybar" then
+        c.border_color = beautiful.border_focus
+    end
+end)
+client.connect_signal("unfocus", function(c)
+    if c.class ~= "Polybar" then
+        c.border_color = beautiful.border_none
+    end
+end)
 -- }}}
