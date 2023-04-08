@@ -1,4 +1,3 @@
 #!/home/baehyunsol/.cargo/bin/nu
-let disp = (xrandr | into string | split row "\n" | find " connected" | get 0 | split row " " | get 0);
 
-xrandr --output $disp --brightness 1.0
+xrandr | into string | split row "\n" | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 1.0}
