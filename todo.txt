@@ -69,3 +69,26 @@ Let's use Awesome WM until the wayland ecosystem is mature.
 - polybar doesn't support wayland
 - rofi doesn't officially support wayland, but it has an unofficial fork
 - no picom in wayland, but I guess it doesn't need one
+
+# Destinations
+
+Write a shell script that locates all the config files.
+
+- config.nu, funcs.nu
+  - /home/baehyunsol/.config/nushell
+- alacritty.yml
+  - /home/baehyunsol/.config/alacritty/alacritty.yml
+- bg.jpg
+  - /home/baehyunsol/Downloads/bg.jpg
+- bluetooth.md, git.md
+  - /home/baehyunsol/Documents
+- help.md, nus.md
+  - /home/baehyunsol/Documents/DThelp
+- launcher.py, polybar.ini
+  - /home/baehyunsol/.config
+- rc.lua
+  - /home/baehyunsol/.config/awesome/rc.lua
+- rofi.rasi, rofi2.rasi
+  - /usr/share/rofi/themes/sol.rasi
+- init.py, lock.py
+  - /home/baehyunsol/.config/_init

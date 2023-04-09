@@ -1,3 +1,3 @@
-`bluetoothctl`: use `list` command to figure out the MAC address of my device
+`bluetoothctl scan on`: can find out the MAC address of the device
 
-`connect 00:00:AB:CD:B1:1B`: connect to the device
+`bluetoothctl connect 00:00:AB:CD:B1:1B`: connect to the device
