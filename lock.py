@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+
+import os
+
+os.chdir("/home/baehyunsol/.config/_init")
+
 with open("data.json", "r") as f:
     data = eval(f.read())
 

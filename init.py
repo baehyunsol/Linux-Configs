@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+import os
+
+os.chdir("/home/baehyunsol/.config/_init")
+
 def save_and_quit(data):
 
     with open("data.json", "w") as f:
@@ -13,7 +17,7 @@ try:
         data = eval(f.read())
 
 except FileNotFoundError:
-    data = {}
+    data = {"fresh_boot": True}
 
 if not data["fresh_boot"]:
     data["fresh_boot"] = True
