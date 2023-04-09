@@ -152,11 +152,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),
     awful.key({ modkey, "Shift" }, "y", function () awful.spawn("gnome-system-monitor -p") end),
 
-    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/screenshot.nu") end),
-    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/screenshot_all.nu") end),
+    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
+    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot all\"") end),
     awful.key({ modkey, "Shift" }, "F3", function () awful.spawn("vlc --random /home/baehyunsol/Music") end),
-    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn("/home/baehyunsol/.config/nushell/turn_black.nu") end),
-    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn("/home/baehyunsol/.config/nushell/turn_white.nu") end)
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"turn black\"") end),
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"turn white\"") end)
 )
 
 clientkeys = gears.table.join(
