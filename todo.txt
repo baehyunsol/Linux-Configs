@@ -52,20 +52,20 @@
 - xrandr
   - screen brightness/resolution utility
   - installed by default in most cases
+
+# Migration
   
-  # Migration
+## Awesome
   
-  ## Awesome
+Let's use Awesome WM until the wayland ecosystem is mature.
   
-  Let's use Awesome WM until the wayland ecosystem is mature.
+## Wayland
   
-  ## Wayland
-  
-  - river wm
-    - wait until...
-      - more than 1100 commits (1030 now)
-      - more than 500 closed issues (473 now)
-      - version 0.3.0 (0.2.4 now)
-  - polybar doesn't support wayland
-  - rofi doesn't officially support wayland, but it has an unofficial fork
-  - no picom in wayland, but I guess it doesn't need one
+- river wm
+  - wait until...
+    - more than 1100 commits (1030 now)
+    - more than 500 closed issues (473 now)
+    - version 0.3.0 (0.2.4 now)
+- polybar doesn't support wayland
+- rofi doesn't officially support wayland, but it has an unofficial fork
+- no picom in wayland, but I guess it doesn't need one
