@@ -142,7 +142,7 @@ globalkeys = gears.table.join(
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
-    awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window --kiosk /home/baehyunsol/Documents/DThelp/index.html") end),
+    awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
     awful.key({ modkey, "Shift" }, "c", function () awful.spawn("gnome-control-center") end),
     awful.key({ modkey, "Shift" }, "f", function () awful.spawn("firefox") end),
     awful.key({ modkey, "Shift" }, "p", function () awful.spawn("firefox --private-window") end),
@@ -150,6 +150,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),
     awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),
+    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("gnome-system-monitor -p") end),
+
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/screenshot.nu") end),
     awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/screenshot_all.nu") end),
     awful.key({ modkey, "Shift" }, "F3", function () awful.spawn("vlc --random /home/baehyunsol/Music") end),
@@ -219,7 +221,21 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
--- {{{ Rules
+function floating_window(class, offset)
+    return {
+        rule = { class = class },
+        properties = {
+            x = offset,
+            y = offset,
+            width = floating_window_size,
+            height = floating_window_size,
+            floating = true,
+            ontop = true
+        }
+    }
+end
+
+    -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -231,33 +247,14 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                     placement = awful.placement.no_overlap + awful.placement.no_offscreen
      }
     },
 
     -- Floating clients.
-    {
-      rule = { class = "gnome-text-editor" },
-      properties = {
-        x = 60,
-        y = 60,
-        width = floating_window_size,
-        height = floating_window_size,
-        floating = true,
-        ontop = true
-      }
-    },
-    {
-      rule = { class = "gnome-calculator" },
-      properties = {
-        x = 80,
-        y = 80,
-        width = floating_window_size,
-        height = floating_window_size,
-        floating = true,
-        ontop = true
-      }
-    }
+    floating_window("gnome-text-editor", 60),
+    floating_window("gnome-calculator", 80),
+    floating_window("Gnome-system-monitor", 100)  -- why the hell are they using mixed characters?
 
 }
 -- }}}

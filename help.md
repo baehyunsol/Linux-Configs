@@ -20,6 +20,8 @@
   - Launch [[giant]]M[[/giant]]emo in floating mode
 - Mod + [[aqua]]Shift[[/aqua]] + L
   - Launch ca[[giant]]L[[/giant]]culator in floating mode
+- Mod + [[aqua]]Shift[[/aqua]] + Y
+  - Launch s[[giant]]Y[[/giant]]stem monitor in floating mode
 
 ## Kill
 
