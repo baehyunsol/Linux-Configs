@@ -18,9 +18,11 @@ require("awful.hotkeys_popup.keys")
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+    naughty.notify({
+        preset = naughty.config.presets.critical,
+        title = "Oops, there were errors during startup!",
+        text = awesome.startup_errors
+    })
 end
 
 -- Handle runtime errors after startup
@@ -31,9 +33,11 @@ do
         if in_error then return end
         in_error = true
 
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
+        naughty.notify({
+            preset = naughty.config.presets.critical,
+            title = "Oops, an error happened!",
+            text = tostring(err)
+        })
         in_error = false
     end)
 end
@@ -68,6 +72,7 @@ awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar0")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar1")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar2")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
+awful.spawn("/home/baehyunsol/.config/_init/init.py")
 
 floating_window_size = 480
 
@@ -75,10 +80,6 @@ local function set_wallpaper(s)
     -- Wallpaper
     if beautiful.wallpaper then
         local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
         gears.wallpaper.maximized(wallpaper, s, true)
     end
 end
@@ -103,10 +104,22 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "Right", awful.tag.viewnext),
 
     -- focus next client
-    awful.key({ modkey }, "Down", function () awful.client.focus.byidx(1) end),
+    awful.key({ modkey }, "Down", function ()
+        awful.client.focus.byidx(1)
+        mouse.coords {
+            x = client.focus.x + client.focus.width / 2,
+            y = client.focus.y + client.focus.height / 2
+        }
+    end),
 
     -- focus previous client
-    awful.key({ modkey }, "Up", function () awful.client.focus.byidx(-1) end),
+    awful.key({ modkey }, "Up", function ()
+        awful.client.focus.byidx(-1)
+        mouse.coords {
+            x = client.focus.x + client.focus.width / 2,
+            y = client.focus.y + client.focus.height / 2
+        }
+    end),
 
     -- Layout manipulation
 
@@ -120,6 +133,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "r", function ()
         awesome.spawn("pkill polybar")
         awesome.spawn("pkill picom")
+        awesome.spawn("/home/baehyunsol/.config/_init/lock.py")  -- makes sure that the init script is not launched
         awesome.restart()
     end),
 
@@ -239,16 +253,18 @@ end
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap + awful.placement.no_offscreen
-     }
+    {
+        rule = {},
+        properties = {
+            border_width = beautiful.border_width,
+            border_color = beautiful.border_normal,
+            focus = awful.client.focus.filter,
+            raise = true,
+            keys = clientkeys,
+            buttons = clientbuttons,
+            screen = awful.screen.preferred,
+            placement = awful.placement.no_overlap + awful.placement.no_offscreen
+        }
     },
 
     -- Floating clients.
@@ -277,6 +293,14 @@ end)
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
+end)
+
+-- move mouse to the center when a new client is launched
+client.connect_signal("manage", function(c)
+    mouse.coords {
+        x = c.x + c.width / 2,
+        y = c.y + c.height / 2
+    }
 end)
 
 client.connect_signal("focus", function(c)
