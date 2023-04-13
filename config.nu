@@ -588,16 +588,24 @@ def render_doc [
   let filename = ($path | path parse | get stem);
   let dirname = ($path | path dirname);
   let pwd = (pwd);
+  let engine_path = "/home/baehyunsol/Documents/Rust/engine"
 
-  cp $path "/home/baehyunsol/Documents/Rust/engine/mdxts/documents"
+  cp $path ($engine_path + "/mdxts/documents")
+  cd $engine_path
 
-  cd /home/baehyunsol/Documents/Rust/engine
-  cargo run --release --quiet
+  if '/run' in (ls $engine_path | get name | each { |x| $x | str substring ($engine_path | str length).. }) {
+    /home/baehyunsol/Documents/Rust/engine/run
+  } else {
+    cargo run --release --quiet
+    mv ($engine_path + "/target/release/engine") ($engine_path + "/run")
+  }
+
   cd $pwd
-  rm $"/home/baehyunsol/Documents/Rust/engine/mdxts/documents/($filename).md"
-  mv $"/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/($filename).html"  $"($pwd)"
-  cp "/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/*.css" $"($pwd)"
-  cp "/home/baehyunsol/Documents/Rust/engine/output/htmls/documents/*.js" $"($pwd)"
+
+  rm ($engine_path + $"/mdxts/documents/($filename).md")
+  mv ($engine_path + $"/output/htmls/documents/($filename).html") $pwd
+  cp ($engine_path + "/output/htmls/documents/*.css") $pwd
+  cp ($engine_path + "/output/htmls/documents/*.js") $pwd
 }
 
 # if it doesn't work, please install `xrandr`
@@ -608,7 +616,7 @@ def set-brightness [
   if $brightness > 1.3 or $brightness < 0.0 {
     print "brightness must be 0.0 ~ 1.3"
   } else {
-    xrandr | into string | split row "\n" | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness $brightness}
+    xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness $brightness}
 
     print $"brightness: ($brightness)"
   }
@@ -658,4 +666,3 @@ def extract [name:string #name of the archive to extract
 # ---------------------
 
 ferris-fetch
-
