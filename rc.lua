@@ -1,3 +1,17 @@
+--[[
+TODO
+
+- multiple monitors
+  - `screen:count()` tells you how many screen it has
+  - `awful.screen.focused()` returns a `screen` instance of the focused screen
+  - `awful.screen.focus(s: screen)`: moves the focus to `s`
+  - if `s` is a `screen` instance,
+    - `s.index`: an integer starting with 1
+    - `s.tags`: a read-only list of all tags on `s`
+  - if `t` is a `tag` instance
+    - `t.screen`: a `screen` instance where `t` belongs to
+]]--
+
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -90,6 +104,8 @@ screen.connect_signal("property::geometry", set_wallpaper)
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
+
+    naughty.notify({text = tostring(awful.screen.focused().index)})
 
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
@@ -263,9 +279,17 @@ awful.rules.rules = {
             keys = clientkeys,
             buttons = clientbuttons,
             screen = awful.screen.preferred,
+            maximized = false,  -- most windows are not launced maximized, except libreoffice. this line is to prevent libreoffice from launched maximized
             placement = awful.placement.no_overlap + awful.placement.no_offscreen
         }
     },
+
+    -- {
+    --     rule = { class = "libreoffice" },
+    --     properties = {
+    --         maximized = false
+    --     }
+    -- },
 
     -- Floating clients.
     floating_window("gnome-text-editor", 60),
