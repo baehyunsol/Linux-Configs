@@ -284,13 +284,6 @@ awful.rules.rules = {
         }
     },
 
-    -- {
-    --     rule = { class = "libreoffice" },
-    --     properties = {
-    --         maximized = false
-    --     }
-    -- },
-
     -- Floating clients.
     floating_window("gnome-text-editor", 60),
     floating_window("gnome-calculator", 80),
