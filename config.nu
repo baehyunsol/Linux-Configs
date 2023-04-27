@@ -573,8 +573,11 @@ def fzff [
                     ['.odt' 'libreoffice']
                     ['.pptx' 'libreoffice']
                     ['.ppt' 'libreoffice']
+                    ['.odp' 'libreoffice']
                     ]
-  let command = ($exten | where $file =~ $it.ex | if ($in | length) > 0 { get 0 } else { "code" })
+  let command = ($exten | where $file =~ $it.ex | if ($in | length) > 0 { get 0 | get com } else { "code" })
+
+  print $"($command) ($file)"
 
   nu -c ($"($command) ($file)")
 }
