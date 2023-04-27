@@ -1023,6 +1023,12 @@ see [columns](#columns)
 | ll     | launcher           |
 | gnt    | gnome-text-editor  |
 
+## fzff and fzfd
+
+`fzff` is a frontend for `fzf`, opening a file
+
+`fzfd` is a frontend for `fzf`, opening a directory containing the file `fzf` selected
+
 ## battery
 
 - `battery` → [record]
