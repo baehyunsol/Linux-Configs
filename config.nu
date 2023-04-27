@@ -547,7 +547,6 @@ let-env config = {
 # -------
 
 alias py = python3
-alias ll = python3 /home/baehyunsol/.config/launcher.py
 alias gnt = gnome-text-editor
 alias fzfd = cd (fzf | into string | str trim | path dirname)
 alias libreoffice = libreoffice7.5  #update it when the version changes
