@@ -549,10 +549,28 @@ let-env config = {
 alias py = python3
 alias ll = python3 /home/baehyunsol/.config/launcher.py
 alias gnt = gnome-text-editor
+alias fzfd = cd (fzf | into string | str trim | path dirname)
+alias libreoffice = libreoffice7.5  #update it when the version changes
 
 # -------
 # my defs
 # -------
+
+# frontend for `fzf`, opening a file. to open a directory, use `fzfd`
+def fzff [
+  --directory (-d)  #open directory
+] {
+  let file = (fzf | into string | str trim)
+  let exten = [ [ex com];
+                    ['.html' 'firefox']
+                    ['.pdf' 'firefox']
+                    ['.docx' 'libreoffice']
+                    ['.odt' 'libreoffice']
+                    ]
+  let command = ($exten | where $file =~ $it.ex | if ($in | length) > 0 { get 0 } else { "code" })
+
+  nu -c ($"($command) ($file)")
+}
 
 # if it doesn't work, please install `upower`
 def battery [
@@ -572,9 +590,9 @@ def screenshot [
   --all (-a)  #entire screen
 ] {
   if $all {
-    /home/baehyunsol/.config/nushell/screenshot_all.nu
+    /home/baehyunsol/.config/nushell/funcs.nu screenshot all
   } else {
-    /home/baehyunsol/.config/nushell/screenshot.nu
+    /home/baehyunsol/.config/nushell/funcs.nu screenshot
   }
 }
 
