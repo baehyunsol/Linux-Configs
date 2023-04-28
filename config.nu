@@ -554,7 +554,6 @@ let-env config = {
 alias py = python3
 alias gnt = gnome-text-editor
 alias fzfd = cd (fzf | into string | str trim | path dirname)
-alias libreoffice = libreoffice7.5  #update it when the version changes
 
 # -------
 # my defs
@@ -574,12 +573,14 @@ def fzff [
                     ['.pptx' 'libreoffice']
                     ['.ppt' 'libreoffice']
                     ['.odp' 'libreoffice']
+                    ['.mp4' 'vlc'] ['.mp3' 'vlc'] ['.m4a' 'vlc']
+                    ['.svg' 'firefox'] ['.png' 'firefox'] ['.jpg' 'firefox'] ['.gif' 'firefox']
                     ]
-  let command = ($exten | where $file =~ $it.ex | if ($in | length) > 0 { get 0 | get com } else { "code" })
+  let command = ($exten | where ($file | str downcase | str ends-with $it.ex) | if ($in | length) > 0 { get 0 | get com } else { "code" })
 
-  print $"($command) ($file)"
-
-  nu -c ($"($command) ($file)")
+  if ($file | str length) > 0 {
+    nu -c ($"($command) \"($file)\"")
+  }
 }
 
 # if it doesn't work, please install `upower`
