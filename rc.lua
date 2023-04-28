@@ -168,7 +168,7 @@ globalkeys = gears.table.join(
 
     -- select next layout
     awful.key({ modkey }, "space", function () awful.layout.inc(1) end),
-
+  
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
@@ -180,7 +180,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),
     awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),
-    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("gnome-system-monitor -p") end),
+    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class SystemMonitor --command btm") end),
 
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
     awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot all\"") end),
@@ -251,14 +251,16 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
-function floating_window(class, offset)
+function floating_window(class, offset, w, h)
+    w = w or floating_window_size
+    h = h or floating_window_size
     return {
         rule = { class = class },
         properties = {
             x = offset,
             y = offset,
-            width = floating_window_size,
-            height = floating_window_size,
+            width = w,
+            height = h,
             floating = true,
             ontop = true
         }
@@ -287,7 +289,7 @@ awful.rules.rules = {
     -- Floating clients.
     floating_window("gnome-text-editor", 60),
     floating_window("gnome-calculator", 80),
-    floating_window("Gnome-system-monitor", 100)  -- why the hell are they using mixed characters?
+    floating_window("SystemMonitor", 100, 960, 720)
 
 }
 -- }}}
