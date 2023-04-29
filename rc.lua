@@ -105,8 +105,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-    naughty.notify({text = tostring(awful.screen.focused().index)})
-
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
 end)
@@ -168,18 +166,18 @@ globalkeys = gears.table.join(
 
     -- select next layout
     awful.key({ modkey }, "space", function () awful.layout.inc(1) end),
-  
+
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
     awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
-    awful.key({ modkey, "Shift" }, "c", function () awful.spawn("gnome-control-center") end),
+    awful.key({ modkey, "Shift" }, "c", function () awful.spawn("gnome-control-center") end),  -- TODO: remove GNOME
     awful.key({ modkey, "Shift" }, "f", function () awful.spawn("firefox") end),
     awful.key({ modkey, "Shift" }, "p", function () awful.spawn("firefox --private-window") end),
     awful.key({ modkey, "Shift" }, "v", function () awful.spawn("code") end),
-    awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),
-    awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),
-    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),
+    awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),  -- TODO: remove GNOME
+    awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),  -- TODO: remove GNOME
+    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),  -- TODO: remove GNOME
     awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class SystemMonitor --command btm") end),
 
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
@@ -193,6 +191,11 @@ clientkeys = gears.table.join(
     -- toggle fullscreen
     awful.key({ modkey, "Control" }, "f",
         function (c)
+
+            -- trick: when a window is not obeying the rules, try `Mod+Control+F`. i don't know why, but it fixes
+            c.maximized = false
+            c.minimized = false
+
             c.fullscreen = not c.fullscreen
             c:raise()
         end),
@@ -281,7 +284,12 @@ awful.rules.rules = {
             keys = clientkeys,
             buttons = clientbuttons,
             screen = awful.screen.preferred,
-            maximized = false,  -- most windows are not launced maximized, except libreoffice. this line is to prevent libreoffice from launched maximized
+
+            -- most windows are not launced maximized, except libreoffice. this line is to prevent libreoffice from launched maximized
+            maximized = false,
+            maximized_horizontal = false,
+            maximized_verical = false,
+
             placement = awful.placement.no_overlap + awful.placement.no_offscreen
         }
     },
@@ -301,6 +309,12 @@ client.connect_signal("manage", function (c)
     -- i.e. put it at the end of others instead of setting it master.
     -- if not awesome.startup then awful.client.setslave(c) end
 
+    -- move mouse to the center when ta new client is launched
+    mouse.coords {
+        x = c.x + c.width / 2,
+        y = c.y + c.height / 2
+    }
+
     if awesome.startup
       and not c.size_hints.user_position
       and not c.size_hints.program_position then
@@ -312,14 +326,6 @@ end)
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
-
--- move mouse to the center when a new client is launched
-client.connect_signal("manage", function(c)
-    mouse.coords {
-        x = c.x + c.width / 2,
-        y = c.y + c.height / 2
-    }
 end)
 
 client.connect_signal("focus", function(c)
