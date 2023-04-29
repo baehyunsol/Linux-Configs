@@ -552,7 +552,7 @@ let-env config = {
 # -------
 
 alias py = python3
-alias gnt = gnome-text-editor
+alias text = gnome-text-editor
 alias fzfd = cd (fzf | into string | str trim | path dirname)
 
 # -------
