@@ -1020,8 +1020,7 @@ see [columns](#columns)
 | alias  | explanation        |
 |--------|--------------------|
 | py     | python3            |
-| ll     | launcher           |
-| gnt    | gnome-text-editor  |
+| text   | gnome-text-editor  |
 
 ## fzff and fzfd
 
