@@ -38,7 +38,7 @@
 - fzf
 - pinta
   - after installing it from flatpak, you have to add the below script to the `bin` folder manually
-  - `def main [args: string ] { nu -c $"flatpak run com.github.PintaProject.Pinta ($args)" }`
+  - `def main [args: string = " " ] { nu -c $"flatpak run com.github.PintaProject.Pinta ($args)" }`
 - kdenlive
 - imagemagick
   - screenshot util
