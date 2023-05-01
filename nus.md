@@ -1022,6 +1022,13 @@ see [columns](#columns)
 | py     | python3            |
 | text   | gnome-text-editor  |
 
+## helper
+
+- `helper` (command: [string])
+  - It either returns a colorized output or enters an interactive pager.
+  - `helper rustc` is an alias for `rustc --help | bat -plhelp`
+  - If `command` has spaces, you should wrap it with quotations
+
 ## fzff and fzfd
 
 `fzff` is a frontend for `fzf`, opening a file
