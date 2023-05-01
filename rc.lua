@@ -87,6 +87,7 @@ awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar1")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar2")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
 awful.spawn("/home/baehyunsol/.config/_init/init.py")
+awful.spawn("pueued")
 
 floating_window_size = 480
 
