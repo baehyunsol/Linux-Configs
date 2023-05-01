@@ -583,7 +583,7 @@ def fzff [
     $command = ""
   }
 
-  pueue add -p $"nu -c '($command) \"($file)\"'"
+  pueue add -i -p $"nu -c '($command) \"($file)\"'"
 }
 
 # if it doesn't work, please install `upower`
