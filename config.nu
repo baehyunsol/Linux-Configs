@@ -553,7 +553,7 @@ let-env config = {
 
 alias py = python3
 alias text = gnome-text-editor
-alias fzfd = cd (fzf | into string | str trim | path dirname)
+alias fzfd = cd (fzf --preview "bat --color=always --style=numbers --line-range=:320 {}" | into string | str trim | path dirname)
 
 # -------
 # my defs
@@ -563,7 +563,7 @@ alias fzfd = cd (fzf | into string | str trim | path dirname)
 def fzff [
   --directory (-d)  #open directory
 ] {
-  let file = (fzf | into string | str trim)
+  let file = (fzf --preview "bat --color=always --style=numbers --line-range=:320 {}" | into string | str trim)
   let exten = [ [ex com];
                     ['.html' 'firefox']
                     ['.pdf' 'firefox']
@@ -574,13 +574,16 @@ def fzff [
                     ['.ppt' 'libreoffice']
                     ['.odp' 'libreoffice']
                     ['.mp4' 'vlc'] ['.mp3' 'vlc'] ['.m4a' 'vlc']
-                    ['.svg' 'firefox'] ['.png' 'firefox'] ['.jpg' 'firefox'] ['.gif' 'firefox']
+                    ['.wav' 'vlc'] ['.ogg' 'vlc'] ['.avi' 'vlc']
+                    ['.svg' 'pinta'] ['.png' 'pinta'] ['.jpg' 'pinta'] ['.gif' 'pinta']
                     ]
-  let command = ($exten | where ($file | str downcase | str ends-with $it.ex) | if ($in | length) > 0 { get 0 | get com } else { "code" })
+  mut command = ($exten | where ($file | str downcase | str ends-with $it.ex) | if ($in | length) > 0 { get 0 | get com } else { "code" })
 
-  if ($file | str length) > 0 {
-    nu -c ($"($command) \"($file)\"")
+  if ($file | str length) == 0 {
+    $command = ""
   }
+
+  pueue add -p $"nu -c '($command) \"($file)\"'"
 }
 
 # if it doesn't work, please install `upower`
