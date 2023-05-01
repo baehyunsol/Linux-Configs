@@ -559,6 +559,10 @@ alias fzfd = cd (fzf --preview "bat --color=always --style=numbers --line-range=
 # my defs
 # -------
 
+# `helper rustc` is an alias for `rustc --help | bat -plhelp`
+# If `comm` has a space, wrap it with quotations.
+def helper [comm: string] { nu -c $"($comm) --help | bat -plhelp" }
+
 # frontend for `fzf`, opening a file. to open a directory, use `fzfd`
 def fzff [
   --directory (-d)  #open directory
