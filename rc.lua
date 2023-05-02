@@ -89,7 +89,7 @@ awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
 awful.spawn("/home/baehyunsol/.config/_init/init.py")
 awful.spawn("pueued")
 
-floating_window_size = 480
+floating_window_size = 540
 
 local function set_wallpaper(s)
     -- Wallpaper
@@ -172,13 +172,16 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
     awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
-    awful.key({ modkey, "Shift" }, "c", function () awful.spawn("gnome-control-center") end),  -- TODO: remove GNOME
+
+    -- for now, the control center doesn't work with awesome, I need a walk-around
+    awful.key({ modkey, "Shift" }, "c", function () awful.spawn("env XDG_CURRENT_DESKTOP=GNOME gnome-control-center") end),  -- TODO: remove GNOME
+
     awful.key({ modkey, "Shift" }, "f", function () awful.spawn("firefox") end),
     awful.key({ modkey, "Shift" }, "p", function () awful.spawn("firefox --private-window") end),
     awful.key({ modkey, "Shift" }, "v", function () awful.spawn("code") end),
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),  -- TODO: remove GNOME
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),  -- TODO: remove GNOME
-    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("gnome-calculator") end),  -- TODO: remove GNOME
+    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("alacritty --class PyCalc --command python3 -i -c \"import math\"") end),
     awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class SystemMonitor --command btm") end),
 
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
@@ -297,7 +300,7 @@ awful.rules.rules = {
 
     -- Floating clients.
     floating_window("gnome-text-editor", 60),
-    floating_window("gnome-calculator", 80),
+    floating_window("PyCalc", 80),
     floating_window("SystemMonitor", 100, 960, 720)
 
 }
