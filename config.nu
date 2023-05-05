@@ -701,4 +701,4 @@ def extract [name:string #name of the archive to extract
 # Start-up Applications
 # ---------------------
 
-ferris-fetch
+/home/baehyunsol/Documents/Rust/my_fetch/target/release/my_fetch
