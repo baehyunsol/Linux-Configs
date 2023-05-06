@@ -553,7 +553,8 @@ let-env config = {
 
 alias py = python3
 alias text = gnome-text-editor
-alias fzfd = cd (fzf --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"svg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }" | into string | str trim | path dirname)
+alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
+alias fzfd = cd (fzf | into string | str trim | path dirname)
 
 # -------
 # my defs
@@ -567,7 +568,7 @@ def helper [comm: string] { nu -c $"($comm) --help | bat -plhelp" }
 def fzff [
   --directory (-d)  #open directory
 ] {
-  let file = (fzf --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"svg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }" | into string | str trim)
+  let file = (fzf | into string | str trim)
   let exten = [ [ex com];
                     ['.html' 'firefox']
                     ['.pdf' 'firefox']
