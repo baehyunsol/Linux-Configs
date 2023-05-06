@@ -1,16 +1,17 @@
-// I'm too lazy to make a new repo...
-
 /*
+I'm too lazy to make a new repo...
+
 colored = "2.0.0"
 lazy_static = "1.4.0"
 sysinfo = "0.28.4"
 battery = "0.7.8"
-chrono = "0.4.24"
 h_time = "0.1.0"
 */
 
 use colored::*;
 use sysinfo::*;
+use std::fs::File;
+use std::io::Read;
 
 fn main() {
     println!("{}\n{}", title().join("\n"), bottom().join("\n"));
@@ -19,25 +20,37 @@ fn main() {
 fn title() -> Vec<String> {
     vec![
         String::new(),
-        format!("{}", " ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
-        format!("{}", " ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
-        format!("{}", " ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
-        format!("{}", "                 ▝▘                                                ".blue()),
-        format!("{}", " =================================================================="),
+        format!("{}", "    ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
+        format!("{}", "    ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
+        format!("{}", "    ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
+        format!("{}", "                    ▝▘                                                ".blue()),
+        format!("{}", " ========================================================================"),
     ]
 }
 
 fn bottom() -> Vec<String> {
-    let cal = calendars();
-    let stat = status();
-    let mut lines = Vec::with_capacity(cal.len());
+    let left = calendars();
+    let right = vec![status(), vec!["".to_string()], load_memo()].concat();
+    let mut lines = Vec::with_capacity(left.len().min(right.len()));
 
-    for i in 0..stat.len() {
-        lines.push(format!(" {} | {}", cal[i], stat[i]));
+    for i in 0..left.len().min(right.len()) {
+        lines.push(format!(" {} | {}", left[i], right[i]));
     }
 
-    for i in lines.len()..cal.len().max(stat.len()) {
-        lines.push(format!(" {} |", cal[i]));
+    if left.len() > right.len() {
+
+        for i in lines.len()..left.len().max(right.len()) {
+            lines.push(format!(" {} |", left[i]));
+        }
+
+    }
+
+    else {
+
+        for i in lines.len()..left.len().max(right.len()) {
+            lines.push(format!(" {} | {}", " ".repeat(33),  right[i]));
+        }
+
     }
 
     lines
@@ -62,6 +75,56 @@ fn status() -> Vec<String> {
         format!("{}: {}", "CPU".green(), sys.cpus()[0].brand()),
         format!("{}: {} MB", "Memory".green(), sys.total_memory() / 1048576),
     ]
+}
+
+fn load_memo() -> Vec<String> {
+    let mut s = String::new();
+    let mut lines = vec![format!("{}", "Memo".green())];
+
+    match File::open("/home/baehyunsol/Documents/fetch_memo.txt") {
+        Ok(mut f) => match f.read_to_string(&mut s) {
+            Ok(_) => {},
+            _ => {
+                lines.push(String::from("~/Documents/fetch_memo.txt를 찾을 수 없습니다."));
+                return lines;
+            }
+        }
+        _ => {
+            lines.push(String::from("~/Documents/fetch_memo.txt를 찾을 수 없습니다."));
+            return lines;
+        }
+    }
+
+    let mut curr_line = vec![];
+
+    for c in s.chars() {
+
+        if c == '\n' {
+            lines.push(curr_line.into_iter().collect());
+            curr_line = vec![];
+        }
+
+        else if curr_line.len() > 21 {
+            lines.push(curr_line.into_iter().collect());
+            curr_line = vec![c];
+        }
+
+        else if curr_line.len() > 14 && c == ' ' {
+            lines.push(curr_line.into_iter().collect());
+            curr_line = vec![];
+        }
+
+        else {
+            curr_line.push(c);
+        }
+
+    }
+
+    if curr_line.len() > 0 {
+        lines.push(curr_line.into_iter().collect());
+    }
+
+    lines
 }
 
 fn get_battery() -> Result<String, ()> {
@@ -104,6 +167,7 @@ fn calendars() -> Vec<String> {
         calendar(year, month, *cal1_weekday, *cal1_lastday, day),
         vec![" ".repeat(33)],
         calendar(year2, month2, *cal2_weekday, *cal2_lastday, 999),
+        vec![" ".repeat(33)],
     ].concat()
 }
 
