@@ -553,7 +553,7 @@ let-env config = {
 
 alias py = python3
 alias text = gnome-text-editor
-alias fzfd = cd (fzf --preview "bat --color=always --style=numbers --line-range=:320 {}" | into string | str trim | path dirname)
+alias fzfd = cd (fzf --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"svg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }" | into string | str trim | path dirname)
 
 # -------
 # my defs
@@ -567,7 +567,7 @@ def helper [comm: string] { nu -c $"($comm) --help | bat -plhelp" }
 def fzff [
   --directory (-d)  #open directory
 ] {
-  let file = (fzf --preview "bat --color=always --style=numbers --line-range=:320 {}" | into string | str trim)
+  let file = (fzf --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"svg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }" | into string | str trim)
   let exten = [ [ex com];
                     ['.html' 'firefox']
                     ['.pdf' 'firefox']
@@ -690,11 +690,14 @@ def extract [name:string #name of the archive to extract
                     ['.Z' 'uncompress']
                     ]
   let command = ($exten | where $name =~ $it.ex | first)
+
   if ($command | is-empty) {
     echo 'Error! Unsupported file extension'
   } else {
     nu -c ($command.com + ' ' + $name)
   }
+
+  null
 }
 
 # ---------------------
