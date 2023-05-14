@@ -14,7 +14,7 @@ TODO
 
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
-pcall(require, "luarocks.loader")
+-- pcall(require, "luarocks.loader")
 
 -- Standard awesome library
 local gears = require("gears")
@@ -88,8 +88,6 @@ awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar2")
 awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
 awful.spawn("/home/baehyunsol/.config/_init/init.py")
 awful.spawn("pueued")
-
-floating_window_size = 540
 
 local function set_wallpaper(s)
     -- Wallpaper
@@ -171,6 +169,9 @@ globalkeys = gears.table.join(
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
+
+    -- TODO: I want it to be Mod + Shift + Space + Return, but Awesome doesn't let me do that
+    awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall --hold --command clear") end),  -- I don't want to see fetches on small terminals
     awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
 
     -- for now, the control center doesn't work with awesome, I need a walk-around
@@ -181,8 +182,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "v", function () awful.spawn("code") end),
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),  -- TODO: remove GNOME
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),  -- TODO: remove GNOME
-    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("alacritty --class PyCalc --command python3 -i -c \"import math\"") end),
-    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class SystemMonitor --command btm") end),
+    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("alacritty --class FloatSmall --command python3 -i -c \"import math\"") end),
+    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class FloatBig --command btm --battery") end),
 
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
     awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot all\"") end),
@@ -259,8 +260,6 @@ root.keys(globalkeys)
 -- }}}
 
 function floating_window(class, offset, w, h)
-    w = w or floating_window_size
-    h = h or floating_window_size
     return {
         rule = { class = class },
         properties = {
@@ -299,9 +298,9 @@ awful.rules.rules = {
     },
 
     -- Floating clients.
-    floating_window("gnome-text-editor", 60),
-    floating_window("PyCalc", 80),
-    floating_window("SystemMonitor", 100, 960, 720)
+    floating_window("gnome-text-editor", 60, 540, 540),
+    floating_window("FloatSmall", 80, 540, 540),
+    floating_window("FloatBig", 100, 1200, 800)
 
 }
 -- }}}
