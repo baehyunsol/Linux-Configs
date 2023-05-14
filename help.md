@@ -2,6 +2,8 @@
 
 - Mod + [[aqua]]Shift[[/aqua]] + Enter
   - Launch Alacritty
+- Mod + [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]] + Enter
+  - Launch Alacritty in floating mode
 - Mod + R
   - Launch [[giant]]R[[/giant]]ofi
 - Mod + [[aqua]]Shift[[/aqua]] + H
