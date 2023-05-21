@@ -119,19 +119,27 @@ globalkeys = gears.table.join(
     -- focus next client
     awful.key({ modkey }, "Down", function ()
         awful.client.focus.byidx(1)
-        mouse.coords {
-            x = client.focus.x + client.focus.width / 2,
-            y = client.focus.y + client.focus.height / 2
-        }
+
+        if client.focus ~= nil then
+            mouse.coords {
+                x = client.focus.x + client.focus.width / 2,
+                y = client.focus.y + client.focus.height / 2
+            }
+        end
+
     end),
 
     -- focus previous client
     awful.key({ modkey }, "Up", function ()
         awful.client.focus.byidx(-1)
-        mouse.coords {
-            x = client.focus.x + client.focus.width / 2,
-            y = client.focus.y + client.focus.height / 2
-        }
+
+        if client.focus ~= nil then
+            mouse.coords {
+                x = client.focus.x + client.focus.width / 2,
+                y = client.focus.y + client.focus.height / 2
+            }
+        end
+
     end),
 
     -- Layout manipulation
@@ -248,6 +256,10 @@ clientbuttons = gears.table.join(
     awful.button({ modkey }, 1, function (c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
         awful.mouse.client.move(c)
+    end),
+    awful.button({ modkey }, 2, function (c)
+        c:emit_signal("request::activate", "mouse_click", {raise = true})
+        awful.client.floating.toggle()
     end),
     awful.button({ modkey }, 3, function (c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})
