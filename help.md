@@ -58,6 +58,8 @@
   - Set the client always on [[giant]]T[[/giant]]op
 - Mod + Left mouse
   - Move window
+- Mod + Middle mouse
+  - Toggle Floating
 - Mod + Right mouse
   - Resize window
 
