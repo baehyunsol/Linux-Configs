@@ -1,6 +1,6 @@
 # Nushell Config File
 #
-# version = 0.79.0
+# version = 0.80.0
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
@@ -183,7 +183,7 @@ let light_theme = {
 # The default config record. This is where much of your global configuration is setup.
 let-env config = {
   # true or false to enable or disable the welcome banner at startup
-  show_banner: false
+  show_banner: true
   ls: {
     use_ls_colors: true # use the LS_COLORS environment variable to colorize output
     clickable_links: true # enable or disable clickable links. Your terminal has to support links.
@@ -266,6 +266,7 @@ let-env config = {
     max_size: 10000 # Session has to be reloaded for this to take effect
     sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
     file_format: "plaintext" # "sqlite" or "plaintext"
+    history_isolation: true # true enables history isolation, false disables it. true will allow the history to be isolated to the current session. false will allow the history to be shared across all sessions.
   }
   completions: {
     case_sensitive: false # set to true to enable case-sensitive completions
@@ -283,9 +284,9 @@ let-env config = {
     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, zb, zib, auto
   }
   cursor_shape: {
-    emacs: line # block, underscore, line (line is the default)
-    vi_insert: block # block, underscore, line (block is the default)
-    vi_normal: underscore # block, underscore, line  (underscore is the default)
+    emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line (line is the default)
+    vi_insert: block # block, underscore, line , blink_block, blink_underscore, blink_line (block is the default)
+    vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line (underscore is the default)
   }
   color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
   use_grid_icons: true
@@ -293,6 +294,7 @@ let-env config = {
   float_precision: 2 # the precision for displaying floats in tables
   # buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
   use_ansi_coloring: true
+  bracketed_paste: true # enable bracketed paste, currently useless on windows
   edit_mode: emacs # emacs, vi
   shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
@@ -553,7 +555,7 @@ let-env config = {
 
 alias py = python3
 alias text = gnome-text-editor
-alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
+alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
 alias fzfd = cd (fzf | into string | str trim | path dirname)
 
 # -------
@@ -588,7 +590,8 @@ def fzff [
     $command = ""
   }
 
-  pueue add -i -p $"nu -c '($command) \"($file)\"'"
+  # it's messy, but I don't know how to remove the return value
+  let _ = (pueue add -i -p $"nu -c '($command) \"($file)\"'");
 }
 
 # if it doesn't work, please install `upower`
