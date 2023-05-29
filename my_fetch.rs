@@ -193,8 +193,11 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
         else {
 
             if curr_day == today {
-                curr_line.push(format!("{:1$}", " ", width - curr_day.to_string().len()));
-                curr_line.push(format!("{}", curr_day.to_string().on_yellow().black()));
+                curr_line.push(format!(
+                    "{}{}",
+                    format!("{:1$}", " ", width - curr_day.to_string().len()),
+                    format!("{}", curr_day.to_string().on_yellow().black())
+                ));
             }
 
             else if curr_weekday == 0 || HOLIDAYS.contains(&(month, curr_day)) {
