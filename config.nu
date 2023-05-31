@@ -562,6 +562,12 @@ alias fzfd = cd (fzf | into string | str trim | path dirname)
 # my defs
 # -------
 
+# It runs a binary without blocking. For example, when you run `firefox`, you cannot do anything with the table until the firefox is terminated.
+# Running `async firefox` will help. For multiple args, use quotes like `async "firefox ."`.
+def async [comm: string] {
+  pueue add -i $comm
+}
+
 # `helper rustc` is an alias for `rustc --help | bat -plhelp`
 # If `comm` has a space, wrap it with quotations.
 def helper [comm: string] { nu -c $"($comm) --help | bat -plhelp" }

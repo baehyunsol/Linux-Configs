@@ -1029,6 +1029,11 @@ see [columns](#columns)
   - `helper rustc` is an alias for `rustc --help | bat -plhelp`
   - If `command` has spaces, you should wrap it with quotations
 
+## async
+
+- `async` (command: [string])
+  - It runs a binary without blocking. For example, when you run `firefox`, you cannot do anything with the table until the firefox is terminated. Running `async firefox` will help. For multiple args, use quotes like `async "firefox ."`.
+
 ## fzff and fzfd
 
 `fzff` is a frontend for `fzf`, opening a file
