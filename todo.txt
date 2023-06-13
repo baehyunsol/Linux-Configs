@@ -61,3 +61,10 @@ mv rofi.rasi /usr/share/rofi/themes/sol.rasi
 mv rofi2.rasi /usr/share/rofi/themes/sol2.rasi
 mv init.py /home/baehyunsol/.config/_init
 mv lock.py /home/baehyunsol/.config/_init
+
+# bat syntaxes
+
+mkdir ~/.config/bat/syntaxes
+cd ~/.config/bat/syntaxes
+git clone https://github.com/stevenxxiu/sublime_text_nushell  # TODO: remove this line if `nu` is included by default
+bat cache --build
