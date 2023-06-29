@@ -3,7 +3,7 @@ I'm too lazy to make a new repo...
 
 colored = "2.0.0"
 lazy_static = "1.4.0"
-sysinfo = "0.28.4"
+sysinfo = "0.29.2"
 battery = "0.7.8"
 h_time = "0.1.0"
 */
@@ -110,12 +110,12 @@ fn load_memo() -> Vec<String> {
             curr_line = vec![];
         }
 
-        else if curr_line.len() > 24 {
+        else if curr_line.len() > 27 {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![c];
         }
 
-        else if curr_line.len() > 16 && c == ' ' {
+        else if curr_line.len() > 18 && c == ' ' {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![];
         }
