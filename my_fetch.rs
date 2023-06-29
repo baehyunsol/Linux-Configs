@@ -12,6 +12,7 @@ use colored::*;
 use sysinfo::*;
 use std::fs::File;
 use std::io::Read;
+use std::process::Command;
 
 fn main() {
     println!("{}\n{}", title().join("\n"), bottom().join("\n"));
@@ -20,11 +21,11 @@ fn main() {
 fn title() -> Vec<String> {
     vec![
         String::new(),
-        format!("{}", "    ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
-        format!("{}", "    ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
-        format!("{}", "    ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
-        format!("{}", "                    ▝▘                                                ".blue()),
-        format!("{}", " ========================================================================"),
+        format!("{}", "     ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
+        format!("{}", "     ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
+        format!("{}", "     ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
+        format!("{}", "                     ▝▘                                                ".blue()),
+        format!("{}", " =========================================================================="),
     ]
 }
 
@@ -65,12 +66,17 @@ fn status() -> Vec<String> {
     let birthday = h_time::Date::from_ymd(1999, 1, 20);
     let since_birth = now.duration_since(&birthday).into_days();
 
+    let nu_version = String::from_utf8_lossy(&Command::new("nu").arg("-v").output().unwrap().stdout).to_string().strip_suffix("\n").unwrap().to_string();
+    let rust_version = String::from_utf8_lossy(&Command::new("rustc").arg("--version").output().unwrap().stdout).to_string().strip_suffix("\n").unwrap().to_string();
+
     vec![
         format!("{}: {}.{:02}.{:02} ({}) {:02}:{:02}:{:02}", "Date".green(), NOW.0, NOW.1, NOW.2, NOW.3, NOW.4, NOW.5, NOW.6),
         format!("{}: {} days", "Since Birth".green(), since_birth),
         format!("{}: {} seconds", "Since Boot".green(), sys.uptime()),
-        format!("{}: {} %", "Battery".green(), get_battery().unwrap_or("Unknown".to_string())),
+        format!("{}: {}", "Battery".green(), get_battery().unwrap_or("Unknown".to_string())),
         format!("{}: {}", "Os".green(), sys.long_os_version().unwrap_or("Unknown".to_string())),
+        format!("{}: {}", "Nushell".green(), nu_version),
+        format!("{}: {}", "Rust".green(), rust_version),
         format!("{}: {}", "Kernel".green(), sys.kernel_version().unwrap_or("Unknown".to_string())),
         format!("{}: {}", "CPU".green(), sys.cpus()[0].brand()),
         format!("{}: {} MB", "Memory".green(), sys.total_memory() / 1048576),
@@ -104,12 +110,12 @@ fn load_memo() -> Vec<String> {
             curr_line = vec![];
         }
 
-        else if curr_line.len() > 21 {
+        else if curr_line.len() > 24 {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![c];
         }
 
-        else if curr_line.len() > 14 && c == ' ' {
+        else if curr_line.len() > 16 && c == ' ' {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![];
         }
@@ -138,16 +144,38 @@ fn get_battery() -> Result<String, ()> {
             }
         };
 
+        let state = match battery.state() {
+            battery::State::Charging => ", charging",
+            battery::State::Discharging => ", discharging",
+            battery::State::Full => ", full",
+            _ => ""
+        }.to_string();
+
         let n = match format!("{:?}", battery.state_of_charge()).parse::<f32>() {
             Ok(n) => n,
             _ => { return Err(()); }
         };
 
-        Ok(format!("{}", (n * 100.0) as u32))
+        Ok(format!("{}%{state}", pretty_f32(n)))
     }
 
     else {
         Err(())
+    }
+
+}
+
+fn pretty_f32(n: f32) -> String {
+    let n = (n * 1000.0) as u32;
+
+    if n % 10 == 0 {
+        (n / 10).to_string()
+    }
+
+    else {
+        let rem = n % 10;
+        let n = n / 10;
+        format!("{n}.{rem}")
     }
 
 }
@@ -164,6 +192,7 @@ fn calendars() -> Vec<String> {
     let (cal2_weekday, cal2_lastday) = MONTHS.get(&(year2, month2)).unwrap();
 
     vec![
+        vec![" ".repeat(33)],
         calendar(year, month, *cal1_weekday, *cal1_lastday, day),
         vec![" ".repeat(33)],
         calendar(year2, month2, *cal2_weekday, *cal2_lastday, 999),
