@@ -179,7 +179,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
 
     -- TODO: I want it to be Mod + Shift + Space + Return, but Awesome doesn't let me do that
-    awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall --command nu -e clear") end),  -- I don't want to see fetches on small terminals
+    awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall") end),
     awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
 
     -- for now, the control center doesn't work with awesome, I need a walk-around
@@ -310,6 +310,7 @@ awful.rules.rules = {
     },
 
     -- Floating clients.
+    -- TODO: make it proportional to the size of the display
     floating_window("gnome-text-editor", 60, 540, 540),
     floating_window("FloatSmall", 80, 540, 540),
     floating_window("FloatBig", 100, 1200, 800)
