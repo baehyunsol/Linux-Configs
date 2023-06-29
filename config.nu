@@ -724,4 +724,10 @@ def extract [name:string #name of the archive to extract
 # Start-up Applications
 # ---------------------
 
-/home/baehyunsol/Documents/Rust/my_fetch/target/release/my_fetch
+let term_size = (term size)
+
+# run my_fetch only when the terminal is big enough
+# TODO: make smaller version of my_fetch
+if ($term_size.columns > 96 and $term_size.rows > 27) {
+  /home/baehyunsol/Documents/Rust/my_fetch/target/release/my_fetch
+}
