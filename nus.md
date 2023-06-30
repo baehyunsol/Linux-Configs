@@ -1029,6 +1029,12 @@ see [columns](#columns)
   - `helper rustc` is an alias for `rustc --help | bat -plhelp`
   - If `command` has spaces, you should wrap it with quotations
 
+## helperman
+
+- `helperman` (command: [string])
+  - It's like [`helper`](#helper), but for `man`.
+  - `helperman apt` is an alias for `man apt | bat -plhelp`
+
 ## async
 
 - `async` (command: [string])

@@ -582,6 +582,10 @@ def async [comm: string] {
 # If `comm` has a space, wrap it with quotations.
 def helper [comm: string] { nu -c $"($comm) --help | bat -plhelp" }
 
+# `helperman apt` is an alias for `man apt | bat -plhelp`
+# If `comm` has a space, wrap it with quotations.
+def helperman [comm: string] { nu -c $"man ($comm) | bat -plhelp" }
+
 # frontend for `fzf`, opening a file. to open a directory, use `fzfd`
 def fzff [
   --directory (-d)  #open directory
