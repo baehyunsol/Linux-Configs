@@ -10,6 +10,17 @@ TODO
     - `s.tags`: a read-only list of all tags on `s`
   - if `t` is a `tag` instance
     - `t.screen`: a `screen` instance where `t` belongs to
+
+text-editor
+- light weight
+- can change X11 class name
+- support for 한글 input
+
+web browsers
+- some GTK applications support `--class` flag
+  - by setting class name, Awesome can control their size
+- brave supports this option (though they don't have `--help`)
+
 ]]--
 
 -- If LuaRocks is installed, make sure that packages installed through it are
