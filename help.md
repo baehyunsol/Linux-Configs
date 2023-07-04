@@ -1,29 +1,34 @@
 ## Launch Applications
 
-- Mod + [[aqua]]Shift[[/aqua]] + Enter
-  - Launch Alacritty
-- Mod + [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]] + Enter
-  - Launch Alacritty in floating mode
 - Mod + R
   - Launch [[giant]]R[[/giant]]ofi
+- Mod + [[aqua]]Shift[[/aqua]] + Enter
+  - Launch Alacritty
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
 - Mod + [[aqua]]Shift[[/aqua]] + H
   - Show [[giant]]H[[/giant]]elp message
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
 - Mod + [[aqua]]Shift[[/aqua]] + C
   - Launch gnome [[giant]]C[[/giant]]ontrol center
-- Mod + [[aqua]]Shift[[/aqua]] + F
-  - Launch [[giant]]F[[/giant]]irefox
-- Mod + [[aqua]]Shift[[/aqua]] + P
-  - Launch Firefox in [[giant]]P[[/giant]]rivate mode
+- Mod + [[aqua]]Shift[[/aqua]] + W
+  - Launch [[giant]]W[[/giant]]eb browser
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
+- Mod + [[aqua]]Shift[[/aqua]] + I
+  - Launch Web browser in [[giant]]I[[/giant]]ncognito mode
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
 - Mod + [[aqua]]Shift[[/aqua]] + V
   - Launch [[giant]]V[[/giant]]SCode
 - Mod + [[aqua]]Shift[[/aqua]] + N
   - Launch [[giant]]N[[/giant]]autilus
 - Mod + [[aqua]]Shift[[/aqua]] + M
-  - Launch [[giant]]M[[/giant]]emo in floating mode
-- Mod + [[aqua]]Shift[[/aqua]] + L
-  - Launch ca[[giant]]L[[/giant]]culator in floating mode
-- Mod + [[aqua]]Shift[[/aqua]] + Y
-  - Launch s[[giant]]Y[[/giant]]stem monitor in floating mode
+  - Launch [[giant]]M[[/giant]]emo
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
+- Mod + [[aqua]]Shift[[/aqua]] + P
+  - Launch [[giant]]P[[/giant]]ython shell. Nice shortcut for calculator!
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
+- Mod + [[aqua]]Shift[[/aqua]] + S
+  - Launch [[giant]]S[[/giant]]ystem monitor
+  - Floating mode: [[aqua]]Shift[[/aqua]] + [[red]]Control[[/red]]
 
 ## Kill
 

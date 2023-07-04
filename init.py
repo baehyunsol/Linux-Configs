@@ -2,7 +2,7 @@
 
 import os
 
-os.chdir("/home/baehyunsol/.config/_init")
+os.chdir("~/.config/_init")
 
 def save_and_quit(data):
 
@@ -22,6 +22,8 @@ except FileNotFoundError:
 if not data["fresh_boot"]:
     data["fresh_boot"] = True
     save_and_quit(data)
+
+# init script from here
 
 import time
 

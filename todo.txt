@@ -1,4 +1,4 @@
-sudo apt install git gcc curl  # use dnf for fedora
+sudo apt install git gcc curl
 
 # rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -6,61 +6,57 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # picom dependencies for ubuntu (do I need these when using apt?)
 sudo apt install libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev libxcb-present-dev libxcb-glx0-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl-dev libegl-dev libpcre2-dev libevdev-dev uthash-dev libev-dev libx11-xcb-dev meson
 
-# picom dependencies for fedora (do I need these when using dnf?)
-sudo dnf install dbus-devel gcc git libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb libXext-devel libxcb-devel libGL-devel libEGL-devel meson pcre2-devel pixman-devel uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel
-
-# use dnf for fedora
 sudo apt install fzf polybar awesome picom rofi
 
-# why the hell do they have different names?
 sudo apt install silversearcher-ag
-sudo dnf install the_silver_searcher
 
-# nushell dependencies for fedora
-sudo dnf install libxcb openssl-devel libX11-devel
-
-# nushell dependencies for ubuntu
+# nushell dependencies
 sudo apt install pkg-config libssl-dev
 
-# alacritty dependencies for fedora
-sudo dnf install cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel g++
-
-# alacritty dependencies for ubuntu
+# alacritty dependencies
 sudo apt install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
+
+sudo apt install gedit
 
 cargo install alacritty bat bottom nu pueue tokei viu
 
-# TODO: code, firefox, (virtualbox), pinta, imagemagick, libreoffice, blueman, vlc, xrandr, (kdenlive)
+# TODO: code, brave-browser, gedit, (virtualbox), pinta, imagemagick, libreoffice, blueman, vlc, xrandr, (kdenlive)
 # TODO: chsh
 # TODO install korean fonts for polybar
-# TODO pinta: `def main [args: string = " " ] { nu -c $"flatpak run com.github.PintaProject.Pinta ($args)" }`
+
+# TODO pinta
+# place below at `~/.cargo/bin`, not `/usr/local/bin` -> no sudo
+# ```nu
+# #!~/.cargo/bin/nu
+# def main [args: string = " " ] { nu -c $"flatpak run com.github.PintaProject.Pinta ($args)" }
+# ```
 
 # let's assume that all the scripts are here
 
 chmod +x ./funcs.nu
 
 # in bash, use `-p` flag
-mkdir /home/baehyunsol/.config/nushell
-mkdir /home/baehyunsol/.config/alacritty
-mkdir /home/baehyunsol/.config/awesome
-mkdir /home/baehyunsol/.config/_init
-mkdir /home/baehyunsol/Documents/DThelp
+mkdir ~/.config/nushell
+mkdir ~/.config/alacritty
+mkdir ~/.config/awesome
+mkdir ~/.config/_init
+mkdir ~/Documents/DThelp
 mkdir /usr/share/rofi/themes
 
-mv ./config.nu /home/baehyunsol/.config/nushell
-mv ./funcs.nu /home/baehyunsol/.config/nushell
-mv ./alacritty.yml /home/baehyunsol/.config/alacritty
-mv ./bg.jpg /home/baehyunsol/Downloads
-mv bluetooth.md /home/baehyunsol/Documents
-mv git.md /home/baehyunsol/Documents
-mv help.md /home/baehyunsol/Documents/DThelp
-mv nus.md /home/baehyunsol/Documents/DThelp
-mv polybar.ini /home/baehyunsol/.config
-mv rc.lua /home/baehyunsol/.config/awesome
+mv ./config.nu ~/.config/nushell
+mv ./funcs.nu ~/.config/nushell
+mv ./alacritty.yml ~/.config/alacritty
+mv ./bg.jpg ~/Downloads
+mv bluetooth.md ~/Documents
+mv git.md ~/Documents
+mv help.md ~/Documents/DThelp
+mv nus.md ~/Documents/DThelp
+mv polybar.ini ~/.config
+mv rc.lua ~/.config/awesome
 mv rofi.rasi /usr/share/rofi/themes/sol.rasi
 mv rofi2.rasi /usr/share/rofi/themes/sol2.rasi
-mv init.py /home/baehyunsol/.config/_init
-mv lock.py /home/baehyunsol/.config/_init
+mv init.py ~/.config/_init
+mv lock.py ~/.config/_init
 
 # bat syntaxes
 

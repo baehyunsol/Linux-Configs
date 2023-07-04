@@ -564,7 +564,7 @@ let-env config = {
 # -------
 
 alias py = python3
-alias text = gnome-text-editor
+alias text = gedit
 alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
 alias fzfd = cd (fzf | into string | str trim | path dirname)
 
@@ -592,8 +592,8 @@ def fzff [
 ] {
   let file = (fzf | into string | str trim)
   let exten = [ [ex com];
-                    ['.html' 'firefox']
-                    ['.pdf' 'firefox']
+                    ['.html' 'brave-browser']
+                    ['.pdf' 'brave-browser']
                     ['.docx' 'libreoffice']
                     ['.doc' 'libreoffice']
                     ['.odt' 'libreoffice']
@@ -632,9 +632,9 @@ def screenshot [
   --all (-a)  #entire screen
 ] {
   if $all {
-    /home/baehyunsol/.config/nushell/funcs.nu screenshot all
+    ~/.config/nushell/funcs.nu screenshot all
   } else {
-    /home/baehyunsol/.config/nushell/funcs.nu screenshot
+    ~/.config/nushell/funcs.nu screenshot
   }
 }
 
@@ -648,13 +648,13 @@ def render_doc [
   let filename = ($path | path parse | get stem);
   let dirname = ($path | path dirname);
   let pwd = (pwd);
-  let engine_path = "/home/baehyunsol/Documents/Rust/engine"
+  let engine_path = "/home/baehyunsol/Documents/Rust/engine"  # TODO: I want it to be `~/Documents/Rust/engine`, but it doesn't work!
 
   cp $path ($engine_path + "/mdxts/documents")
   cd $engine_path
 
   if '/run' in (ls $engine_path | get name | each { |x| $x | str substring ($engine_path | str length).. }) {
-    /home/baehyunsol/Documents/Rust/engine/run
+    ~/Documents/Rust/engine/run
   } else {
     cargo run --release --quiet
     mv ($engine_path + "/target/release/engine") ($engine_path + "/run")
@@ -733,5 +733,5 @@ let term_size = (term size)
 # run my_fetch only when the terminal is big enough
 # TODO: make smaller version of my_fetch
 if ($term_size.columns > 96 and $term_size.rows > 27) {
-  /home/baehyunsol/Documents/Rust/my_fetch/target/release/my_fetch
+  ~/Documents/Rust/my_fetch/target/release/my_fetch
 }

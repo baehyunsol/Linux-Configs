@@ -11,16 +11,6 @@ TODO
   - if `t` is a `tag` instance
     - `t.screen`: a `screen` instance where `t` belongs to
 
-text-editor
-- light weight
-- can change X11 class name
-- support for 한글 input
-
-web browsers
-- some GTK applications support `--class` flag
-  - by setting class name, Awesome can control their size
-- brave supports this option (though they don't have `--help`)
-
 ]]--
 
 -- If LuaRocks is installed, make sure that packages installed through it are
@@ -76,7 +66,7 @@ beautiful.useless_gap = dpi(4)
 beautiful.border_width = dpi(2)
 beautiful.border_focus = "#f02020"
 beautiful.border_none = "#404040"
-beautiful.wallpaper = "/home/baehyunsol/Downloads/bg.jpg"
+beautiful.wallpaper = "~/Downloads/bg.jpg"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -93,11 +83,11 @@ awful.layout.layouts = {
 
 -- start-up applications
 awful.spawn("picom -i 0.88")
-awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar0")
-awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar1")
-awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar2")
-awful.spawn("polybar -c /home/baehyunsol/.config/polybar.ini bar3")
-awful.spawn("/home/baehyunsol/.config/_init/init.py")
+awful.spawn("polybar -c ~/.config/polybar.ini bar0")
+awful.spawn("polybar -c ~/.config/polybar.ini bar1")
+awful.spawn("polybar -c ~/.config/polybar.ini bar2")
+awful.spawn("polybar -c ~/.config/polybar.ini bar3")
+awful.spawn("~/.config/_init/init.py")
 awful.spawn("pueued")
 
 local function set_wallpaper(s)
@@ -165,7 +155,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "r", function ()
         awesome.spawn("pkill polybar")
         awesome.spawn("pkill picom")
-        awesome.spawn("/home/baehyunsol/.config/_init/lock.py")  -- makes sure that the init script is not launched
+        awesome.spawn("~/.config/_init/lock.py")  -- makes sure that the init script is not launched
         awesome.restart()
     end),
 
@@ -187,28 +177,39 @@ globalkeys = gears.table.join(
 
     -- Launch applications/utilities
     awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end),
-    awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
 
-    -- TODO: I want it to be Mod + Shift + Space + Return, but Awesome doesn't let me do that
+    awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
     awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall") end),
-    awful.key({ modkey, "Shift" }, "h", function () awful.spawn("firefox --new-window /home/baehyunsol/Documents/DThelp/index.html") end),
+
+    awful.key({ modkey, "Shift" }, "h", function () awful.spawn("brave-browser --new-window ~/Documents/DThelp/index.html") end),
+    awful.key({ modkey, "Shift", "Control" }, "h", function () awful.spawn("brave-browser --class=FloatMedium --new-window ~/Documents/DThelp/index.html") end),
 
     -- for now, the control center doesn't work with awesome, I need a walk-around
     awful.key({ modkey, "Shift" }, "c", function () awful.spawn("env XDG_CURRENT_DESKTOP=GNOME gnome-control-center") end),  -- TODO: remove GNOME
 
-    awful.key({ modkey, "Shift" }, "f", function () awful.spawn("firefox") end),
-    awful.key({ modkey, "Shift" }, "p", function () awful.spawn("firefox --private-window") end),
+    awful.key({ modkey, "Shift" }, "w", function () awful.spawn("brave-browser") end),
+    awful.key({ modkey, "Shift", "Control" }, "w", function () awful.spawn("brave-browser --class=FloatMedium") end),
+
+    awful.key({ modkey, "Shift" }, "i", function () awful.spawn("brave-browser --incognito") end),
+    awful.key({ modkey, "Shift", "Control" }, "i", function () awful.spawn("brave-browser --incognito --class=FloatMedium") end),
+
     awful.key({ modkey, "Shift" }, "v", function () awful.spawn("code") end),
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),  -- TODO: remove GNOME
-    awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gnome-text-editor") end),  -- TODO: remove GNOME
-    awful.key({ modkey, "Shift" }, "l", function () awful.spawn("alacritty --class FloatSmall --command python3 -i -c \"import math\"") end),
-    awful.key({ modkey, "Shift" }, "y", function () awful.spawn("alacritty --class FloatBig --command btm --battery") end),
 
-    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot\"") end),
-    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"screenshot all\"") end),
-    awful.key({ modkey, "Shift" }, "F3", function () awful.spawn("vlc --random /home/baehyunsol/Music") end),
-    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"turn black\"") end),
-    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn("/home/baehyunsol/.config/nushell/funcs.nu \"turn white\"") end)
+    awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gedit") end),
+    awful.key({ modkey, "Shift", "Control" }, "m", function () awful.spawn("gedit --class=FloatSmall") end),
+
+    awful.key({ modkey, "Shift" }, "p", function () awful.spawn("alacritty --command python3 -i -c \"from math import *\"") end),
+    awful.key({ modkey, "Shift", "Control" }, "p", function () awful.spawn("alacritty --class FloatSmall --command python3 -i -c \"from math import *\"") end),
+
+    awful.key({ modkey, "Shift" }, "s", function () awful.spawn("alacritty --command btm --battery") end),
+    awful.key({ modkey, "Shift", "Control" }, "s", function () awful.spawn("alacritty --class FloatBig --command btm --battery") end),
+
+    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("~/.config/nushell/funcs.nu \"screenshot\"") end),
+    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("~/.config/nushell/funcs.nu \"screenshot all\"") end),
+    awful.key({ modkey, "Shift" }, "F3", function () awful.spawn("vlc --random ~/Music") end),
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn("~/.config/nushell/funcs.nu \"turn black\"") end),
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn("~/.config/nushell/funcs.nu \"turn white\"") end)
 )
 
 clientkeys = gears.table.join(
@@ -322,8 +323,8 @@ awful.rules.rules = {
 
     -- Floating clients.
     -- TODO: make it proportional to the size of the display
-    floating_window("gnome-text-editor", 60, 540, 540),
     floating_window("FloatSmall", 80, 540, 540),
+    floating_window("FloatMedium", 80, 720, 720),
     floating_window("FloatBig", 100, 1200, 800)
 
 }
