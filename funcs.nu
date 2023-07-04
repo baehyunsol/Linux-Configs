@@ -1,4 +1,4 @@
-#!~/.cargo/bin/nu
+#!/home/baehyunsol/.cargo/bin/nu
 
 def main [action: string, extra_arg: string = ""] {
     if $action == "turn black" {  # turn black
@@ -8,7 +8,7 @@ def main [action: string, extra_arg: string = ""] {
     } else if $action == "screenshot" {
         let now = (date now | date to-table);
         let dateint = (($now | get year | get 0) * 10000000000 + ($now | get month | get 0) * 100000000 + ($now | get day | get 0) * 1000000 + ($now | get hour | get 0) * 10000 + ($now | get minute | get 0) * 100 + ($now | get second | get 0));
-        let name = $"~/Pictures/($dateint).png";
+        let name = $"($env.HOME)/Pictures/($dateint).png";
 
         import $name
 
@@ -17,7 +17,7 @@ def main [action: string, extra_arg: string = ""] {
     } else if $action == "screenshot all" {
         let now = (date now | date to-table);
         let dateint = (($now | get year | get 0) * 10000000000 + ($now | get month | get 0) * 100000000 + ($now | get day | get 0) * 1000000 + ($now | get hour | get 0) * 10000 + ($now | get minute | get 0) * 100 + ($now | get second | get 0));
-        let name = $"~/Pictures/($dateint).png";
+        let name = $"($env.HOME)/Pictures/($dateint).png";
 
         import -window root $name
 

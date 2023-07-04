@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
 import os
+from pathlib import Path
 
-os.chdir("~/.config/_init")
+home = str(Path.home())
+os.chdir(f"{home}/.config/_init")
 
 with open("data.json", "r") as f:
     data = eval(f.read())

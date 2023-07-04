@@ -58,6 +58,8 @@ do
 end
 -- }}}
 
+HOME = "/home/baehyunsol"
+
 -- Themes
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
@@ -66,7 +68,7 @@ beautiful.useless_gap = dpi(4)
 beautiful.border_width = dpi(2)
 beautiful.border_focus = "#f02020"
 beautiful.border_none = "#404040"
-beautiful.wallpaper = "~/Downloads/bg.jpg"
+beautiful.wallpaper = string.format("%s/Downloads/bg.jpg", HOME)
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -83,11 +85,11 @@ awful.layout.layouts = {
 
 -- start-up applications
 awful.spawn("picom -i 0.88")
-awful.spawn("polybar -c ~/.config/polybar.ini bar0")
-awful.spawn("polybar -c ~/.config/polybar.ini bar1")
-awful.spawn("polybar -c ~/.config/polybar.ini bar2")
-awful.spawn("polybar -c ~/.config/polybar.ini bar3")
-awful.spawn("~/.config/_init/init.py")
+awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar0", HOME))
+awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar1", HOME))
+awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar2", HOME))
+awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar3", HOME))
+awful.spawn(string.format("%s/.config/_init/init.py", HOME))
 awful.spawn("pueued")
 
 local function set_wallpaper(s)
@@ -155,7 +157,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "r", function ()
         awesome.spawn("pkill polybar")
         awesome.spawn("pkill picom")
-        awesome.spawn("~/.config/_init/lock.py")  -- makes sure that the init script is not launched
+        awesome.spawn(string.format("%s/.config/_init/lock.py", HOME))  -- makes sure that the init script is not launched
         awesome.restart()
     end),
 
@@ -181,8 +183,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
     awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall") end),
 
-    awful.key({ modkey, "Shift" }, "h", function () awful.spawn("brave-browser --new-window ~/Documents/DThelp/index.html") end),
-    awful.key({ modkey, "Shift", "Control" }, "h", function () awful.spawn("brave-browser --class=FloatMedium --new-window ~/Documents/DThelp/index.html") end),
+    awful.key({ modkey, "Shift" }, "h", function () awful.spawn(string.format("brave-browser --new-window %s/Documents/DThelp/index.html", HOME)) end),
+    awful.key({ modkey, "Shift", "Control" }, "h", function () awful.spawn(string.format("brave-browser --class=FloatMedium --new-window %s/Documents/DThelp/index.html", HOME)) end),
 
     -- for now, the control center doesn't work with awesome, I need a walk-around
     awful.key({ modkey, "Shift" }, "c", function () awful.spawn("env XDG_CURRENT_DESKTOP=GNOME gnome-control-center") end),  -- TODO: remove GNOME
@@ -205,11 +207,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "s", function () awful.spawn("alacritty --command btm --battery") end),
     awful.key({ modkey, "Shift", "Control" }, "s", function () awful.spawn("alacritty --class FloatBig --command btm --battery") end),
 
-    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn("~/.config/nushell/funcs.nu \"screenshot\"") end),
-    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn("~/.config/nushell/funcs.nu \"screenshot all\"") end),
-    awful.key({ modkey, "Shift" }, "F3", function () awful.spawn("vlc --random ~/Music") end),
-    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn("~/.config/nushell/funcs.nu \"turn black\"") end),
-    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn("~/.config/nushell/funcs.nu \"turn white\"") end)
+    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"screenshot\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"screenshot all\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F3", function () awful.spawn(string.format("vlc --random %s/Music", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"turn black\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"turn white\"", HOME)) end)
 )
 
 clientkeys = gears.table.join(

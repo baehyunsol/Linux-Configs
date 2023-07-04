@@ -648,7 +648,7 @@ def render_doc [
   let filename = ($path | path parse | get stem);
   let dirname = ($path | path dirname);
   let pwd = (pwd);
-  let engine_path = "/home/baehyunsol/Documents/Rust/engine"  # TODO: I want it to be `~/Documents/Rust/engine`, but it doesn't work!
+  let engine_path = $"($env.HOME)/Documents/Rust/engine"
 
   cp $path ($engine_path + "/mdxts/documents")
   cd $engine_path
