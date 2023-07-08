@@ -87,7 +87,7 @@ fn load_memo() -> Vec<String> {
     let mut s = String::new();
     let mut lines = vec![format!("{}", "Memo".green())];
 
-    match File::open("~/Documents/fetch_memo.txt") {
+    match File::open("/home/baehyunsol/Documents/fetch_memo.txt") {  // TODO: I don't want to hard-code `/home/baehyunsol`
         Ok(mut f) => match f.read_to_string(&mut s) {
             Ok(_) => {},
             _ => {
