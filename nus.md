@@ -12,6 +12,8 @@
 
 [[/box]]
 
+Instructions for custom commands are always up to date, but default commands are not. The last BIG update for default commands was 30, Jun, 2023, with nushell version 0.82.
+
 # Basic Types
 
 [[anchor, id = type binary]][[/anchor]]
@@ -19,7 +21,9 @@
 
 `0x[1f ff]`, `0b[0111 1111 1111 1111]`, `0o[77777]`
 
-incomplete bytes will be left-padded with zeros
+Incomplete bytes will be left-padded with zeros
+
+ㅋㅋ `0o[777]`부터 안되는데?
 
 [[anchor, id = type bool]][[/anchor]]
 ## bool
@@ -38,7 +42,7 @@ In order to directly call a closure, `let foo = {|name| print $"hello ($name)"};
 [[anchor, id = type date]][[/anchor]]
 ## date
 
-see [here][comdate]
+See [here][comdate]
 
 [[anchor, id = type duration]][[/anchor]]
 ## duration
@@ -69,7 +73,7 @@ It panics when a duration is longer than `15250.285714wk`
 [[anchor, id = type list]][[/anchor]]
 ## list
 
-untyped data structure, use json-style syntax
+A list is an untyped data structure, which uses json-style syntax
 
 [[anchor, id = type null]][[/anchor]]
 ## null
@@ -83,12 +87,18 @@ untyped data structure, use json-style syntax
 
 `0..100`
 
-It's a [list]<[int]>. There's no `range` type in Nu.
+It's not a [list]<[int]>m but in most cases it's implicitly casted to a [list]<[int]>. If you want an explicit cast... (TODO: how?)
+
+Ranges are inclusive, meaning `0..3` includes both `0` and `3`. For exclusive ranges, use `..<` (e.g. `0..<3` is `0`, `1`, and `2`).
+
+Ranges can also be open-ended: `0..` (goes forever), `..2` (`0`, `1` and `2`).
 
 [[anchor, id = type record]][[/anchor]]
 ## record
 
-key-value data structure, use json-style syntax
+A record is a key-value data structure, which uses json-style syntax.
+
+A record is like a one-row table. That means commands that work on table's rows also work on records.
 
 [[anchor, id = type string]][[/anchor]]
 ## string
@@ -100,7 +110,7 @@ key-value data structure, use json-style syntax
 [[anchor, id = type table]][[/anchor]]
 ## table
 
-each row is a record, and each column is a list. if the rows have different types... don't just do that
+Each row is a record, and each column is a list. If the rows have different types... don't just do that
 
 [[box]]
 
@@ -113,6 +123,7 @@ TODO: 이거 어디에 적지...
 # Arithmatic Operations
 
 - (lhs: [list]<any>) `++` (rhs: [list]<any>) → [list]<any>
+- (lhs: [string]) `++` (rhs: [string]) → [string]
 - (lhs: [string]) `+` (rhs: [string]) → [string]
 - (l: [list]<T>) `*` (times: [int]) → [list]<T>
 - (s: [string]) `*` (times: [int]) → [string]
@@ -121,6 +132,9 @@ TODO: 이거 어디에 적지...
 - (lhs: [date][typedate]) `-` (rhs: [date][typedate]) → [duration]
 - (val: any) `in` (list: [list]<any>) → [bool]
 - (val: any) `not-in` (list: [list]<any>) → [bool]
+- (key: [string]) `in` (range: [range][typerange]<any>) → [bool]
+- (key: [string]) `not-in` (range: [range][typerange]<any>) → [bool]
+  - I'm not sure whether `key` can have a type other than [string]
 
 # Basic Commands
 
@@ -140,6 +154,8 @@ TODO: 이거 어디에 적지...
 
 - (l: [list]<T>) | `append` (val: T) → [list]<T>
   - if `T` is `list<U>`, it will unwrap `val`, that means `[1 2 3] | append [1 2 3]` is `[1 2 3 1 2 3]`
+
+I assume `A | append B` and `A ++ B` do the same thing (not sure).
 
 ## columns
 
@@ -206,10 +222,14 @@ see [values](#values)
 
 ## decode
 
-- (raw: [binary]) | `decode utf-8` → [string]
-- (raw: [binary]) | `decode utf-16be` → [string]
-- (raw: [binary]) | `decode utf-16le` → [string]
-- (raw: [binary]) | `decode euc-kr` → [string]
+Inverse of [encode](#encode)
+
+- (bytes: [binary]) | `decode utf-8` → [string]
+- (bytes: [binary]) | `decode utf-16be` → [string]
+- (bytes: [binary]) | `decode utf-16le` → [string]
+- (bytes: [binary]) | `decode euc-kr` → [string]
+
+`decode hex` and `decode base64` decodes a [string] to a [binary], but I don't know what they're for.
 
 ## drop
 
@@ -220,10 +240,12 @@ see [skip](#skip) and [last](#last)
 - (t: [table]) | `drop` (count: [int] = 1) → [table]
   - removes `count` rows from the end
 
+If `count` is greater than the length of the list, it returns an empty list.
+
 ### drop column
 
 - (t: [table]) | `drop column` (count: [int] = 1) → [table]
-  - removes `count` columns from the end (right)
+  - removes `count` columns from the end (from the right-hand side)
 
 ### drop nth
 
@@ -239,6 +261,8 @@ see [skip](#skip) and [last](#last)
   - `T` is the type of `t`'s row
   - the length of the result is the number of the rows, that means `func` is applied to "each" row
 
+Since a [record] is like a [table] with one row, this command works on [record]s. But you don't have any reason to do that. If you want to iterate over values of a [record], first cast it into a [table] using [transpose](#transpose).
+
 flags
 
 - `-k`: keep empty ([null]) value cells
@@ -247,13 +271,18 @@ flags
 
 - `echo` (val: T) → T
   - it returns its argument to the pipeline
+  - if no value is given, it returns an empty [string].
 
 ## encode
 
-- (s: [string]) | `encode utf-8` → [binary]
-- (s: [string]) | `encode utf-16be` → [binary]
-- (s: [string]) | `encode utf-16le` → [binary]
-- (s: [string]) | `encode euc-kr` → [binary]
+Inverse of [decode](#decode)
+
+- (input: [string]) | `encode utf-8` → [binary]
+- (input: [string]) | `encode utf-16be` → [binary]
+- (input: [string]) | `encode utf-16le` → [binary]
+- (input: [string]) | `encode euc-kr` → [binary]
+
+`encode hex` and `encode base64` encodes a [binary] to a [string], but I don't know what they're for.
 
 ## enumerate
 
@@ -280,34 +309,48 @@ It doesn't work on strings
   - it returns `s`, if there's a match
   - otherwise it returns [null]
 
+If you want a search-function, use `fzf` or `ag`.
+
 flags
 
 - `-i`: case-insensitive regex mode
 - `-m`: multiline regex mode; \^ and \$ match begin/end of a line
 - `-r` (regex: [string]): regex to match with
 - `-s`: allow a dot (`.`) to match newlines
-- `-v`: invert the match
+- `-v`: invert the match (returns results that do not include the term)
 
 ## first
 
 see [last](#last)
 
 - (l: [list]<T>) | `first` → T
+  - returns the first element
+  - if `l` is empty, it's an error
 - (l: [list]<T>) | `first` (n: [int]) → [list]<T>
   - returns a list with the first `n` elements of `l`
-
-TODO: `first` on binary data
+  - if `n` is greater than the length of `l`, it returns `l`
+- (t: [table]) | `first` → [record]
+  - returns the first row
+- (t: [table]) | `first` (n: [int]) → [table]
+  - returns the first `n` rows
+- (b: [binary]) | `first` (n: [int] = 1) → [binary]
+  - returns the first `n` bytes
 
 ## get
 
 - (t: [table]) | `get` (n: [int]) → [record]
   - gets `n`th row of `t`
-- (t: [table]) | `get` (k: T) → [list]
+- (t: [table]) | `get` (k: [string]) → [list]
   - gets column with key `k` in `t`
 - (l: [list]<T>) | `get` (n: [int]) → T
   - gets `n`th element of `l`
 - (r: [record]) | `get` (k: any) → V
   - key-value search
+
+flags
+
+- `-s`: case sensitive
+  - meaning the default is case-insensitive search
 
 ## group
 
@@ -317,14 +360,14 @@ TODO: `first` on binary data
 ## group-by
 
 - (l: [list]<T>) | `group-by` → [record]
-  - `[1 1 2 2 3] | group-by` is `{1: [1 1], 2: [2, 2], 3: [3]}`
+  - `[1 1 2 2 3] | group-by` is `{1: [1, 1], 2: [2, 2], 3: [3]}`
 - (t: [table]) | `group-by` (grouper: ColumnName) → [record]
   - `ls | group-by type` is `{file: TableOfFiles, dir: TableOfDirs, ...}`
 
 ## hash
 
-- (s: [string]) | `hash md5` → [string]
-- (s: [string]) | `hash sha256` → [string]
+- (s: [string] | [binary]) | `hash md5` → [string]
+- (s: [string] | [binary]) | `hash sha256` → [string]
 
 flags
 
@@ -337,8 +380,9 @@ see [upsert]
 It panics when the field already exists
 
 - (r: [record]) | `insert` (key: any) (value: any) → [record]
-- (t: [table]) | `insert` (key: any) (value: any) → [table]
+- (t: [table]) | `insert` (key: [string]) (value: any) → [table]
   - all the cells of the inserted column have the same value
+  - e.g.: after `ls | insert "flag" true`, all the files/directories have a `flag` with value `true`
 - (l: [list]<T>) | `insert` (index: [int]) (value: T) → [list]<T>
 
 ## into
@@ -376,7 +420,9 @@ flags
 
 ### into decimal
 
-TODO
+- (s: [string]) | `into decimal` -> [float]
+- (b: [bool]) | `into decimal` -> [float]
+- (n: [int]) | `into decimal` -> [float]
 
 ### into duration
 
@@ -414,17 +460,21 @@ flags
 
 ### into record
 
-- (d: [date][typedate]) | `into record` -> [record]
+- (d: [date][typedate]) | `into record` → [record]
   - year: [int], month: [int], day: [int], hour: [int], minute: [int], second: [int], timezone: [string]
-- (d: [duration]) | `into record` -> [record]
+- (d: [duration]) | `into record` → [record]
   - year: [int], month: [int], week: [int], day: [int], hour: [int], minute: [int], second: [int], millisecond: [int], microsecond: [int], nanosecond: [int], sign: [string]
   - some fields may be missing
-- (l: [list]<any>) | `into record` -> [record]
+- (l: [list]<any>) | `into record` → [record]
   - keys of the result are index numbers
   - values of the results are the elements of `l`
-- (t: [table]) | `into record` -> [record]
+- (t: [table]) | `into record` → [record]
   - keys of the result are index numbers
   - values of the result are the rows of `t`
+
+### into sqlite
+
+- any | `into sqlite` (file_name: [string])
 
 ### into string
 
@@ -439,8 +489,15 @@ flags
 see [first](#first)
 
 - (l: [list]<T>) | `last` → T
+  - returns the last element
+  - if `l` is empty, it's an error
 - (l: [list]<T>) | `last` (n: [int]) → [list]<T>
   - returns a list with the last `n` elements of `l`
+  - if `n` is greater than the length of `l`, it returns `l`
+- (t: [table]) | `last` → [record]
+  - returns the last row
+- (t: [table]) | `last` (n: [int]) → [table]
+  - returns the last `n` rows
 
 ## length
 
@@ -448,7 +505,9 @@ see [first](#first)
 - (t: [table]) | `length` → [int]
   - the number of rows
 
-It doesn't work on [record]s and [string]s
+It doesn't work on [record]s and [string]s: they always return 1
+
+TODO: record 길이 구하는 것도 하고 싶은데 이슈를 너무 많이 날려서 조금 눈치 보임...ㅋㅋㅋ
 
 ## lines
 
@@ -527,7 +586,7 @@ flags
 ## merge
 
 - (r: [record]) | `merge` (val: [record]) → [record]
-  - if `r` and `val` has overlapping keys, the values of `val` are chosen
+  - if `r` and `val` have the same keys, the values of `val` are chosen
 - (t: [table]) | `merge` (val: [table]) → [table]
   - merge row by row
 
@@ -541,6 +600,12 @@ It can read some formats (json, toml, ...). It creates nu-data types for those f
 - `-r`: open file as a raw binary
 
 ## path
+
+Even though the type signatures below say that a path should be a [string], there are 3 possible forms of a path.
+
+1. [string]: "/home/my_name/Documents/nu.md"
+1. [table]: what [`path parse`](#path-parse) returns
+1. [list]<[string]>: what [`path split`](#path-split) returns
 
 ### path basename
 
@@ -583,7 +648,7 @@ flags
 
 ## print
 
-no inputs, no outputs
+no inputs (from pipelines), no outputs
 
 - `print` (value: any)*
 
@@ -623,12 +688,14 @@ flags
 flags
 
 - `-d` (dice: [int]): the amount of dices being rolled
-- `-s` (sides: [int]): the amount of sides a dice has
-  - TODO: there's a typo in the help message
+- `-s` (sides: [int]): the amount of sides a die has
+  - 여담: die가 오타가 아닌듯?
 
 ### random integer
 
 - `random integer` (range: [range][typerange]<[int]> = (0..2^63^)) → [int]
+
+TODO: 기본 범위 알려주기
 
 ### random uuid
 
@@ -638,6 +705,8 @@ flags
 
 [[anchor, id = command range]][[/anchor]]
 ## range
+
+It's like index slicings
 
 - (l: [list]<T>) | `range` (range: [range][typerange]<[int]>) → [list]<T>
   - a range may have negative indexes
@@ -665,6 +734,8 @@ examples
   - returns a table without `column`s
 - (r: [record]) | `reject` (column: ColumnName)* → [record]
   - returns a record without `column`s
+- (l: [list]<any>) | `reject` (index: [int]) -> [list]<any>
+  - returns a list without the index
 
 ## reverse
 
@@ -673,6 +744,8 @@ examples
   - reverses the rows
 
 ## save
+
+It doesn't let me overwrite a file by default. To do so, I should use `-f` flag.
 
 - (data: any) | `save` (path: [string])
 
@@ -687,6 +760,8 @@ flags
   - selects 1 or more columns
 - (t: [table]) | `select` (column: ColumnName)* → [table]
   - selects 1 or more columns
+
+TODO: it works on lists, but I have no idea what it does...
 
 ## skip
 
@@ -920,6 +995,18 @@ flags
 
 - `-p`: prettify the markdown table
 
+## transpose
+
+- (t: [table]) | `transpose` (column_name: [string])* → [table]
+  - transpose a table
+  - you can specify the name of the columns with extra arguments
+- (r: [record]) | `transpose` (column_name: [string])* → [table]
+  - transpose a record, as if it were a one-row table
+
+flags
+
+- `-d`: if the result is a one-row table, it returns a [record]
+
 ## uniq
 
 - (l: [list]<any>) | `uniq` → [list]<any>
@@ -984,6 +1071,8 @@ see [columns](#columns)
 
 - (l: [list]<any>) | `wrap` (column_name: [string]) → [table]
   - make `l` a column of a [table]
+
+TODO: 이거 help message에 range도 있는데, 그렇게 치면 모든 help message에 다 range 있어야 하는 거 아님??
 
 ## zip
 
