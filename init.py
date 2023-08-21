@@ -1,17 +1,14 @@
 #!/usr/bin/python3
 
+def save(data):
+    with open("data.json", "w") as f:
+        f.write(str(data))
+
 import os
 from pathlib import Path
 
 home = str(Path.home())
 os.chdir(f"{home}/.config/_init")
-
-def save_and_quit(data):
-
-    with open("data.json", "w") as f:
-        f.write(str(data))
-
-    quit()
 
 try:
 
@@ -19,7 +16,7 @@ try:
         data = eval(f.read())
 
 except FileNotFoundError:
-    data = {"fresh_boot": True}
+    data = {"fresh_boot": True, "last_github_fetch": 0}
 
 if not data["fresh_boot"]:
     data["fresh_boot"] = True
@@ -27,10 +24,21 @@ if not data["fresh_boot"]:
 
 # init script from here
 
-import time
+import time, github_fetcher
 
 t = time.localtime()
+tt = time.time()
 
-data["launched_at"] = [t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec]
+data["launched_at"] = [t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec, tt]
 
-save_and_quit(data)
+save(data)
+
+# GithubFetcher must be called all the other actions are done: it takes very long!!
+try:
+
+    if data["last_github_fetch"] + 300_000 < tt:
+        github_fetcher.main()
+        data["last_github_fetch"] = tt
+
+finally:
+    save(data)
