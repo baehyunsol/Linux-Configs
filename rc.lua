@@ -68,7 +68,7 @@ beautiful.useless_gap = dpi(4)
 beautiful.border_width = dpi(2)
 beautiful.border_focus = "#f02020"
 beautiful.border_none = "#404040"
-beautiful.wallpaper = string.format("%s/Downloads/bg.jpg", HOME)
+beautiful.wallpaper = string.format("%s/Downloads/bg.png", HOME)
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
