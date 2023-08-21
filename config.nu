@@ -947,10 +947,7 @@ def set-brightness [
 def-env up [
     limit = 1: int # The number of directories to go up (default is 1)
   ] {
-    cd ..
-    for _ in 1..$limit {
-        cd ..
-    }
+    cd ("." * ($limit + 1))
 }
 
 #Function to extract archives with different extensions
