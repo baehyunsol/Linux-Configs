@@ -1,9 +1,9 @@
 /*
 I'm too lazy to make a new repo...
 
-colored = "2.0.0"
+colored = "2.0.4"
 lazy_static = "1.4.0"
-sysinfo = "0.29.2"
+sysinfo = "0.29.9"
 battery = "0.7.8"
 h_time = "0.1.0"
 */
@@ -25,7 +25,7 @@ fn title() -> Vec<String> {
         format!("{}", "     ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
         format!("{}", "     ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
         format!("{}", "                     ▝▘                                                ".blue()),
-        format!("{}", " =========================================================================="),
+        format!("{}", " ──────────────────────────────────┬───────────────────────────────────────"),
     ]
 }
 
@@ -35,13 +35,13 @@ fn bottom() -> Vec<String> {
     let mut lines = Vec::with_capacity(left.len().min(right.len()));
 
     for i in 0..left.len().min(right.len()) {
-        lines.push(format!(" {} | {}", left[i], right[i]));
+        lines.push(format!(" {} │ {}", left[i], right[i]));
     }
 
     if left.len() > right.len() {
 
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!(" {} |", left[i]));
+            lines.push(format!(" {} │", left[i]));
         }
 
     }
@@ -49,7 +49,7 @@ fn bottom() -> Vec<String> {
     else {
 
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!(" {} | {}", " ".repeat(33),  right[i]));
+            lines.push(format!(" {} │ {}", " ".repeat(33),  right[i]));
         }
 
     }
