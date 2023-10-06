@@ -774,6 +774,7 @@ $env.config = {
 # aliases
 # -------
 
+alias web = brave-browser
 alias py = python3
 alias text = gedit
 alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
