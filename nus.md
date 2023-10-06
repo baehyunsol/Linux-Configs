@@ -1108,8 +1108,9 @@ TODO: 이거 help message에 range도 있는데, 그렇게 치면 모든 help me
 
 | alias  | explanation        |
 |--------|--------------------|
+| web    | web browser        |
 | py     | python3            |
-| text   | gnome-text-editor  |
+| text   | text editor        |
 
 ## helper
 
