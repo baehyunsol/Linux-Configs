@@ -779,6 +779,8 @@ alias py = python3
 alias text = gedit
 alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
 alias fzfd = cd (fzf | into string | str trim | path dirname)
+alias ggbr = web ~/Documents/가계부/output/htmls/documents/main.html
+alias ggbw = code ~/Documents/가계부/data
 
 # -------
 # my defs

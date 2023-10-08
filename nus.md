@@ -1111,6 +1111,8 @@ TODO: 이거 help message에 range도 있는데, 그렇게 치면 모든 help me
 | web    | web browser        |
 | py     | python3            |
 | text   | text editor        |
+| ggbr   | read 가계부         |
+| ggbw   | write 가계부        |
 
 ## helper
 
