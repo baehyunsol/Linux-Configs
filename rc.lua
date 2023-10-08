@@ -29,6 +29,8 @@ local naughty = require("naughty")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+curr_tag = 0
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -114,10 +116,40 @@ end)
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     -- view previous
-    awful.key({ modkey }, "Left", awful.tag.viewprev),
+    awful.key({ modkey }, "Left", function ()
+        awful.tag.viewprev()
+        curr_tag = (curr_tag + 9) % 10
+    end),
 
     -- view next
-    awful.key({ modkey }, "Right", awful.tag.viewnext),
+    awful.key({ modkey }, "Right", function ()
+        awful.tag.viewnext()
+        curr_tag = (curr_tag + 1) % 10
+    end),
+
+    -- move client to the previous tag
+    awful.key({ modkey, "Control" }, "Left", function ()
+        if client.focus then
+            curr_tag = (curr_tag + 9) % 10
+            local tag = client.focus.screen.tags[curr_tag]
+
+            if tag then
+                client.focus:move_to_tag(tag)
+            end
+        end
+    end),
+
+    -- move client to the next tag
+    awful.key({ modkey, "Control" }, "Right", function ()
+        if client.focus then
+            curr_tag = (curr_tag + 1) % 10
+            local tag = client.focus.screen.tags[curr_tag]
+
+            if tag then
+                client.focus:move_to_tag(tag)
+            end
+        end
+    end),
 
     -- focus next client
     awful.key({ modkey }, "Down", function ()
@@ -158,6 +190,7 @@ globalkeys = gears.table.join(
         awesome.spawn("pkill polybar")
         awesome.spawn("pkill picom")
         awesome.spawn(string.format("%s/.config/_init/lock.py", HOME))  -- makes sure that the init script is not launched
+        curr_tag = 1
         awesome.restart()
     end),
 
@@ -243,23 +276,28 @@ for i = 1, 10 do
     globalkeys = gears.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
-                  function ()
-                        local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
-                        if tag then
-                           tag:view_only()
-                        end
-                  end),
+            function ()
+                curr_tag = i
+                local screen = awful.screen.focused()
+                local tag = screen.tags[i]
+
+                if tag then
+                    tag:view_only()
+                end
+            end),
         -- Move client to tag.
-        awful.key({ modkey, "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:move_to_tag(tag)
-                          end
-                     end
-                  end)
+        awful.key({ modkey, "Control" }, "#" .. i + 9,
+            function ()
+                if client.focus then
+                    local tag = client.focus.screen.tags[i]
+                    curr_tag = i
+
+                    if tag then
+                        client.focus:move_to_tag(tag)
+                    end
+                end
+            end
+        )
     )
 end
 

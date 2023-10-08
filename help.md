@@ -1,3 +1,7 @@
+---
+title: "Help"
+---
+
 ## Launch Applications
 
 - Mod + R
@@ -41,9 +45,9 @@
 
 ## Move Windows
 
-- Mod + [[aqua]]Shift[[/aqua]] + Up
+- Mod + [[red]]Control[[/red]] + Up
   - Move window [[giant]]Up[[/giant]]ward
-- Mod + [[aqua]]Shift[[/aqua]] + Down
+- Mod + [[red]]Control[[/red]] + Down
   - Move window [[giant]]Down[[/giant]]ward
 - Mod + Up
   - Move focus [[giant]]Up[[/giant]]ward
@@ -57,6 +61,10 @@
   - Go to next tag
 - Mod + Left
   - Go to previous tag
+- Mod + [[red]]Control[[/red]] Right
+  - Move window to next tag
+- Mod + [[red]]Control[[/red]] Left
+  - Move window to previous tag
 - Mod + [[aqua]]Shift[[/aqua]] + 0~9
   - Move window to tag
 - Mod + [[red]]Control[[/red]] + T
