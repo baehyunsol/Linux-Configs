@@ -61,9 +61,9 @@ title: "Help"
   - Go to next tag
 - Mod + Left
   - Go to previous tag
-- Mod + [[red]]Control[[/red]] Right
+- Mod + [[red]]Control[[/red]] + Right
   - Move window to next tag
-- Mod + [[red]]Control[[/red]] Left
+- Mod + [[red]]Control[[/red]] + Left
   - Move window to previous tag
 - Mod + [[aqua]]Shift[[/aqua]] + 0~9
   - Move window to tag
