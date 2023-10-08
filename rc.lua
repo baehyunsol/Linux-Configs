@@ -243,8 +243,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "F1", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"screenshot\"", HOME)) end),
     awful.key({ modkey, "Shift" }, "F2", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"screenshot all\"", HOME)) end),
     awful.key({ modkey, "Shift" }, "F3", function () awful.spawn(string.format("vlc --random %s/Music", HOME)) end),
-    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"turn black\"", HOME)) end),
-    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"turn white\"", HOME)) end)
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"br0\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"br1\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F6", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"br2\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F7", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"br3\"", HOME)) end),
+    awful.key({ modkey, "Shift" }, "F8", function () awful.spawn(string.format("%s/.config/nushell/funcs.nu \"br4\"", HOME)) end)
 )
 
 clientkeys = gears.table.join(

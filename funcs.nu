@@ -1,9 +1,15 @@
 #!/home/baehyunsol/.cargo/bin/nu
 
 def main [action: string, extra_arg: string = ""] {
-    if $action == "turn black" {  # turn black
+    if $action == "br0" {
         xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 0.05}
-    } else if $action == "turn white" { # turn white
+    } else if $action == "br1" {
+        xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 0.25}
+    } else if $action == "br2" {
+        xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 0.5}
+    } else if $action == "br3" {
+        xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 0.75}
+    } else if $action == "br4" {
         xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness 1.0}
     } else if $action == "screenshot" {
         let now = (date now | date to-table);

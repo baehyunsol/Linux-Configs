@@ -96,8 +96,14 @@ title: "Help"
 - Mod + [[aqua]]Shift[[/aqua]] + F3
   - Play Music
 - Mod + [[aqua]]Shift[[/aqua]] + F4
-  - Set the screen brightness to 0.1
+  - Set the screen brightness to 0.05
 - Mod + [[aqua]]Shift[[/aqua]] + F5
+  - Set the screen brightness to 0.25
+- Mod + [[aqua]]Shift[[/aqua]] + F6
+  - Set the screen brightness to 0.5
+- Mod + [[aqua]]Shift[[/aqua]] + F7
+  - Set the screen brightness to 0.75
+- Mod + [[aqua]]Shift[[/aqua]] + F8
   - Set the screen brightness to 1.0
 
 ## Other manuals
