@@ -6,6 +6,7 @@ lazy_static = "1.4.0"
 sysinfo = "0.29.9"
 battery = "0.7.8"
 h_time = "0.1.0"
+clearscreen = "2.0.1"
 */
 
 use colored::*;
@@ -15,7 +16,20 @@ use std::io::Read;
 use std::process::Command;
 
 fn main() {
-    println!("{}\n{}", title().join("\n"), bottom().join("\n"));
+    let args: Vec<String> = std::env::args().collect();
+    let inte = args.len() > 1 && (args[1] == "-i" || args[1] == "--interactive");
+
+    let mut prev = format!("{}\n{}", title().join("\n"), bottom().join("\n"));
+
+    loop {
+        println!("{prev}");
+
+        if !inte { break; }
+
+        prev = format!("{}\n{}", title().join("\n"), bottom().join("\n"));
+        std::thread::sleep(std::time::Duration::from_millis(120));
+        clearscreen::clear().unwrap();
+    }
 }
 
 fn title() -> Vec<String> {
@@ -63,6 +77,7 @@ fn status() -> Vec<String> {
     sys.refresh_memory();
 
     let now = h_time::Date::now();
+    let now_pretty = now_pretty();
     let birthday = h_time::Date::from_ymd(1999, 1, 20);
     let since_birth = now.duration_since(&birthday).into_days();
 
@@ -70,7 +85,7 @@ fn status() -> Vec<String> {
     let rust_version = String::from_utf8_lossy(&Command::new("rustc").arg("--version").output().unwrap().stdout).to_string().strip_suffix("\n").unwrap().to_string();
 
     vec![
-        format!("{}: {}.{:02}.{:02} ({}) {:02}:{:02}:{:02}", "Date".green(), NOW.0, NOW.1, NOW.2, NOW.3, NOW.4, NOW.5, NOW.6),
+        format!("{}: {}.{:02}.{:02} ({}) {:02}:{:02}:{:02}", "Date".green(), now_pretty.0, now_pretty.1, now_pretty.2, now_pretty.3, now_pretty.4, now_pretty.5, now_pretty.6),
         format!("{}: {} days", "Since Birth".green(), since_birth),
         format!("{}: {} seconds", "Since Boot".green(), sys.uptime()),
         format!("{}: {}", "Battery".green(), get_battery().unwrap_or("Unknown".to_string())),
@@ -181,7 +196,8 @@ fn pretty_f32(n: f32) -> String {
 }
 
 fn calendars() -> Vec<String> {
-    let (year, month, day) = (NOW.0, NOW.1, NOW.2);
+    let now_pretty = now_pretty();
+    let (year, month, day) = (now_pretty.0, now_pretty.1, now_pretty.2);
     let (year2, month2) = if month == 12 {
         (year + 1, 1)
     } else {
@@ -263,6 +279,15 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
     result
 }
 
+fn now_pretty() -> (usize, usize, usize, String, usize, usize, usize) {
+    let now = h_time::Date::now();
+    let weekdays = [
+        "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"
+    ];
+
+    (now.year as usize, now.month as usize, now.m_day as usize, weekdays[now.w_day as usize].to_string(), now.hour as usize, now.minute as usize, now.second as usize)
+}
+
 use std::collections::{HashSet, HashMap};
 
 lazy_static::lazy_static! {
@@ -297,14 +322,5 @@ lazy_static::lazy_static! {
         result.insert((2024, 4), (1, 30));
 
         result
-    };
-
-    pub static ref NOW: (usize, usize, usize, String, usize, usize, usize) = {  // (year, month, day, weekday, hour. minute, second)
-        let now = h_time::Date::now();
-        let weekdays = [
-            "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"
-        ];
-
-        (now.year as usize, now.month as usize, now.m_day as usize, weekdays[now.w_day as usize].to_string(), now.hour as usize, now.minute as usize, now.second as usize)
     };
 }
