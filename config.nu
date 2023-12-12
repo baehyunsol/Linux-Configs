@@ -769,6 +769,7 @@ $env.config = {
 # aliases
 # -------
 
+alias katalk = wine "C:\\Program Files (x86)\\Kakao\\KakaoTalk\\KaKaoTalk.exe"
 alias web = brave-browser
 alias py = python3
 alias text = gedit
