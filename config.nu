@@ -773,7 +773,7 @@ $env.config = {
 # -------
 
 alias katalk = wine "C:\\Program Files (x86)\\Kakao\\KakaoTalk\\KaKaoTalk.exe"
-alias web = brave-browser
+alias web = brave
 alias py = python3
 alias text = gedit
 alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
