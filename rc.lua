@@ -240,17 +240,17 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "Return", function () awful.spawn("alacritty") end),
     awful.key({ modkey, "Shift", "Control" }, "Return", function () awful.spawn("alacritty --class FloatSmall") end),
 
-    awful.key({ modkey, "Shift" }, "h", function () awful.spawn(string.format("brave-browser --new-window %s/Documents/DThelp/index.html", HOME)) end),
-    awful.key({ modkey, "Shift", "Control" }, "h", function () awful.spawn(string.format("brave-browser --class=FloatMedium --new-window %s/Documents/DThelp/index.html", HOME)) end),
+    awful.key({ modkey, "Shift" }, "h", function () awful.spawn(string.format("brave --new-window %s/Documents/DThelp/index.html", HOME)) end),
+    awful.key({ modkey, "Shift", "Control" }, "h", function () awful.spawn(string.format("brave --class=FloatMedium --new-window %s/Documents/DThelp/index.html", HOME)) end),
 
     -- for now, the control center doesn't work with awesome, I need a walk-around
     awful.key({ modkey, "Shift" }, "c", function () awful.spawn("env XDG_CURRENT_DESKTOP=GNOME gnome-control-center") end),  -- TODO: remove GNOME
 
-    awful.key({ modkey, "Shift" }, "w", function () awful.spawn("brave-browser") end),
-    awful.key({ modkey, "Shift", "Control" }, "w", function () awful.spawn("brave-browser --class=FloatMedium") end),
+    awful.key({ modkey, "Shift" }, "w", function () awful.spawn("brave") end),
+    awful.key({ modkey, "Shift", "Control" }, "w", function () awful.spawn("brave --class=FloatMedium") end),
 
-    awful.key({ modkey, "Shift" }, "i", function () awful.spawn("brave-browser --incognito") end),
-    awful.key({ modkey, "Shift", "Control" }, "i", function () awful.spawn("brave-browser --incognito --class=FloatMedium") end),
+    awful.key({ modkey, "Shift" }, "i", function () awful.spawn("brave --incognito") end),
+    awful.key({ modkey, "Shift", "Control" }, "i", function () awful.spawn("brave --incognito --class=FloatMedium") end),
 
     awful.key({ modkey, "Shift" }, "v", function () awful.spawn("code") end),
     awful.key({ modkey, "Shift" }, "n", function () awful.spawn("nautilus") end),  -- TODO: remove GNOME
