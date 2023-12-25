@@ -29,6 +29,8 @@ local naughty = require("naughty")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+local polybar_on = true
+
 curr_tag = 0
 
 -- {{{ Error handling
@@ -81,17 +83,21 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.tile,
+    awful.layout.suit.tile,  -- TODO: set the ratio of windows to 6:4 by default
     awful.layout.suit.tile.bottom,
 }
 
 -- start-up applications
+local function launch_polybar ()
+    awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar0", HOME))
+    awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar1", HOME))
+    awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar2", HOME))
+    awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar3", HOME))
+end
+
 awful.spawn("picom -i 0.88")
-awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar0", HOME))
-awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar1", HOME))
-awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar2", HOME))
-awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar3", HOME))
-awful.spawn(string.format("%s/.config/_init/init.py", HOME))
+launch_polybar()
+-- awful.spawn(string.format("%s/.config/_init/init.py", HOME))  -- not using these scripts anymore...
 awful.spawn("pueued")
 
 local function set_wallpaper(s)
@@ -111,7 +117,14 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
+
+    -- set default ratio of windows to 64:36
+    for i = 1, 10 do
+        s.tags[i].master_width_factor = 0.64
+    end
 end)
+
+all_tags = root.tags()
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
@@ -158,7 +171,7 @@ globalkeys = gears.table.join(
         if client.focus ~= nil then
             mouse.coords {
                 x = client.focus.x + client.focus.width / 2,
-                y = client.focus.y + client.focus.height / 2
+                y = client.focus.y + client.focus.height / 2,
             }
         end
 
@@ -171,7 +184,7 @@ globalkeys = gears.table.join(
         if client.focus ~= nil then
             mouse.coords {
                 x = client.focus.x + client.focus.width / 2,
-                y = client.focus.y + client.focus.height / 2
+                y = client.focus.y + client.focus.height / 2,
             }
         end
 
@@ -185,11 +198,22 @@ globalkeys = gears.table.join(
     -- move client up
     awful.key({ modkey, "Control" }, "Up", function () awful.client.swap.byidx(-1) end),
 
+    -- toggle polybar
+    awful.key({ modkey, "Control" }, "p", function ()
+        if polybar_on then
+            awesome.spawn("pkill polybar")
+            polybar_on = false
+        else
+            launch_polybar()
+            polybar_on = true
+        end
+    end),
+
     -- restart awesome
     awful.key({ modkey, "Control" }, "r", function ()
         awesome.spawn("pkill polybar")
         awesome.spawn("pkill picom")
-        awesome.spawn(string.format("%s/.config/_init/lock.py", HOME))  -- makes sure that the init script is not launched
+        -- awesome.spawn(string.format("%s/.config/_init/lock.py", HOME))  -- not using these scripts anymore...
         curr_tag = 1
         awesome.restart()
     end),

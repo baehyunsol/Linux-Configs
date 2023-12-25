@@ -42,6 +42,8 @@ title: "Help"
   - [[giant]]Q[[/giant]]uit window
 - Mod + [[red]]Control[[/red]] + R
   - [[giant]]R[[/giant]]eload Awesome
+- Mod + [[red]]Control[[/red]] + P
+  - Toggle [[giant]]P[[/giant]]olybar
 
 ## Move Windows
 
