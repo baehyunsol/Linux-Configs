@@ -3,7 +3,7 @@ I'm too lazy to make a new repo...
 
 colored = "2.0.4"
 lazy_static = "1.4.0"
-sysinfo = "0.29.9"
+sysinfo = "0.30.3"
 battery = "0.7.8"
 h_time = "0.1.0"
 clearscreen = "2.0.1"
@@ -35,11 +35,11 @@ fn main() {
 fn title() -> Vec<String> {
     vec![
         String::new(),
-        format!("{}", "     ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
-        format!("{}", "     ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
-        format!("{}", "     ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
-        format!("{}", "                     ▝▘                                                ".blue()),
-        format!("{}", " ──────────────────────────────────┬───────────────────────────────────────"),
+        format!("{}", "      ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
+        format!("{}", "      ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
+        format!("{}", "      ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
+        format!("{}", "                      ▝▘                                                ".blue()),
+        format!("{}", " ────────────────────────────────────┬───────────────────────────────────────"),
     ]
 }
 
@@ -49,23 +49,19 @@ fn bottom() -> Vec<String> {
     let mut lines = Vec::with_capacity(left.len().min(right.len()));
 
     for i in 0..left.len().min(right.len()) {
-        lines.push(format!(" {} │ {}", left[i], right[i]));
+        lines.push(format!("  {}  │ {}", left[i], right[i]));
     }
 
     if left.len() > right.len() {
-
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!(" {} │", left[i]));
+            lines.push(format!("  {}  │", left[i]));
         }
-
     }
 
     else {
-
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!(" {} │ {}", " ".repeat(33),  right[i]));
+            lines.push(format!("  {}  │ {}", " ".repeat(33),  right[i]));
         }
-
     }
 
     lines
@@ -81,21 +77,32 @@ fn status() -> Vec<String> {
     let birthday = h_time::Date::from_ymd(1999, 1, 20);
     let since_birth = now.duration_since(&birthday).into_days();
 
-    let nu_version = String::from_utf8_lossy(&Command::new("nu").arg("-v").output().unwrap().stdout).to_string().strip_suffix("\n").unwrap().to_string();
-    let rust_version = String::from_utf8_lossy(&Command::new("rustc").arg("--version").output().unwrap().stdout).to_string().strip_suffix("\n").unwrap().to_string();
+    let nu_version = if let Ok(proc) = Command::new("nu").arg("-v").output() {
+        Some(String::from_utf8_lossy(&proc.stdout).to_string().strip_suffix("\n").unwrap().to_string())
+    } else {
+        None
+    };
+    let rust_version = if let Ok(proc) = Command::new("rustc").arg("--version").output() {
+        Some(String::from_utf8_lossy(&proc.stdout).to_string().strip_suffix("\n").unwrap().to_string())
+    } else {
+        None
+    };
 
-    vec![
-        format!("{}: {}.{:02}.{:02} ({}) {:02}:{:02}:{:02}", "Date".green(), now_pretty.0, now_pretty.1, now_pretty.2, now_pretty.3, now_pretty.4, now_pretty.5, now_pretty.6),
-        format!("{}: {} days", "Since Birth".green(), since_birth),
-        format!("{}: {} seconds", "Since Boot".green(), sys.uptime()),
-        format!("{}: {}", "Battery".green(), get_battery().unwrap_or("Unknown".to_string())),
-        format!("{}: {}", "Os".green(), sys.long_os_version().unwrap_or("Unknown".to_string())),
-        format!("{}: {}", "Nushell".green(), nu_version),
-        format!("{}: {}", "Rust".green(), rust_version),
-        format!("{}: {}", "Kernel".green(), sys.kernel_version().unwrap_or("Unknown".to_string())),
-        format!("{}: {}", "CPU".green(), sys.cpus()[0].brand()),
-        format!("{}: {} MB", "Memory".green(), sys.total_memory() / 1048576),
-    ]
+    let res = vec![
+        Some(format!("{}: {}.{:02}.{:02} ({}) {:02}:{:02}:{:02}", "Date".green(), now_pretty.0, now_pretty.1, now_pretty.2, now_pretty.3, now_pretty.4, now_pretty.5, now_pretty.6)),
+        Some(format!("{}: {} days", "Since Birth".green(), since_birth)),
+        Some(format!("{}: {} seconds", "Since Boot".green(), System::uptime())),
+        Some(format!("{}: {}", "CPU".green(), sys.cpus()[0].brand())),
+        Some(format!("{}: {} MB", "Memory".green(), sys.total_memory() >> 20)),
+        get_disk().map(|res| format!("{}: {res}", "Disk".green())).ok(),
+        get_battery().map(|res| format!("{}: {res}", "Battery".green())).ok(),
+        System::long_os_version().map(|res| format!("{}: {res}", "Os".green())),
+        nu_version.map(|res| format!("{}: {res}", "Nushell".green())),
+        rust_version.map(|res| format!("{}: {res}", "Rust".green())),
+        System::kernel_version().map(|res| format!("{}: {res}", "Kernel".green())),
+    ];
+
+    res.into_iter().filter_map(|s| s).collect()
 }
 
 fn load_memo() -> Vec<String> {
@@ -146,6 +153,37 @@ fn load_memo() -> Vec<String> {
     }
 
     lines
+}
+
+fn get_disk() -> Result<String, ()> {
+    let mut disks = Disks::new_with_refreshed_list();
+
+    if disks.len() == 0 {
+        return Err(());
+    }
+
+    disks.sort_by_key(|disk| u64::MAX - disk.available_space());
+
+    // takes one with the biggest available space
+    let disk = &disks[0];
+
+    // MB
+    let available = disk.available_space() >> 20;
+    let total = disk.total_space() >> 20;
+    let used = total - available;
+
+    let fs = if let Some(s) = disk.file_system().to_str() {
+        s.to_string()
+    } else {
+        String::from("Unknown")
+    };
+
+    Ok(format!(
+        "{}, using {}.{} / {}.{} GB",
+        fs,
+        used >> 10, used % 1000 / 100,
+        total >> 10, total % 1000 / 100,
+    ))
 }
 
 fn get_battery() -> Result<String, ()> {
@@ -220,12 +258,12 @@ fn calendars() -> Vec<String> {
 fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, today: usize) -> Vec<String> {
     let mut result = vec![
         format!("             {}.{:02}             ", year, month),
-        format!("{}  MON  TUE  WED  THU  FRI  SAT", "SUN".green())
+        format!("{}  MON  TUE  WED  THU  FRI  SAT", "SUN".green()),
     ];
 
     let mut curr_day = 1;
     let mut curr_weekday = 0;
-    let mut curr_line = Vec::with_capacity(7);
+    let mut curr_line = Vec::with_capacity(9);
 
     while curr_day <= last_day {
         let width = if curr_weekday == 0 { 3 } else { 5 };
@@ -236,7 +274,6 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
         }
 
         else {
-
             if curr_day == today {
                 curr_line.push(format!(
                     "{}{}",
@@ -262,11 +299,9 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
             curr_weekday = 0;
             curr_line = Vec::with_capacity(7);
         }
-
     }
 
     if curr_line.len() > 0 {
-
         while curr_line.len() < 7 {
             curr_line.push("     ".to_string());
         }
@@ -275,6 +310,7 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
     }
 
     #[cfg(test)] assert!(result.iter().all(|line| line.len() == 33));
+    result.push(" ".repeat(33));  // bottom padding
 
     result
 }
