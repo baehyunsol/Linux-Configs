@@ -111,3 +111,4 @@ title: "Help"
 ## Other manuals
 
 [nu](nus.html)
+[vim](neovim.html)
