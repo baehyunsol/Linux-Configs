@@ -258,8 +258,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn("gedit") end),
     awful.key({ modkey, "Shift", "Control" }, "m", function () awful.spawn("gedit --class=FloatSmall") end),
 
-    awful.key({ modkey, "Shift" }, "p", function () awful.spawn("alacritty --command python3 -i -c \"from math import *\"") end),
-    awful.key({ modkey, "Shift", "Control" }, "p", function () awful.spawn("alacritty --class FloatSmall --command python3 -i -c \"from math import *\"") end),
+    awful.key({ modkey, "Shift" }, "p", function () awful.spawn("alacritty --command python3 -i -c \"from math import *\ndef prime_fact(n):\n    res = []\n    while n & 1 == 0:\n        res.append(2)\n        n >>= 1\n    div = 3\n    while div * div <= n:\n        while n % div == 0:\n            res.append(div)\n            n //= div\n        div += 2\n    if n != 1:\n        res.append(n)\n    return res\n\"") end),
+    awful.key({ modkey, "Shift", "Control" }, "p", function () awful.spawn("alacritty --class FloatSmall --command python3 -i -c \"from math import *\ndef prime_fact(n):\n    res = []\n    while n & 1 == 0:\n        res.append(2)\n        n >>= 1\n    div = 3\n    while div * div <= n:\n        while n % div == 0:\n            res.append(div)\n            n //= div\n        div += 2\n    if n != 1:\n        res.append(n)\n    return res\n\"") end),
 
     awful.key({ modkey, "Shift" }, "s", function () awful.spawn("alacritty --command btm --battery") end),
     awful.key({ modkey, "Shift", "Control" }, "s", function () awful.spawn("alacritty --class FloatBig --command btm --battery") end),
