@@ -344,18 +344,14 @@ lazy_static::lazy_static! {
     pub static ref MONTHS: HashMap<(usize, usize), (usize, usize)> = {  // <(year, month), (weekday, lastday)>
         let mut result = HashMap::with_capacity(12);
 
-        result.insert((2023, 5), (1, 31));
-        result.insert((2023, 6), (4, 30));
-        result.insert((2023, 7), (6, 31));
-        result.insert((2023, 8), (2, 31));
-        result.insert((2023, 9), (5, 30));
-        result.insert((2023, 10), (0, 31));
-        result.insert((2023, 11), (3, 30));
-        result.insert((2023, 12), (5, 31));
         result.insert((2024, 1), (1, 31));
         result.insert((2024, 2), (4, 29));
         result.insert((2024, 3), (5, 31));
         result.insert((2024, 4), (1, 30));
+        result.insert((2024, 5), (3, 31));
+        result.insert((2024, 6), (6, 30));
+        result.insert((2024, 7), (1, 31));
+        result.insert((2024, 8), (4, 31));
 
         result
     };
