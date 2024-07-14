@@ -55,8 +55,6 @@ mv polybar.ini ~/.config
 mv rc.lua ~/.config/awesome
 mv rofi.rasi /usr/share/rofi/themes/sol.rasi
 mv rofi2.rasi /usr/share/rofi/themes/sol2.rasi
-mv init.py ~/.config/_init
-mv lock.py ~/.config/_init
 
 # bat syntaxes
 
