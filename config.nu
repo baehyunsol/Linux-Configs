@@ -889,7 +889,7 @@ def set-brightness [
   if $brightness > 1.3 or $brightness < 0.0 {
     print "brightness must be 0.0 ~ 1.3"
   } else {
-    xrandr | into string | lines | find " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness $brightness}
+    xrandr | into string | grep " connected" | each {|x| split row " " | get 0} | each {|x| xrandr --output $x --brightness $brightness}
 
     print $"brightness: ($brightness)"
   }
