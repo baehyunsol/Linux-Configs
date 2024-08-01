@@ -109,7 +109,7 @@ fn load_memo() -> Vec<String> {
     let mut s = String::new();
     let mut lines = vec![format!("{}", "Memo".green())];
 
-    match File::open("/home/baehyunsol/Documents/fetch_memo.txt") {  // TODO: I don't want to hard-code `/home/baehyunsol`
+    match File::open("/Users/baehyunsol/Documents/fetch_memo.txt") {  // TODO: I don't want to hard-code `/home/baehyunsol`
         Ok(mut f) => match f.read_to_string(&mut s) {
             Ok(_) => {},
             _ => {
@@ -344,7 +344,6 @@ lazy_static::lazy_static! {
     pub static ref MONTHS: HashMap<(usize, usize), (usize, usize)> = {  // <(year, month), (weekday, lastday)>
         let mut result = HashMap::with_capacity(12);
 
-        result.insert((2024, 1), (1, 31));
         result.insert((2024, 2), (4, 29));
         result.insert((2024, 3), (5, 31));
         result.insert((2024, 4), (1, 30));
@@ -352,6 +351,10 @@ lazy_static::lazy_static! {
         result.insert((2024, 6), (6, 30));
         result.insert((2024, 7), (1, 31));
         result.insert((2024, 8), (4, 31));
+        result.insert((2024, 9), (0, 30));
+        result.insert((2024, 10), (2, 31));
+        result.insert((2024, 11), (5, 30));
+        result.insert((2024, 12), (0, 31));
 
         result
     };
