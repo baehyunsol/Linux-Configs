@@ -35,11 +35,11 @@ fn main() {
 fn title() -> Vec<String> {
     vec![
         String::new(),
-        format!("{}", "      ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
-        format!("{}", "      ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
-        format!("{}", "      ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
-        format!("{}", "                      ▝▘                                                ".blue()),
-        format!("{}", " ────────────────────────────────────┬───────────────────────────────────────"),
+        format!("{}", "        ▛▀▚ ▗▄▖ ▞▀▚ ▌   ▖ ▖         ▗▄▖     ▜▌ ▘ ▗▄▖    ▌   ▗▖         ▖ ▖".red()),
+        format!("{}", "        ▛▀▚ ▗▄▟ ▛▀▘ ▛▀▖ ▚▄▘ ▌ ▐ ▄▄  ▚▄▖ ▞▀▚ ▐▌   ▚▄▖    ▌   ▗▖ ▄▄  ▌ ▐ ▝▞ ".red()),
+        format!("{}", "        ▙▄▞ ▚▄▞ ▚▄▞ ▌ ▌  ▐  ▚▄▞ ▌ ▌ ▗▄▞ ▚▄▞ ▐▙   ▗▄▞    ▙▄▄ ▐▌ ▌ ▌ ▚▄▞ ▞▝▖".blue()),
+        format!("{}", "                        ▝▘                                                ".blue()),
+        format!("{}", " ──────────────────────────────────────┬─────────────────────────────────────────"),
     ]
 }
 
@@ -49,18 +49,18 @@ fn bottom() -> Vec<String> {
     let mut lines = Vec::with_capacity(left.len().min(right.len()));
 
     for i in 0..left.len().min(right.len()) {
-        lines.push(format!("  {}  │ {}", left[i], right[i]));
+        lines.push(format!("   {}   │ {}", left[i], right[i]));
     }
 
     if left.len() > right.len() {
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!("  {}  │", left[i]));
+            lines.push(format!("   {}   │", left[i]));
         }
     }
 
     else {
         for i in lines.len()..left.len().max(right.len()) {
-            lines.push(format!("  {}  │ {}", " ".repeat(33),  right[i]));
+            lines.push(format!("   {}   │ {}", " ".repeat(33),  right[i]));
         }
     }
 
@@ -109,7 +109,7 @@ fn load_memo() -> Vec<String> {
     let mut s = String::new();
     let mut lines = vec![format!("{}", "Memo".green())];
 
-    match File::open("/Users/baehyunsol/Documents/fetch_memo.txt") {  // TODO: I don't want to hard-code `/home/baehyunsol`
+    match File::open("/home/baehyunsol/Documents/fetch_memo.txt") {  // TODO: I don't want to hard-code `/home/baehyunsol`
         Ok(mut f) => match f.read_to_string(&mut s) {
             Ok(_) => {},
             _ => {
@@ -126,18 +126,17 @@ fn load_memo() -> Vec<String> {
     let mut curr_line = vec![];
 
     for c in s.chars() {
-
         if c == '\n' {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![];
         }
 
-        else if curr_line.len() > 27 {
+        else if curr_line.len() > 30 {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![c];
         }
 
-        else if curr_line.len() > 18 && c == ' ' {
+        else if curr_line.len() > 20 && c == ' ' {
             lines.push(curr_line.into_iter().collect());
             curr_line = vec![];
         }
@@ -145,7 +144,6 @@ fn load_memo() -> Vec<String> {
         else {
             curr_line.push(c);
         }
-
     }
 
     if curr_line.len() > 0 {
@@ -194,19 +192,19 @@ fn get_battery() -> Result<String, ()> {
             Some(Ok(battery)) => battery,
             _ => {
                 return Err(());
-            }
+            },
         };
 
         let state = match battery.state() {
             battery::State::Charging => ", charging",
             battery::State::Discharging => ", discharging",
             battery::State::Full => ", full",
-            _ => ""
+            _ => "",
         }.to_string();
 
         let n = match format!("{:?}", battery.state_of_charge()).parse::<f32>() {
             Ok(n) => n,
-            _ => { return Err(()); }
+            _ => { return Err(()); },
         };
 
         Ok(format!("{}%{state}", pretty_f32(n)))
@@ -230,7 +228,6 @@ fn pretty_f32(n: f32) -> String {
         let n = n / 10;
         format!("{n}.{rem}")
     }
-
 }
 
 fn calendars() -> Vec<String> {
@@ -318,7 +315,7 @@ fn calendar(year: usize, month: usize, first_weekday: usize, last_day: usize, to
 fn now_pretty() -> (usize, usize, usize, String, usize, usize, usize) {
     let now = h_time::Date::now();
     let weekdays = [
-        "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"
+        "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN",
     ];
 
     (now.year as usize, now.month as usize, now.m_day as usize, weekdays[now.w_day as usize].to_string(), now.hour as usize, now.minute as usize, now.second as usize)
@@ -327,7 +324,6 @@ fn now_pretty() -> (usize, usize, usize, String, usize, usize, usize) {
 use std::collections::{HashSet, HashMap};
 
 lazy_static::lazy_static! {
-
     pub static ref HOLIDAYS: HashSet<(usize, usize)> = {
         vec![
             (1, 1),
@@ -344,17 +340,18 @@ lazy_static::lazy_static! {
     pub static ref MONTHS: HashMap<(usize, usize), (usize, usize)> = {  // <(year, month), (weekday, lastday)>
         let mut result = HashMap::with_capacity(12);
 
-        result.insert((2024, 2), (4, 29));
-        result.insert((2024, 3), (5, 31));
-        result.insert((2024, 4), (1, 30));
-        result.insert((2024, 5), (3, 31));
-        result.insert((2024, 6), (6, 30));
         result.insert((2024, 7), (1, 31));
         result.insert((2024, 8), (4, 31));
         result.insert((2024, 9), (0, 30));
         result.insert((2024, 10), (2, 31));
         result.insert((2024, 11), (5, 30));
         result.insert((2024, 12), (0, 31));
+        result.insert((2025, 1), (3, 31));
+        result.insert((2025, 2), (6, 28));
+        result.insert((2025, 3), (6, 31));
+        result.insert((2025, 4), (2, 30));
+        result.insert((2025, 5), (4, 31));
+        result.insert((2025, 6), (0, 30));
 
         result
     };
