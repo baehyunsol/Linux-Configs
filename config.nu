@@ -994,27 +994,32 @@ def birthday [] {
 def render_doc [
   path: string
 ] {
-  let filename = ($path | path parse | get stem);
-  let dirname = ($path | path dirname);
-  let pwd = (pwd);
   let engine_path = $"($env.HOME)/Documents/Rust/engine"
+  let pwd = (pwd);
 
-  cp $path ($engine_path + "/mdxts/documents")
-  cd $engine_path
+  for p in (glob $path) {
+    let filename = ($p | path parse | get stem);
+    let dirname = ($p | path dirname);
 
-  if '/run' in (ls $engine_path | get name | each { |x| $x | str substring ($engine_path | str length).. }) {
-    ~/Documents/Rust/engine/run
-  } else {
-    cargo run --release --quiet
-    mv ($engine_path + "/target/release/engine") ($engine_path + "/run")
+    cp $p ($engine_path + "/mdxts/documents")
+    cd $engine_path
+
+    if '/run' in (ls $engine_path | get name | each { |x| $x | str substring ($engine_path | str length).. }) {
+      ~/Documents/Rust/engine/run
+    } else {
+      cargo run --release --quiet
+      mv ($engine_path + "/target/release/engine") ($engine_path + "/run")
+    }
+
+    cd $pwd
+
+    rm ($engine_path + $"/mdxts/documents/($filename).md")
+    mv ($engine_path + $"/output/htmls/documents/($filename).html") $pwd
   }
 
-  cd $pwd
-
-  rm ($engine_path + $"/mdxts/documents/($filename).md")
-  mv ($engine_path + $"/output/htmls/documents/($filename).html") $pwd
-  cp ($engine_path + "/output/htmls/documents/*.css") $pwd
-  cp ($engine_path + "/output/htmls/documents/*.js") $pwd
+  for style in ((glob ($engine_path + "/output/htmls/documents/*.css")) ++ (glob ($engine_path + "/output/htmls/documents/*.js"))) {
+    cp $style $pwd
+  }
 }
 
 # if it doesn't work, please install `xrandr`
