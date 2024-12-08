@@ -62,3 +62,10 @@ mkdir ~/.config/bat/syntaxes
 cd ~/.config/bat/syntaxes
 git clone https://github.com/stevenxxiu/sublime_text_nushell  # TODO: remove this line if `nu` is included by default
 bat cache --build
+
+# Korean Input
+
+`sudo apt install ibus-hangul`, and restart
+set language in the control panel
+run `ibus-setup` and choose `hangul`. unselect all the other options
+run `ibus` to see other useful commands
