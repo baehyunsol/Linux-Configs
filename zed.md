@@ -61,14 +61,17 @@ What it's lacking is
 1. Toggle word wrap option with a key (maybe I can create one)
 2. Prevent word wrapping however long a line is (maybe due to a performance reason?)
 
-## Python Language Servers
+## Language Servers
 
-I found the default-enabled Python language extension so annoying. I disabled it by
+I found the default-enabled Python/Rust language extension so annoying. I disabled it by
 
 ```json
 {
   "languages": {
     "Python": {
+      "language_servers": []
+    },
+    "Rust": {
       "language_servers": []
     }
   }
