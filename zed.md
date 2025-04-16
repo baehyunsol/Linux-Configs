@@ -78,6 +78,18 @@ I found the default-enabled Python/Rust language extension so annoying. I disabl
 }
 ```
 
+## Disable font ligatures
+
+It combines multiple characters into one. I don't like this feature.
+
+```json
+{
+  "buffer_font_features": {
+    "calt": false
+  }
+}
+```
+
 # Git integration
 
 - Line history by default
