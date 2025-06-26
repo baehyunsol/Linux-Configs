@@ -4,6 +4,10 @@ It feels faster than VSCode, but to be honest, VSCode is fast enough.
 
 # UI/UX
 
+## minimap
+
+`"minimap": { "show": "always" }`
+
 ## Auto-remove trailing whitespace
 
 It removes trailing whitespace when I save a file. At first I thought it was a bug, but it's a feature!
