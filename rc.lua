@@ -95,7 +95,7 @@ local function launch_polybar ()
     awful.spawn(string.format("polybar -c %s/.config/polybar.ini bar3", HOME))
 end
 
-awful.spawn("picom -i 0.88")
+awful.spawn("picom --backend xrender -i 0.88")
 launch_polybar()
 -- awful.spawn(string.format("%s/.config/_init/init.py", HOME))  -- not using these scripts anymore...
 awful.spawn("pueued")
