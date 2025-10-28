@@ -94,6 +94,16 @@ It combines multiple characters into one. I don't like this feature.
 }
 ```
 
+## More contextful search
+
+```json
+{
+  "excerpt_context_lines": 4
+}
+```
+
+It shows more lines in the Ctrl+Shift+F result view.
+
 # Git integration
 
 - Line history by default
