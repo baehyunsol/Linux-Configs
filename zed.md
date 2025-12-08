@@ -102,6 +102,16 @@ It combines multiple characters into one. I don't like this feature.
 }
 ```
 
+## Disable auto indentation on paste
+
+There's is a bug (or it could be intentional) in auto_indent_on_paste behavior.
+
+```json
+{
+  "auto_indent_on_paste": false
+}
+```
+
 It shows more lines in the Ctrl+Shift+F result view.
 
 # Git integration
