@@ -115,13 +115,19 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-    -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
+    if s.index == 1 then
+        -- Each screen has its own tag table.
+        awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, s, awful.layout.layouts[1])
 
-    -- set default ratio of windows to 64:36
-    for i = 1, 10 do
-        s.tags[i].master_width_factor = 0.64
+        -- set default ratio of windows to 64:36
+        for i = 1, 10 do
+            s.tags[i].master_width_factor = 0.64
+        end
+    else
+        awful.tag({ "ex" }, s, awful.layout.layouts[1])
+        s.tags[1].master_width_factor = 0.64
     end
+
 end)
 
 all_tags = root.tags()
