@@ -1,6 +1,7 @@
 # Nushell Config File
 #
-# version = "0.105.0"
+# version = "0.109.0"
+#
 
 # if updating this config file,
 # 1. download fresh config file
@@ -16,7 +17,7 @@ $env.config.show_banner = false
 # -------
 
 alias katalk = wine "C:\\Program Files (x86)\\Kakao\\KakaoTalk\\KaKaoTalk.exe"
-alias web = brave
+alias web = firefox
 alias py = python3
 alias text = gedit
 alias fzf = fzf --preview-window=right:60% --preview "let path = {}; let ext = ($path | str downcase | path parse | if \"extension\" in $in { get extension } else { \"\" }); if $ext == \"png\" or $ext == \"jpg\" or $ext == \"jpeg\" or $ext == \"gif\" { viu $path } else { bat --color=always --style=numbers --line-range=:320 $path }"
@@ -48,8 +49,8 @@ def fzff [
 ] {
   let file = (fzf | into string | str trim)
   let exten = [ [ex com];
-                    ['.html' 'brave-browser']
-                    ['.pdf' 'brave-browser']
+                    ['.html' 'firefox']
+                    ['.pdf' 'firefox']
                     ['.docx' 'libreoffice']
                     ['.doc' 'libreoffice']
                     ['.odt' 'libreoffice']
